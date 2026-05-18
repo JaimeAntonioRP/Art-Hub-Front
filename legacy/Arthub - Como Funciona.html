@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Arthub — Cómo funciona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="arthub-base.css" />
+<style>
+  .cf-hero {
+    background: var(--dark); color: var(--cream-on-dark);
+    padding: 72px 0 0;
+    text-align: center;
+  }
+  .cf-hero .eyebrow { color: var(--gold-on-dark); }
+  .cf-hero h1 {
+    color: var(--cream-on-dark);
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(40px, 5vw, 64px); line-height: 1.05; margin: 14px 0 12px;
+    letter-spacing: -0.018em;
+  }
+  .cf-hero h1 .gold { color: var(--oro-cusco); font-style: italic; }
+  .cf-hero p.sub { max-width: 60ch; margin: 0 auto; color: #C9BFA9; font-size: 16.5px; line-height: 1.55; }
+
+  .cf-hero .frame-row {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center;
+    text-align: left;
+    padding: 64px 0;
+    border-top: 1px solid var(--rule-dark);
+    margin-top: 64px;
+  }
+  .cf-hero .left h2 {
+    color: var(--cream-on-dark);
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 40px; line-height: 1.05; letter-spacing: -0.018em;
+  }
+  .cf-hero .left h2 em { color: var(--oro-cusco); font-style: italic; }
+  .cf-hero .left p { color: #C9BFA9; margin: 18px 0 0; font-size: 15.5px; line-height: 1.6; max-width: 50ch; }
+  .cf-hero .left .quick {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    margin-top: 32px;
+  }
+  .cf-hero .left .quick .item { display: flex; gap: 12px; align-items: flex-start; }
+  .cf-hero .left .quick .ico { width: 26px; height: 26px; color: var(--oro-cusco); flex-shrink: 0; margin-top: 2px; }
+  .cf-hero .left .quick b { display: block; font-size: 13.5px; font-weight: 500; color: var(--cream-on-dark); }
+  .cf-hero .left .quick span { color: #9E957F; font-size: 12.5px; line-height: 1.5; }
+
+  .cf-hero .video {
+    position: relative; aspect-ratio: 5/4; overflow: hidden;
+    border-radius: 12px; border: 8px solid #3A2A1D; outline: 1px solid #5C432F;
+    background:
+      radial-gradient(circle at 30% 35%, rgba(232,196,140,0.4), transparent 55%),
+      linear-gradient(165deg, #2c1a10 0%, #5c3520 30%, #a07040 60%, #d8b078 100%);
+  }
+  .cf-hero .video .play {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 72px; height: 72px; border-radius: 50%;
+    background: rgba(20,17,12,0.7); border: 2px solid rgba(237,227,204,0.4);
+    backdrop-filter: blur(8px);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--oro-cusco);
+  }
+  .cf-hero .video .play svg { width: 28px; height: 28px; }
+  .cf-hero .video .cap {
+    position: absolute; left: 16px; bottom: 16px;
+    background: rgba(20,17,12,0.78); padding: 8px 14px; border-radius: 999px;
+    font-size: 12px; color: var(--cream-on-dark); letter-spacing: 0.04em;
+  }
+
+  /* Process timeline */
+  .process { padding: 96px 0; }
+  .process .timeline {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 36px 24px;
+    position: relative;
+  }
+  .process-step { text-align: center; position: relative; }
+  .process-step .badge {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--paper-card);
+    border: 2px solid var(--oro-cusco); color: var(--oro-cusco);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 16px;
+    margin-bottom: 14px; position: relative; z-index: 2;
+    background: var(--paper);
+  }
+  .process-step .ico-circle {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--dark); color: var(--oro-cusco);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .process-step .ico-circle svg { width: 24px; height: 24px; }
+  .process-step h4 {
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 14px;
+    margin: 0 0 6px; color: var(--ink);
+  }
+  .process-step p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* connector line between steps in same row */
+  .process-step:not(:nth-child(6n+1))::before {
+    content: ""; position: absolute; top: 16px;
+    left: -50%; right: 50%;
+    border-top: 1.5px dashed rgba(200,162,74,0.45);
+  }
+
+  /* Tech cards */
+  .tech-cards {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+  }
+  .tech-card {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 12px;
+    overflow: hidden;
+  }
+  .tech-card .img {
+    aspect-ratio: 5/3;
+    background: linear-gradient(135deg, var(--dark), #1f2a3a);
+    position: relative;
+  }
+  .tech-card .img::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 30% 50%, rgba(75,96,114,0.5), transparent 50%),
+                      radial-gradient(circle at 70% 30%, rgba(200,162,74,0.25), transparent 50%);
+  }
+  .tech-card .img .glyph {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: var(--oro-soft); opacity: 0.7;
+  }
+  .tech-card .img .glyph svg { width: 80px; height: 80px; }
+  .tech-card .body { padding: 22px 24px 24px; }
+  .tech-card h4 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px;
+    margin: 0 0 8px;
+  }
+  .tech-card p { margin: 0; color: var(--ink-soft); font-size: 13.5px; line-height: 1.55; }
+
+  /* Logistics flow */
+  .log-flow {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px;
+    background: var(--paper-2); padding: 36px; border-radius: 12px;
+    border: 1px solid var(--rule); position: relative;
+  }
+  .log-step { text-align: center; position: relative; }
+  .log-step .ico-circle {
+    width: 56px; height: 56px; border-radius: 12px;
+    background: var(--paper-card); color: var(--oro-cusco);
+    border: 1px solid var(--rule);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  .log-step h5 { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 13.5px; margin: 0 0 4px; }
+  .log-step p { margin: 0; color: var(--ink-soft); font-size: 12px; line-height: 1.5; }
+  .log-step:not(:last-child)::after {
+    content: "→"; color: var(--oro-cusco); position: absolute;
+    right: -16px; top: 18px; font-size: 18px;
+  }
+
+  /* Partners strip */
+  .partners-strip {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; align-items: center;
+    padding: 22px 28px; background: var(--paper-card); border: 1px solid var(--rule);
+    border-radius: 12px;
+  }
+  .partners-strip .pill {
+    display: flex; align-items: center; gap: 10px; padding: 6px 0;
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 16px;
+    color: var(--ink-2); justify-content: center; text-align: center;
+  }
+  .partners-strip .pill .sq { width: 24px; height: 24px; flex-shrink: 0; background: var(--oro-cusco); border-radius: 4px; color: var(--dark);
+    display: inline-flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11px; }
+  .partners-strip .pill em { font-style: italic; color: var(--oro-cusco); }
+</style>
+</head>
+<body data-page="como">
+
+<div id="site-header-slot"></div>
+
+<!-- Hero -->
+<section class="cf-hero">
+  <div class="wrap">
+    <span class="eyebrow">Cómo funciona</span>
+    <h1>Un proceso claro.<br/><span class="gold">Cero incertidumbre.</span></h1>
+    <p class="sub">
+      En Arthub combinamos curaduría experta, tecnología avanzada y logística internacional
+      para que comprar o invertir en arte sea seguro, transparente y simple.
+    </p>
+
+    <div class="frame-row">
+      <div class="left">
+        <h2>Del taller al destino,<br/>con respaldo <em>tecnológico</em>.</h2>
+        <p>Cada obra atraviesa un protocolo de validación, registro, visualización y entrega antes de llegar a tu colección. Sin trámites adicionales, sin sorpresas.</p>
+        <div class="quick">
+          <div class="item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/><path d="M9 12 l2 2 l4 -4"/></svg>
+            <div><b>100 % seguro</b><span>Autenticidad garantizada</span></div>
+          </div>
+          <div class="item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18"/><path d="M9 9 L15 9 L15 15 L9 15 Z"/></svg>
+            <div><b>Trazabilidad total</b><span>Blockchain inmutable</span></div>
+          </div>
+          <div class="item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12 H22"/><path d="M12 2 a16 16 0 0 1 0 20 a16 16 0 0 1 0 -20"/></svg>
+            <div><b>Envíos globales</b><span>Puerta a puerta</span></div>
+          </div>
+          <div class="item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15 a3 3 0 0 1 -3 3 h-3 l-4 3 v-3 H6 a3 3 0 0 1 -3 -3 V7 a3 3 0 0 1 3 -3 h12 a3 3 0 0 1 3 3 z"/></svg>
+            <div><b>Acompañamiento</b><span>Experto en cada paso</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="video">
+        <span class="cap">Ver video del proceso · 3:24</span>
+        <span class="play">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5 v14 l11 -7 z"/></svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 step process -->
+<section class="process">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Proceso</span>
+      <h2>Así funciona <em>Arthub</em></h2>
+      <p>Un proceso simple en 11 pasos para brindarte confianza total al comprar o invertir en arte.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="process-step">
+        <span class="badge">1</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21 L16 16"/></svg></span>
+        <h4>Explora</h4>
+        <p>Descubre obras maestras certificadas de nuestros artistas cusqueños.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">2</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18"/><circle cx="9" cy="9" r="2"/><path d="M21 15 L16 10 L5 21"/></svg></span>
+        <h4>Selecciona</h4>
+        <p>Elige la obra que deseas comprar o en la que deseas invertir.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">3</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M21 12 c-2.5 3 -5.5 4.5 -9 4.5 S5.5 15 3 12 c2.5 -3 5.5 -4.5 9 -4.5 S18.5 9 21 12 z"/></svg></span>
+        <h4>Validación IA</h4>
+        <p>Analizamos la obra con inteligencia artificial: estilo, técnica, autenticidad.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">4</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 11 c0 -3 -2 -5 -4 -5 s-4 2 -4 5 c0 4 4 7 4 10"/><path d="M12 11 c0 -3 2 -5 4 -5 s4 2 4 5 c0 4 -4 7 -4 10"/><path d="M8 18 H16"/></svg></span>
+        <h4>Huella digital</h4>
+        <p>Creamos una identidad única para la obra con todos sus datos verificados.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">5</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+        <h4>Registro Blockchain</h4>
+        <p>Registramos la obra en blockchain para garantizar su origen y trazabilidad.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">6</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18 H14"/></svg></span>
+        <h4>Visualiza en AR</h4>
+        <p>Proyecta la obra en tu espacio en tamaño real con realidad aumentada.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">7</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/><path d="M9 12 l2 2 l4 -4"/></svg></span>
+        <h4>Confirma</h4>
+        <p>Revisa todos los detalles y confirma tu compra o inversión con seguridad.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">8</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10 H21"/><path d="M7 16 H10"/></svg></span>
+        <h4>Pago seguro</h4>
+        <p>Realiza el pago de forma segura con múltiples métodos disponibles.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">9</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 11 L21 11 L21 18 L17 18"/><circle cx="7" cy="20" r="2"/><circle cx="18" cy="20" r="2"/></svg></span>
+        <h4>Logística puerta a puerta</h4>
+        <p>Nos encargamos del embalaje, permisos y envío internacional.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">10</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 10 c0 7 -9 12 -9 12 s-9 -5 -9 -12 a9 9 0 0 1 18 0 z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <h4>Seguimiento</h4>
+        <p>Monitorea tu envío en cada etapa hasta la entrega final.</p>
+      </div>
+      <div class="process-step">
+        <span class="badge">11</span>
+        <span class="ico-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 16 V8 L12 3 L3 8 V16 L12 21 Z"/><path d="M3.3 7 L12 12 L20.7 7"/><path d="M12 21 V12"/></svg></span>
+        <h4>Recibe tu obra</h4>
+        <p>Recibe la obra en la puerta de tu casa con seguro incluido.</p>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 56px;">
+      <a class="btn btn-gold btn-lg btn-arrow" href="Arthub - Catalogo.html">Comenzar el proceso</a>
+    </div>
+  </div>
+</section>
+
+<!-- Technology cards -->
+<section class="section" style="background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Tecnología</span>
+      <h2>Tecnología y expertos<br/>en <em>cada etapa</em></h2>
+      <p>Combinamos lo mejor del arte y la tecnología para proteger tu inversión.</p>
+    </div>
+
+    <div class="tech-cards">
+      <div class="tech-card">
+        <div class="img">
+          <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="3"/><path d="M21 12 c-2.5 3 -5.5 4.5 -9 4.5 S5.5 15 3 12 c2.5 -3 5.5 -4.5 9 -4.5 S18.5 9 21 12 z"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 4"/></svg></span>
+        </div>
+        <div class="body">
+          <h4>IA de autenticidad</h4>
+          <p>Nuestra inteligencia artificial analiza miles de detalles: pincelada, textura, composición, color y patrones únicos del artista.</p>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="img">
+          <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 11 c0 -3 -2 -5 -4 -5 s-4 2 -4 5 c0 4 4 7 4 10"/><path d="M12 11 c0 -3 2 -5 4 -5 s4 2 4 5 c0 4 -4 7 -4 10"/><path d="M8 18 H16"/></svg></span>
+        </div>
+        <div class="body">
+          <h4>Huella digital única</h4>
+          <p>Cada obra recibe una identidad digital con metadatos verificados que la convierten en un activo cultural único.</p>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="img">
+          <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><path d="M10 6.5 H14"/><path d="M10 17.5 H14"/><path d="M6.5 10 V14"/><path d="M17.5 10 V14"/></svg></span>
+        </div>
+        <div class="body">
+          <h4>Blockchain inmutable</h4>
+          <p>Registramos la obra en blockchain para garantizar su autenticidad, procedencia e historial de propiedad.</p>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="img">
+          <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="5" y="2" width="14" height="20" rx="2"/><rect x="9" y="7" width="6" height="6"/><path d="M11 17 H13"/></svg></span>
+        </div>
+        <div class="body">
+          <h4>Realidad Aumentada</h4>
+          <p>Visualiza la obra en tu espacio antes de comprar. Tamaño real, escala perfecta, decisión segura.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Logistics flow -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Logística</span>
+      <h2>Logística internacional<br/>sin <em>complicaciones</em></h2>
+      <p>Nosotros nos encargamos de todo para que tu única preocupación sea disfrutar tu obra.</p>
+    </div>
+
+    <div class="log-flow">
+      <div class="log-step">
+        <span class="ico-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="3" width="12" height="18" rx="1"/><path d="M9 8 H15"/><path d="M9 12 H15"/><path d="M9 16 H13"/></svg></span>
+        <h5>Evaluación y documentación</h5>
+        <p>Revisamos la obra y gestionamos los documentos necesarios.</p>
+      </div>
+      <div class="log-step">
+        <span class="ico-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16 V8 L12 3 L3 8 V16 L12 21 Z"/><path d="M3.3 7 L12 12 L20.7 7"/></svg></span>
+        <h5>Embalaje profesional</h5>
+        <p>Protegemos la obra con materiales de alta calidad para transporte seguro.</p>
+      </div>
+      <div class="log-step">
+        <span class="ico-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="3" width="12" height="18" rx="1"/><path d="M9 14 L11 16 L15 12"/></svg></span>
+        <h5>Permisos y exportación</h5>
+        <p>Gestionamos permisos culturales y trámites de exportación.</p>
+      </div>
+      <div class="log-step">
+        <span class="ico-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12 L9 8 L15 10 L22 6 L22 14 L15 18 L9 16 L2 20 Z"/></svg></span>
+        <h5>Transporte asegurado</h5>
+        <p>Trabajamos con couriers internacionales líderes como DHL.</p>
+      </div>
+      <div class="log-step">
+        <span class="ico-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10 c0 7 -9 12 -9 12 s-9 -5 -9 -12 a9 9 0 0 1 18 0 z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <h5>Seguimiento en tiempo real</h5>
+        <p>Monitorea tu envío en cada etapa hasta la entrega final.</p>
+      </div>
+      <div class="log-step">
+        <span class="ico-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21 V11 L12 4 L21 11 V21 H14 V14 H10 V21 Z"/></svg></span>
+        <h5>Entrega garantizada</h5>
+        <p>Recibe la obra en la puerta de tu casa con seguro incluido.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partners -->
+<section class="section" style="padding-top: 0;">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Alianzas</span>
+      <h2>Confianza respaldada por<br/><em>expertos e instituciones</em></h2>
+    </div>
+
+    <div class="partners-strip">
+      <div class="pill"><span class="sq">MC</span>Ministerio<br/>de Cultura</div>
+      <div class="pill"><span class="sq">PP</span><em>prom</em>perú</div>
+      <div class="pill"><span class="sq">DB</span>Dircetur<br/>Cusco</div>
+      <div class="pill"><span class="sq">CC</span>Cámara de<br/>Comercio Cusco</div>
+      <div class="pill"><span class="sq">IC</span>ICOM<br/>International</div>
+      <div class="pill"><span class="sq">DH</span>DHL<br/>Express</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow" style="color: var(--gold-on-dark);">Empieza ahora</span>
+        <h2 style="margin-top: 14px;">Invierte en arte.<br/><em>Invierte en cultura.</em></h2>
+        <p>Arthub hace que comprar o invertir en arte sea tan seguro como invertir en cualquier otro activo.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-gold btn-lg btn-arrow" href="Arthub - Catalogo.html" style="justify-content: space-between;">Explorar catálogo de obras</a>
+        <a class="btn btn-outline-light btn-lg" href="#" style="justify-content: space-between; border-color: rgba(237,227,204,0.35);">
+          Hablar con un asesor
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.5 4 c-3 -1 -7 -1 -10 1 c-3 2 -5 6 -5 9 v6 h6 c3 0 7 -2 9 -5 c2 -3 2 -7 1 -10 z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer-slot"></div>
+<script src="arthub-chrome.js"></script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Arthub — Catálogo de Maestros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="arthub-base.css" />
+<style>
+  .cat-head {
+    padding: 64px 0 40px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+  .cat-head .grid {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: end;
+  }
+  .cat-head h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(34px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.018em;
+  }
+  .cat-head p { color: var(--ink-soft); font-size: 15.5px; line-height: 1.55; margin: 16px 0 0; max-width: 50ch; }
+
+  .trust-pills {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    padding: 22px; background: var(--paper-card);
+    border: 1px solid var(--rule); border-radius: 12px;
+  }
+  .trust-pills .item { display: flex; gap: 12px; align-items: flex-start; }
+  .trust-pills .item .ico { width: 26px; height: 26px; color: var(--oro-cusco); flex-shrink: 0; margin-top: 2px; }
+  .trust-pills .item b { display: block; font-size: 13.5px; font-weight: 500; }
+  .trust-pills .item span { font-size: 12px; color: var(--ink-soft); line-height: 1.45; }
+
+  /* Body */
+  .cat-body {
+    padding: 40px 0 96px;
+    display: grid; grid-template-columns: 260px 1fr; gap: 40px;
+  }
+
+  /* Filters */
+  .filters .head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 14px; border-bottom: 1px solid var(--rule);
+  }
+  .filters .head h3 {
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink); margin: 0;
+  }
+  .filters .head a { color: var(--oro-cusco); font-size: 12.5px; font-weight: 500; }
+  .filters section { margin-top: 24px; }
+  .filters section h5 {
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11.5px;
+    color: var(--ink); letter-spacing: 0.18em; text-transform: uppercase;
+    margin: 0 0 14px;
+  }
+  .filters .search {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 10px 12px; font-size: 13px;
+  }
+  .filters .search input { border: 0; outline: 0; flex: 1; background: transparent; font: inherit; }
+  .filters .search .ico { width: 14px; height: 14px; color: var(--ink-soft); }
+
+  .check {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 0; font-size: 13.5px; color: var(--ink-2);
+    cursor: pointer;
+  }
+  .check input { accent-color: var(--oro-cusco); }
+  .check .count { margin-left: auto; color: var(--ink-soft); font-size: 12px; }
+
+  .range {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 14px;
+  }
+  .range .track {
+    height: 4px; background: var(--rule); border-radius: 999px; position: relative;
+  }
+  .range .track .fill {
+    position: absolute; left: 10%; right: 25%;
+    height: 4px; background: var(--oro-cusco); border-radius: 999px;
+  }
+  .range .track .knob {
+    position: absolute; top: -5px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--paper-card); border: 2px solid var(--oro-cusco);
+  }
+  .range .vals {
+    margin-top: 14px; display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--ink-soft);
+  }
+
+  .select {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 10px 12px; font-size: 13px;
+    cursor: pointer;
+  }
+  .select .ico { width: 14px; height: 14px; color: var(--ink-soft); }
+
+  /* Results bar */
+  .results-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .results-bar .count {
+    font-size: 14px; color: var(--ink-2);
+  }
+  .results-bar .right { display: flex; align-items: center; gap: 12px; }
+  .results-bar .right .select { min-width: 200px; }
+  .view-toggle { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+  .view-toggle button {
+    background: transparent; border: 0; padding: 9px 12px; color: var(--ink-soft);
+    border-right: 1px solid var(--rule);
+  }
+  .view-toggle button:last-child { border-right: 0; }
+  .view-toggle button.active { background: var(--oro-cusco); color: var(--dark); }
+
+  /* Grid */
+  .works-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+  }
+  @media (max-width: 1180px) { .works-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 900px)  { .works-grid { grid-template-columns: repeat(2, 1fr); } .cat-body { grid-template-columns: 1fr; } }
+
+  /* Pagination */
+  .pagination {
+    margin-top: 40px; display: flex; justify-content: center; align-items: center; gap: 6px;
+  }
+  .pagination button {
+    width: 36px; height: 36px; border: 1px solid var(--rule); background: var(--paper-card);
+    border-radius: 6px; font-size: 13px; color: var(--ink-2);
+  }
+  .pagination button.active { background: var(--ink); color: var(--cream-on-dark); border-color: var(--ink); }
+  .pagination button.nav { color: var(--ink-soft); }
+</style>
+</head>
+<body data-page="catalogo">
+
+<div id="site-header-slot"></div>
+
+<!-- Header -->
+<section class="cat-head">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow">Catálogo de maestros</span>
+        <h1 style="margin-top: 14px;">Obras maestras del Cusco<br/>para coleccionistas globales</h1>
+        <p>Cada obra es un activo cultural validado con IA, registrado en Blockchain y listo para entrega internacional certificada.</p>
+      </div>
+
+      <div class="trust-pills">
+        <div class="item">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M21 12 c-2.5 3 -5.5 4.5 -9 4.5 S5.5 15 3 12 c2.5 -3 5.5 -4.5 9 -4.5 S18.5 9 21 12 z"/></svg>
+          <div><b>Autenticidad IA</b><span>Validación científica de cada obra</span></div>
+        </div>
+        <div class="item">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <div><b>Blockchain</b><span>Trazabilidad e identidad digital</span></div>
+        </div>
+        <div class="item">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7 V5 a2 2 0 0 1 2 -2 H7"/><path d="M17 3 H19 a2 2 0 0 1 2 2 V7"/><path d="M21 17 V19 a2 2 0 0 1 -2 2 H17"/><path d="M7 21 H5 a2 2 0 0 1 -2 -2 V17"/><rect x="8" y="8" width="8" height="8"/></svg>
+          <div><b>Realidad Aumentada</b><span>Visualiza a escala real</span></div>
+        </div>
+        <div class="item">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 17 H22"/><path d="M3 13 L7 5 H17 L21 13"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <div><b>Logística certificada</b><span>Envío seguro DHL + MinCul</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Body -->
+<div class="wrap cat-body">
+
+  <!-- Filters -->
+  <aside class="filters">
+    <div class="head">
+      <h3>Filtrar obras</h3>
+      <a href="#">Limpiar filtros</a>
+    </div>
+
+    <section>
+      <h5>Artista</h5>
+      <div class="search">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21 L16 16"/></svg>
+        <input placeholder="Buscar artista..." />
+      </div>
+      <div style="margin-top: 12px;">
+        <label class="check"><input type="checkbox" checked /> Augusto García Peñalva <span class="count">12</span></label>
+        <label class="check"><input type="checkbox" /> Marcos Chillitupa <span class="count">8</span></label>
+        <label class="check"><input type="checkbox" /> Fortunato Ccopa <span class="count">7</span></label>
+        <label class="check"><input type="checkbox" /> Sabino Cusicanqui <span class="count">6</span></label>
+        <label class="check"><input type="checkbox" /> Otros maestros <span class="count">15</span></label>
+      </div>
+    </section>
+
+    <section>
+      <h5>Técnica</h5>
+      <label class="check"><input type="checkbox" /> Óleo sobre lienzo <span class="count">32</span></label>
+      <label class="check"><input type="checkbox" /> Acrílico sobre lienzo <span class="count">10</span></label>
+      <label class="check"><input type="checkbox" /> Técnica mixta <span class="count">5</span></label>
+      <label class="check"><input type="checkbox" /> Temple <span class="count">2</span></label>
+    </section>
+
+    <section>
+      <h5>Rango de precio (USD)</h5>
+      <div class="range">
+        <div class="track">
+          <div class="fill"></div>
+          <div class="knob" style="left: 10%;"></div>
+          <div class="knob" style="left: 75%;"></div>
+        </div>
+        <div class="vals"><span>$1,000</span><span>$50,000+</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h5>Dimensiones</h5>
+      <div class="select">Todas las dimensiones
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9 L12 15 L18 9"/></svg>
+      </div>
+    </section>
+
+    <section>
+      <h5>Disponibilidad</h5>
+      <label class="check"><input type="checkbox" checked /> Disponibles para envío <span class="count">42</span></label>
+      <label class="check"><input type="checkbox" /> Bajo reserva <span class="count">5</span></label>
+    </section>
+
+    <section>
+      <h5>Garantías</h5>
+      <label class="check"><input type="checkbox" checked /> Validado por IA</label>
+      <label class="check"><input type="checkbox" checked /> Registro Blockchain</label>
+      <label class="check"><input type="checkbox" /> AR Disponible</label>
+    </section>
+  </aside>
+
+  <!-- Results -->
+  <div>
+    <div class="results-bar">
+      <div class="count"><b>42 obras</b> encontradas</div>
+      <div class="right">
+        <div class="select">Ordenar por: Relevancia
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9 L12 15 L18 9"/></svg>
+        </div>
+        <div class="view-toggle">
+          <button class="active" title="Grilla"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+          <button title="Lista"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="works-grid" id="works">
+      <!-- works injected below -->
+    </div>
+
+    <div class="pagination">
+      <button class="nav">‹</button>
+      <button class="active">1</button>
+      <button>2</button>
+      <button>3</button>
+      <span style="padding:0 6px; color:var(--ink-soft);">…</span>
+      <button>11</button>
+      <button class="nav">›</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom trust bar -->
+<div class="trust-bar">
+  <div class="wrap">
+    <div class="grid">
+      <div class="trust-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M21 12 c-2.5 3 -5.5 4.5 -9 4.5 S5.5 15 3 12 c2.5 -3 5.5 -4.5 9 -4.5 S18.5 9 21 12 z"/></svg>
+        <div class="t"><b>Validado por IA</b><span>Análisis forense de la pincelada</span></div>
+      </div>
+      <div class="trust-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <div class="t"><b>Blockchain inmutable</b><span>Identidad digital perpetua</span></div>
+      </div>
+      <div class="trust-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7 V5 a2 2 0 0 1 2 -2 H7"/><path d="M17 3 H19 a2 2 0 0 1 2 2 V7"/><path d="M21 17 V19 a2 2 0 0 1 -2 2 H17"/><path d="M7 21 H5 a2 2 0 0 1 -2 -2 V17"/><rect x="8" y="8" width="8" height="8"/></svg>
+        <div class="t"><b>Visualiza en AR</b><span>Escala real 1:1</span></div>
+      </div>
+      <div class="trust-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 17 H22"/><path d="M3 13 L7 5 H17 L21 13"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+        <div class="t"><b>Logística DHL</b><span>Cobertura puerta a puerta</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer-slot"></div>
+
+<script src="arthub-chrome.js"></script>
+<script>
+  // Inject works
+  const WORKS = [
+    { t: 'Camino al Qoricancha',     a: 'Augusto García Peñalva',  d: '100 × 80 cm', p: 15000, bg: 1 },
+    { t: 'Mujeres del mercado',      a: 'Sabino Cusicanqui',       d: '90 × 70 cm',  p: 12000, bg: 6 },
+    { t: 'Atardecer en San Blas',    a: 'Marcos Chillitupa',       d: '100 × 81 cm', p: 18500, bg: 8 },
+    { t: 'Danza de los Qhapaq Qolla', a: 'Fortunato Ccopa',         d: '120 × 100 cm', p: 16800, bg: 4 },
+    { t: 'Valle Sagrado',            a: 'Augusto García Peñalva',  d: '100 × 80 cm', p: 14000, bg: 5 },
+    { t: 'Tejados de Cusco',         a: 'Marcos Chillitupa',       d: '90 × 70 cm',  p: 11500, bg: 3 },
+    { t: 'Retrato de Mama Cusqueña', a: 'Sabino Cusicanqui',       d: '80 × 60 cm',  p: 10000, bg: 7 },
+    { t: 'Procesión del Corpus',     a: 'Fortunato Ccopa',         d: '100 × 80 cm', p: 13200, bg: 2 },
+  ];
+  const fmt = (n) => '$' + n.toLocaleString('en-US');
+  const grid = document.getElementById('works');
+  grid.innerHTML = WORKS.map(w => `
+    <a class="work" href="#">
+      <div class="work-img bg-paint-${w.bg}">
+        <span class="stamp">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/><path d="M9 12 l2 2 l4 -4"/></svg>
+          Obra certificada
+        </span>
+      </div>
+      <div class="body">
+        <div class="author">${w.a}</div>
+        <h4>${w.t}</h4>
+        <div class="meta">Óleo sobre lienzo · ${w.d}</div>
+        <div class="price">USD ${w.p.toLocaleString('en-US')}</div>
+        <div class="row-actions">
+          <div class="icons">
+            <button class="icon-btn" title="AR">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7 V5 a2 2 0 0 1 2 -2 H7"/><path d="M17 3 H19 a2 2 0 0 1 2 2 V7"/><path d="M21 17 V19 a2 2 0 0 1 -2 2 H17"/><path d="M7 21 H5 a2 2 0 0 1 -2 -2 V17"/><rect x="8" y="8" width="8" height="8"/></svg>
+            </button>
+            <button class="icon-btn" title="Guardar">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 21 L12 16 L5 21 V5 a2 2 0 0 1 2 -2 h10 a2 2 0 0 1 2 2 z"/></svg>
+            </button>
+          </div>
+          <button class="icon-btn" style="border-color: var(--oro-cusco); color: var(--oro-cusco);" title="Ver">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12 H19"/><path d="M13 6 L19 12 L13 18"/></svg>
+          </button>
+        </div>
+      </div>
+    </a>
+  `).join('');
+</script>
+</body>
+</html>
