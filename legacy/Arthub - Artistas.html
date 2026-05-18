@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Arthub — Índice de Valor Artístico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="arthub-base.css" />
+<style>
+  .art-hero {
+    background: var(--dark); color: var(--cream-on-dark);
+    padding: 64px 0 56px;
+    border-bottom: 1px solid var(--rule-dark);
+  }
+  .art-hero .grid {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center;
+  }
+  .art-hero h1 {
+    color: var(--cream-on-dark);
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(40px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.018em;
+  }
+  .art-hero h1 em { color: var(--oro-cusco); font-style: italic; }
+  .art-hero p { color: #C9BFA9; margin: 16px 0 0; font-size: 15.5px; line-height: 1.6; max-width: 56ch; }
+
+  .art-hero .right { position: relative; }
+  .art-hero .painting {
+    position: relative; aspect-ratio: 4/3;
+    border: 8px solid #3A2A1D; outline: 1px solid #5C432F;
+    background:
+      radial-gradient(circle at 35% 30%, rgba(232,196,140,0.45), transparent 55%),
+      linear-gradient(165deg, #2c1a10, #5c3520 30%, #a07040 60%, #d8b078);
+  }
+
+  .meth-card {
+    position: absolute; right: -10px; bottom: -40px; max-width: 320px;
+    background: var(--dark-2); border: 1px solid var(--rule-dark); border-radius: 12px;
+    padding: 22px;
+  }
+  .meth-card .ico { width: 28px; height: 28px; color: var(--oro-cusco); margin-bottom: 10px; }
+  .meth-card h4 { color: var(--cream-on-dark);
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 20px; margin: 0 0 8px; }
+  .meth-card p { color: #C9BFA9; font-size: 13px; line-height: 1.5; margin: 0; }
+  .meth-card a {
+    margin-top: 14px; display: inline-flex; align-items: center; gap: 6px;
+    color: var(--oro-cusco); font-size: 13px; font-weight: 500;
+  }
+
+  /* feature row under hero */
+  .art-hero .features {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;
+    margin-top: 56px;
+  }
+  .art-hero .features .feat .ico { width: 28px; height: 28px; color: var(--oro-cusco); margin-bottom: 10px; }
+  .art-hero .features .feat h4 {
+    color: var(--cream-on-dark); font-family: 'Inter', sans-serif;
+    font-weight: 500; font-size: 13.5px; margin: 0 0 4px;
+  }
+  .art-hero .features .feat p { color: #9E957F; font-size: 12.5px; line-height: 1.5; margin: 0; }
+
+  /* Ranking page */
+  .rank-head {
+    padding: 56px 0 28px;
+  }
+  .rank-head h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -0.015em;
+  }
+  .rank-head p { color: var(--ink-soft); font-size: 14.5px; margin: 14px 0 0; max-width: 70ch; }
+
+  .filter-row {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap: 12px;
+    margin: 28px 0;
+  }
+  .filter-row .input, .filter-row .sel {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 10px 14px; font-size: 13.5px; display: flex; align-items: center; gap: 8px;
+    color: var(--ink-2);
+  }
+  .filter-row input { border: 0; outline: 0; flex: 1; background: transparent; font: inherit; color: inherit; }
+  .filter-row .clear {
+    background: var(--oro-cusco); color: var(--dark); padding: 10px 16px;
+    border: 0; border-radius: 8px; font-weight: 500; font-size: 13.5px;
+  }
+  .filter-row .ico { width: 14px; height: 14px; color: var(--ink-soft); }
+
+  .tbl td.avatar-cell { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+
+  .verified {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--oro-cusco); color: var(--dark);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  /* Score calc cards */
+  .score-calc {
+    background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: 64px 0;
+  }
+  .score-calc .grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 56px; }
+  .score-calc h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 28px; margin: 0 0 8px; letter-spacing: -0.015em;
+  }
+  .score-calc p.sub { color: var(--ink-soft); font-size: 14px; margin: 0 0 22px; }
+
+  .crit-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .crit { text-align: center; padding: 18px 8px; background: var(--paper-card);
+    border: 1px solid var(--rule); border-radius: 10px; }
+  .crit .ico { width: 22px; height: 22px; color: var(--oro-cusco); margin: 0 auto 10px; }
+  .crit h6 { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11.5px; margin: 0 0 4px; line-height: 1.3; }
+  .crit .v { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 18px; color: var(--oro-cusco); }
+
+  .interp { display: flex; flex-direction: column; gap: 8px; }
+  .interp .row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 14px; border-radius: 8px; background: var(--paper-card);
+    border: 1px solid var(--rule);
+  }
+  .interp .row .range { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 13px; color: var(--ink-soft); }
+  .interp .row .lbl { font-size: 13.5px; font-weight: 500; }
+  .interp .premium .lbl { color: #29603a; }
+  .interp .premium .range { color: #29603a; }
+  .interp .premium { background: rgba(122,132,107,0.18); border-color: rgba(122,132,107,0.4); }
+  .interp .certif .lbl { color: var(--oro-cusco); }
+  .interp .consolid .lbl { color: var(--terracota); }
+  .interp .emergente .lbl { color: var(--tierra); }
+  .interp .desarrollo .lbl { color: var(--ink-soft); }
+
+  /* CTA finance */
+  .cta-rich {
+    margin: 0; padding: 56px 0;
+    background: var(--dark); color: var(--cream-on-dark);
+  }
+  .cta-rich .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; align-items: center; }
+  .cta-rich .image {
+    position: relative; aspect-ratio: 16/10; overflow: hidden; border-radius: 8px;
+    background:
+      radial-gradient(circle at 30% 35%, rgba(232,196,140,0.35), transparent 50%),
+      linear-gradient(165deg, #1f1410, #50361f 35%, #98683a 65%, #d8b585);
+    border: 4px solid #3A2A1D;
+  }
+  .cta-rich h3 {
+    color: var(--cream-on-dark);
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 32px;
+    line-height: 1.1; margin: 0; letter-spacing: -0.015em;
+  }
+  .cta-rich h3 em { font-style: italic; color: var(--oro-cusco); }
+  .cta-rich p { color: #C9BFA9; margin: 14px 0 0; font-size: 14px; line-height: 1.55; }
+  .cta-rich .actions { display: flex; flex-direction: column; gap: 12px; }
+</style>
+</head>
+<body data-page="artistas">
+
+<div id="site-header-slot"></div>
+
+<!-- Hero -->
+<section class="art-hero">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow" style="color: var(--gold-on-dark);">Inteligencia artística</span>
+        <h1 style="margin-top: 14px;">Índice Arthub de<br/><em>Valor Artístico</em></h1>
+        <p>Evaluamos y clasificamos a los maestros cusqueños con nuestro sistema propio de análisis artístico, cultural y financiero para que inviertas con seguridad y transparencia.</p>
+      </div>
+      <div class="right">
+        <div class="painting"></div>
+        <div class="meth-card">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/></svg>
+          <h4>Metodología Arthub</h4>
+          <p>Sistema de evaluación propio basado en 6 criterios, con un puntaje máximo de 100 puntos.</p>
+          <a href="#score">Ver metodología completa →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9 L12 4 L21 9 L12 14 Z"/><path d="M7 12 V18 c0 1 2 2 5 2 s5 -1 5 -2 V12"/></svg>
+        <h4>Curaduría experta</h4>
+        <p>Historiadores del arte y curadores revisan la trayectoria de cada artista.</p>
+      </div>
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M21 12 c-2.5 3 -5.5 4.5 -9 4.5 S5.5 15 3 12 c2.5 -3 5.5 -4.5 9 -4.5 S18.5 9 21 12 z"/></svg>
+        <h4>IA de autenticidad</h4>
+        <p>Analizamos patrones técnicos, estilo pictórico y consistencia de obra.</p>
+      </div>
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <h4>Blockchain</h4>
+        <p>Registramos procedencia, propiedad y trazabilidad de activos culturales.</p>
+      </div>
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 8 H16"/><path d="M8 12 H16"/><path d="M8 16 H13"/></svg>
+        <h4>Respaldo institucional</h4>
+        <p>Revisamos documentación cultural, premios, exhibiciones y expedientes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ranking heading + filters -->
+<section class="rank-head">
+  <div class="wrap">
+    <h2>Ranking de Maestros Cusqueños Certificados</h2>
+    <p>Nuestro índice clasifica a cada artista de la A a la Z según su trayectoria, calidad técnica, respaldo institucional, documentación y potencial de apreciación en el mercado global.</p>
+
+    <div class="filter-row">
+      <label class="input">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21 L16 16"/></svg>
+        <input placeholder="Buscar por nombre del maestro..." />
+      </label>
+      <div class="sel">Categoría<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-left:auto;"><path d="M6 9 L12 15 L18 9"/></svg></div>
+      <div class="sel">Técnica<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-left:auto;"><path d="M6 9 L12 15 L18 9"/></svg></div>
+      <div class="sel">Puntaje<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-left:auto;"><path d="M6 9 L12 15 L18 9"/></svg></div>
+      <div class="sel">Estado<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-left:auto;"><path d="M6 9 L12 15 L18 9"/></svg></div>
+      <div class="sel">Disponibilidad<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-left:auto;"><path d="M6 9 L12 15 L18 9"/></svg></div>
+      <button class="clear">Limpiar filtros</button>
+    </div>
+  </div>
+</section>
+
+<!-- Table -->
+<section style="padding-bottom: 56px;">
+  <div class="wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width: 48px;">#</th>
+          <th>Artista</th>
+          <th>Categoría</th>
+          <th>Técnica principal</th>
+          <th>Puntaje Arthub</th>
+          <th>Validación institucional</th>
+          <th>Potencial de inversión</th>
+          <th style="width: 130px;">Estado</th>
+        </tr>
+      </thead>
+      <tbody id="rank-body"></tbody>
+    </table>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 22px;">
+      <span class="muted" style="font-size: 13px;">Mostrando 1–8 de 128 artistas evaluados</span>
+      <div class="pagination" style="margin: 0;">
+        <button class="nav">‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <span style="padding:0 6px; color:var(--ink-soft);">…</span>
+        <button>16</button>
+        <button class="nav">›</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Score methodology -->
+<section class="score-calc" id="score">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h3>¿Cómo se calcula el Arthub Score?</h3>
+        <p class="sub">Nuestro puntaje de 0 a 100 combina 6 criterios clave evaluados por expertos y tecnología.</p>
+        <div class="crit-grid">
+          <div class="crit">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 L15 9 L22 10 L17 15 L18 22 L12 18 L6 22 L7 15 L2 10 L9 9 Z"/></svg>
+            <h6>Trayectoria artística</h6>
+            <div class="v">25 %</div>
+          </div>
+          <div class="crit">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21 V11 L12 4 L21 11 V21 H14 V14 H10 V21 Z"/></svg>
+            <h6>Reconocimiento institucional</h6>
+            <div class="v">20 %</div>
+          </div>
+          <div class="crit">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15 14"/></svg>
+            <h6>Calidad técnica de la obra</h6>
+            <div class="v">20 %</div>
+          </div>
+          <div class="crit">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8 H15"/><path d="M9 12 H15"/><path d="M9 16 H12"/></svg>
+            <h6>Documentación y procedencia</h6>
+            <div class="v">15 %</div>
+          </div>
+          <div class="crit">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17 L9 11 L13 15 L21 7"/><path d="M15 7 H21 V13"/></svg>
+            <h6>Potencial de mercado</h6>
+            <div class="v">10 %</div>
+          </div>
+          <div class="crit">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12 H22"/><path d="M12 2 a16 16 0 0 1 0 20 a16 16 0 0 1 0 -20"/></svg>
+            <h6>Viabilidad de exportación</h6>
+            <div class="v">10 %</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Interpretación del Arthub Score</h3>
+        <div class="interp" style="margin-top: 16px;">
+          <div class="row premium"><span class="range">90 – 100</span><span class="lbl">Maestro Premium</span></div>
+          <div class="row certif"><span class="range">80 – 89</span><span class="lbl">Maestro Certificado</span></div>
+          <div class="row consolid"><span class="range">70 – 79</span><span class="lbl">En Consolidación</span></div>
+          <div class="row emergente"><span class="range">60 – 69</span><span class="lbl">Emergente Validable</span></div>
+          <div class="row desarrollo"><span class="range">0 – 59</span><span class="lbl">En Desarrollo</span></div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Sobre la validación institucional</h3>
+        <p style="color: var(--ink-soft); font-size: 14px; line-height: 1.6; margin-top: 14px;">
+          Arthub revisa documentación disponible, trayectoria pública, expedientes culturales y permisos
+          gestionables ante entidades correspondientes, incluyendo el Ministerio de Cultura, según el caso.
+        </p>
+        <a href="#" style="display:inline-flex; align-items:center; gap:6px; margin-top: 14px; color: var(--oro-cusco); font-weight: 500; font-size: 13.5px;">Conocer más →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="cta-rich">
+  <div class="wrap">
+    <div class="grid">
+      <div class="image"></div>
+      <div>
+        <h3>Invierte en maestros.<br/><em>Invierte en cultura.</em></h3>
+        <p>Accede a obras certificadas, con respaldo tecnológico e institucional, listas para formar parte de tu colección.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-gold btn-lg btn-arrow" href="Arthub - Catalogo.html" style="justify-content: space-between;">Explorar catálogo de maestros</a>
+        <a class="btn btn-outline-light btn-lg" href="#" style="justify-content: space-between; border-color: rgba(237,227,204,0.35);">
+          Hablar con un asesor
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.5 4 c-3 -1 -7 -1 -10 1 c-3 2 -5 6 -5 9 v6 h6 c3 0 7 -2 9 -5 c2 -3 2 -7 1 -10 z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bottom trust strip -->
+<div class="trust-bar">
+  <div class="wrap">
+    <div class="grid">
+      <div class="trust-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M21 12 c-2.5 3 -5.5 4.5 -9 4.5 S5.5 15 3 12 c2.5 -3 5.5 -4.5 9 -4.5 S18.5 9 21 12 z"/></svg>
+        <div class="t"><b>Autenticidad validada por IA</b><span>Análisis técnico de obra y estilo</span></div>
+      </div>
+      <div class="trust-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <div class="t"><b>Registro Blockchain inmutable</b><span>Trazabilidad de procedencia</span></div>
+      </div>
+      <div class="trust-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7 V5 a2 2 0 0 1 2 -2 H7"/><path d="M17 3 H19 a2 2 0 0 1 2 2 V7"/><path d="M21 17 V19 a2 2 0 0 1 -2 2 H17"/><path d="M7 21 H5 a2 2 0 0 1 -2 -2 V17"/><rect x="8" y="8" width="8" height="8"/></svg>
+        <div class="t"><b>Visualización en Realidad Aumentada</b><span>Proyección 1:1 antes de invertir</span></div>
+      </div>
+      <div class="trust-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 17 H22"/><path d="M3 13 L7 5 H17 L21 13"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+        <div class="t"><b>Logística internacional certificada</b><span>Exportación, seguros y entrega segura</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer-slot"></div>
+
+<script src="arthub-chrome.js"></script>
+<script>
+  const ARTISTS = [
+    { name: 'Augusto García Peñalva', sub: 'Maestro internacional', cat: 'Maestro internacional', catC: 'chip-gold',
+      tec: 'Óleo sobre lienzo', score: 96, stars: 5, val: 'Reconocimiento cultural, exposiciones internacionales, documentación completa',
+      pot: 'Alto valor', potSub: 'Premium', potC: 'var(--quenua)', status: 'certif', initials: 'AG' },
+    { name: 'Sabino Cusicanqui', sub: 'Maestro tradicional', cat: 'Maestro tradicional', catC: 'chip-tierra',
+      tec: 'Óleo sobre lienzo', score: 91, stars: 5, val: 'Trayectoria artística regional, reconocimiento cultural, documentación verificada',
+      pot: 'Alto potencial', potSub: 'Alto', potC: 'var(--quenua)', status: 'certif', initials: 'SC' },
+    { name: 'Marcos Chillitupa', sub: 'Pintor contemporáneo', cat: 'Contemporáneo cusqueño', catC: 'chip-quenua',
+      tec: 'Óleo sobre lienzo', score: 88, stars: 4.5, val: 'Exhibiciones colectivas, documentación artística, respaldo galerístico',
+      pot: 'Alto potencial', potSub: 'Alto', potC: 'var(--quenua)', status: 'certif', initials: 'MC' },
+    { name: 'Fortunato Ccopa', sub: 'Arte costumbrista', cat: 'Costumbrista andino', catC: 'chip-azul',
+      tec: 'Óleo sobre lienzo', score: 85, stars: 4.5, val: 'Producción cultural documentada, trayectoria comprobada',
+      pot: 'Colección patrimonial', potSub: 'Alto', potC: 'var(--azul-altura)', status: 'certif', initials: 'FC' },
+    { name: 'Cecilia Guzmán', sub: 'Realismo andino', cat: 'Realismo contemporáneo', catC: 'chip-terracota',
+      tec: 'Acrílico sobre lienzo', score: 78, stars: 4, val: 'Trayectoria artística, documentación parcial',
+      pot: 'Inversión media', potSub: 'Media', potC: 'var(--terracota)', status: 'validacion', initials: 'CG' },
+    { name: 'Edgar Abarca', sub: 'Paisajismo andino', cat: 'Paisajismo', catC: 'chip-quenua',
+      tec: 'Óleo sobre lienzo', score: 72, stars: 3.5, val: 'Documentación en proceso, obras en análisis',
+      pot: 'Emergente', potSub: 'Media', potC: 'var(--terracota)', status: 'validacion', initials: 'EA' },
+    { name: 'Yovana Mamani', sub: 'Arte contemporáneo', cat: 'Arte contemporáneo', catC: 'chip-azul',
+      tec: 'Técnica mixta sobre lienzo', score: 68, stars: 3.5, val: 'Artista emergente, potencial identificado',
+      pot: 'Emergente', potSub: 'Bajo – Medio', potC: 'var(--tierra)', status: 'revision', initials: 'YM' },
+    { name: 'Otros maestros', sub: 'Diversas técnicas', cat: 'Diversas técnicas', catC: 'chip',
+      tec: 'Varias', score: 60, stars: 3, val: 'Evaluación documental pendiente',
+      pot: 'Emergente', potSub: 'Bajo', potC: 'var(--ink-soft)', status: 'revision', initials: '••' },
+  ];
+
+  const STATUS_MAP = {
+    certif:     { cls: '',       lbl: 'Certificado' },
+    validacion: { cls: 'warn',   lbl: 'En validación' },
+    revision:   { cls: 'review', lbl: 'En revisión' },
+  };
+
+  const stars = (n) => {
+    const full = Math.floor(n);
+    const half = n - full >= 0.5;
+    let out = '';
+    for (let i = 0; i < full; i++) out += '★';
+    if (half) out += '⯨';
+    for (let i = 0; i < 5 - full - (half ? 1 : 0); i++) out += '☆';
+    return out;
+  };
+
+  const tbody = document.getElementById('rank-body');
+  tbody.innerHTML = ARTISTS.map((a, i) => `
+    <tr>
+      <td><span class="rank">${String(i + 1).padStart(2, '0')}</span></td>
+      <td>
+        <div class="who">
+          <div class="avatar" style="background: linear-gradient(135deg, var(--oro-cusco), var(--tierra)); display: flex; align-items: center; justify-content: center; color: var(--dark); font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 16px;">${a.initials}</div>
+          <div>
+            <div class="name">
+              ${a.name}
+              <span class="verified" title="Verificado">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12 L10 17 L20 7"/></svg>
+              </span>
+            </div>
+            <div class="sub">${a.sub}</div>
+          </div>
+        </div>
+      </td>
+      <td><span class="chip ${a.catC}">${a.cat}</span></td>
+      <td><span class="muted" style="font-size: 13px;">${a.tec}</span></td>
+      <td>
+        <div class="score">${a.score}<span style="color:var(--ink-soft); font-size:14px;">/100</span></div>
+        <div class="stars">${stars(a.stars)}</div>
+      </td>
+      <td><span class="muted" style="font-size: 12.5px; display: inline-flex; gap: 8px; align-items: flex-start;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--oro-cusco); flex-shrink: 0; margin-top: 2px;"><path d="M3 21 V11 L12 4 L21 11 V21 H14 V14 H10 V21 Z"/></svg>
+        ${a.val}
+      </span></td>
+      <td>
+        <div style="color: ${a.potC}; font-weight: 500; font-size: 14px;">${a.pot}</div>
+        <div class="muted" style="font-size: 12px;">(${a.potSub})</div>
+      </td>
+      <td><span class="status-dot ${STATUS_MAP[a.status].cls}">${STATUS_MAP[a.status].lbl}</span></td>
+    </tr>
+  `).join('');
+</script>
+</body>
+</html>
