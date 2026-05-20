@@ -18,10 +18,13 @@ function rewriteLinks(s) {
     .replaceAll('href="Arthub - Nosotros.html"', 'href="#"')
     .replaceAll('href="Arthub Index.html"', 'href="/ventanas"')
     .replaceAll('href="Arthub Landing.html"', 'href="/landing"')
-    .replaceAll(
-      /<a href="\/cdn-cgi\/l\/email-protection"[^>]*>\[email[^<]*<\/a>/g,
-      '<a href="mailto:info@arthub.pe">info@arthub.pe</a>'
-    );
+    // Rewrite Cloudflare email-protection hrefs (with or without #hash) to mailto
+    .replace(
+      /href="\/cdn-cgi\/l\/email-protection[^"]*"/g,
+      'href="mailto:info@arthub.pe"'
+    )
+    // Replace the obfuscated link body "[email protected]" with the actual address
+    .replace(/\[email(?:&#160;|\s+|&nbsp;)protected\]/g, "info@arthub.pe");
 }
 
 function extract(file) {
@@ -149,6 +152,9 @@ const pages = {
   catalogo: "Arthub - Catalogo.html",
   comoFunciona: "Arthub - Como Funciona.html",
   artistas: "Arthub - Artistas.html",
+  tecnologia: "Arthub - Tecnologia.html",
+  inversionistas: "Arthub - Inversionistas.html",
+  nosotros: "Arthub - Nosotros.html",
 };
 
 const result = {};
@@ -193,6 +199,9 @@ export const inicioHtml = ${JSON.stringify(result.inicio)};
 export const catalogoHtml = ${JSON.stringify(result.catalogo)};
 export const comoFuncionaHtml = ${JSON.stringify(result.comoFunciona)};
 export const artistasHtml = ${JSON.stringify(result.artistas)};
+export const tecnologiaHtml = ${JSON.stringify(result.tecnologia)};
+export const inversionistasHtml = ${JSON.stringify(result.inversionistas)};
+export const nosotrosHtml = ${JSON.stringify(result.nosotros)};
 export const ventanasHtml = ${JSON.stringify(ventanas())};
 `;
 writeFileSync(resolve(OUT, "pages.ts"), out, "utf8");

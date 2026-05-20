@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Arthub — Nosotros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="arthub-base.css" />
+<style>
+  /* ─── Hero ───────────────────────────────────────────────────────── */
+  .ns-hero {
+    background: var(--dark); color: var(--cream-on-dark);
+    padding: 88px 0 96px;
+    border-bottom: 1px solid var(--rule-dark);
+    position: relative; overflow: hidden;
+  }
+  .ns-hero::before {
+    content: ""; position: absolute; right: -10%; top: -20%;
+    width: 60vw; height: 60vw; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,162,74,0.12), transparent 60%);
+    pointer-events: none;
+  }
+  .ns-hero .top-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: end;
+    position: relative;
+  }
+  .ns-hero h1 {
+    color: var(--cream-on-dark);
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(48px, 6.4vw, 92px); line-height: 0.96;
+    letter-spacing: -0.025em;
+  }
+  .ns-hero h1 em { color: var(--oro-cusco); font-style: italic; }
+  .ns-hero .small-lead {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: var(--gold-on-dark); font-size: 22px; line-height: 1.45;
+    max-width: 36ch;
+  }
+  .ns-hero .small-lead::before { content: "❝ "; color: var(--oro-cusco); font-style: normal; margin-right: 4px; }
+
+  .ns-hero .stats {
+    margin-top: 64px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border-top: 1px solid var(--rule-dark);
+    position: relative;
+  }
+  .ns-hero .stats .s {
+    padding: 28px 28px 0;
+    border-right: 1px solid var(--rule-dark);
+  }
+  .ns-hero .stats .s:last-child { border-right: 0; }
+  .ns-hero .stats .v {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 56px; letter-spacing: -0.02em; line-height: 1; color: var(--gold-on-dark);
+  }
+  .ns-hero .stats .v sup { font-size: 0.45em; vertical-align: 0.55em; }
+  .ns-hero .stats .k {
+    margin-top: 12px; color: #9E957F; font-size: 12px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+
+  /* ─── Manifesto ─────────────────────────────────────────────────── */
+  .manifesto {
+    padding: 96px 0;
+    background: var(--paper);
+  }
+  .manifesto .grid {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; align-items: start;
+  }
+  .manifesto h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(36px, 4vw, 56px); line-height: 1.05; letter-spacing: -0.018em;
+  }
+  .manifesto h2 em { font-style: italic; color: var(--oro-cusco); }
+  .manifesto .col p {
+    font-family: 'Cormorant Garamond', serif; font-size: 21px; line-height: 1.55;
+    color: var(--ink-2); margin: 0 0 18px;
+  }
+  .manifesto .col p::first-letter {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    initial-letter: 3; -webkit-initial-letter: 3; color: var(--oro-cusco); padding-right: 10px;
+  }
+  .manifesto .col p:not(:first-child)::first-letter { initial-letter: unset; -webkit-initial-letter: unset; color: inherit; padding: 0; }
+
+  /* Pillars under manifesto */
+  .pillars-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    margin-top: 56px; padding-top: 56px; border-top: 1px solid var(--rule);
+  }
+  .pillar-mini { display: flex; gap: 18px; align-items: flex-start; }
+  .pillar-mini .ico {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(200,162,74,0.16); color: var(--oro-cusco);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pillar-mini h5 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px;
+    margin: 0 0 6px; letter-spacing: -0.01em;
+  }
+  .pillar-mini p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.55; }
+
+  /* ─── Timeline ──────────────────────────────────────────────────── */
+  .timeline-section {
+    background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: 96px 0;
+  }
+  .tl-track {
+    position: relative;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    margin-top: 56px;
+  }
+  .tl-track::before {
+    content: ""; position: absolute;
+    left: 5%; right: 5%; top: 22px; height: 2px;
+    background: linear-gradient(90deg, var(--oro-cusco), rgba(200,162,74,0.4) 90%, transparent);
+  }
+  .tl-node {
+    text-align: center; padding: 0 12px;
+    position: relative; z-index: 2;
+  }
+  .tl-node .dot {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--paper-2); border: 2px solid var(--oro-cusco); color: var(--oro-cusco);
+    margin: 0 auto 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 16px;
+    letter-spacing: 0;
+  }
+  .tl-node h5 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px;
+    margin: 0 0 6px; letter-spacing: -0.01em;
+  }
+  .tl-node p { margin: 0; color: var(--ink-soft); font-size: 13.5px; line-height: 1.55; }
+
+  /* ─── Team ─────────────────────────────────────────────────────── */
+  .team-section { padding: 96px 0; }
+  .team-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;
+  }
+  .team-card {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 12px;
+    overflow: hidden;
+  }
+  .team-card .photo {
+    aspect-ratio: 4/5; position: relative; overflow: hidden;
+  }
+  .team-card .photo::after {
+    content: ""; position: absolute; left: 16px; bottom: 16px;
+    background: var(--paper);
+    padding: 4px 10px; border-radius: 999px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .team-card .photo.t1 { background:
+    radial-gradient(circle at 30% 25%, rgba(232,196,140,0.5), transparent 50%),
+    linear-gradient(165deg, #3a2a1f, #7a4a30 40%, #c89058 75%, #e9d4a8); }
+  .team-card .photo.t1::after { content: "Cusco"; }
+  .team-card .photo.t2 { background:
+    radial-gradient(circle at 50% 30%, rgba(180,200,230,0.45), transparent 55%),
+    linear-gradient(165deg, #1e2027, #3d4a5c 40%, #7d8aa0 70%, #cfd5df); }
+  .team-card .photo.t2::after { content: "Lima"; }
+  .team-card .photo.t3 { background:
+    radial-gradient(circle at 60% 30%, rgba(245,210,140,0.5), transparent 55%),
+    linear-gradient(165deg, #2a1e15, #8c5a2e 40%, #d49a4a 70%, #f1deb6); }
+  .team-card .photo.t3::after { content: "Zürich"; }
+  .team-card .photo.t4 { background:
+    radial-gradient(circle at 35% 35%, rgba(140,200,170,0.4), transparent 55%),
+    linear-gradient(165deg, #15201a, #364a3b 40%, #7a9a82 70%, #cfdbcf); }
+  .team-card .photo.t4::after { content: "Miami"; }
+  .team-card .photo.t5 { background:
+    radial-gradient(circle at 50% 35%, rgba(210,150,200,0.35), transparent 55%),
+    linear-gradient(165deg, #1f1421, #4c2f4f 40%, #856086 70%, #d2b8cf); }
+  .team-card .photo.t5::after { content: "Cusco"; }
+  .team-card .photo.t6 { background:
+    radial-gradient(circle at 40% 35%, rgba(232,170,140,0.45), transparent 55%),
+    linear-gradient(165deg, #2a1614, #6c2a26 40%, #b35040 70%, #e8b5a4); }
+  .team-card .photo.t6::after { content: "Cusco"; }
+  .team-card .photo.t7 { background:
+    radial-gradient(circle at 55% 35%, rgba(220,180,120,0.45), transparent 55%),
+    linear-gradient(165deg, #271d10, #5a4220 40%, #a08246 70%, #e2cd97); }
+  .team-card .photo.t7::after { content: "Lima"; }
+  .team-card .photo.t8 { background:
+    radial-gradient(circle at 50% 45%, rgba(245,200,140,0.45), transparent 55%),
+    linear-gradient(165deg, #1f1410, #50361f 40%, #98683a 70%, #d8b585); }
+  .team-card .photo.t8::after { content: "Lima"; }
+
+  .team-card .body { padding: 18px 20px 22px; }
+  .team-card .role {
+    color: var(--oro-cusco); font-family: 'Inter', sans-serif;
+    font-weight: 500; font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: 0.22em;
+  }
+  .team-card h4 {
+    margin: 8px 0 6px;
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px;
+    letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .team-card p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
+
+  /* ─── Council / Advisory ──────────────────────────────────────── */
+  .council {
+    background: var(--paper-2); padding: 96px 0;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .council-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    margin-top: 40px;
+  }
+  .council-row {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 22px 24px;
+    display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: center;
+  }
+  .council-row h5 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 19px;
+    margin: 0 0 4px;
+  }
+  .council-row .role { color: var(--ink-soft); font-size: 12px; letter-spacing: 0.04em; }
+  .council-row .ins { color: var(--oro-cusco); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; }
+
+  /* ─── Alliances ──────────────────────────────────────────────── */
+  .alliances {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+    margin-top: 40px;
+  }
+  .all-card {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 12px;
+    padding: 26px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .all-card .badge-row { display: flex; justify-content: space-between; align-items: center; }
+  .all-card .seal {
+    width: 44px; height: 44px; border-radius: 8px;
+    background: var(--oro-cusco); color: var(--dark);
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    letter-spacing: -0.01em;
+  }
+  .all-card .since {
+    font-family: 'Inter', sans-serif; font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .all-card h5 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px;
+    margin: 0; letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .all-card p { margin: 0; color: var(--ink-soft); font-size: 13.5px; line-height: 1.55; flex: 1; }
+  .all-card .tag {
+    background: rgba(200,162,74,0.16); color: #826019;
+    padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 500;
+    align-self: flex-start;
+  }
+
+  /* ─── Press ───────────────────────────────────────────────────── */
+  .press-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    margin-top: 40px;
+  }
+  .press-row {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .press-row .source {
+    color: var(--oro-cusco); font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 18px;
+    font-style: italic;
+  }
+  .press-row blockquote {
+    margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 19px; line-height: 1.4;
+    color: var(--ink); font-style: italic;
+  }
+  .press-row .date { color: var(--ink-soft); font-size: 12px; letter-spacing: 0.12em; }
+
+  /* ─── Locations ───────────────────────────────────────────────── */
+  .locations { padding: 96px 0; }
+  .loc-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+    margin-top: 40px;
+  }
+  .loc-card {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 12px;
+    overflow: hidden;
+  }
+  .loc-card .map {
+    height: 140px; position: relative;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(200,162,74,0.2), transparent 60%),
+      linear-gradient(135deg, var(--piedra), var(--piedra-2));
+  }
+  .loc-card .map svg.lines {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  .loc-card .map .pin {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -100%);
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--oro-cusco); border: 3px solid var(--paper);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .loc-card .body { padding: 22px 24px 24px; }
+  .loc-card h5 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 24px;
+    margin: 0 0 6px; letter-spacing: -0.01em;
+  }
+  .loc-card .kind { color: var(--oro-cusco); font-size: 11.5px;
+    letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 10px; }
+  .loc-card p { margin: 0; color: var(--ink-soft); font-size: 13.5px; line-height: 1.55; }
+  .loc-card .addr { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule);
+    font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink-2); line-height: 1.7; }
+</style>
+</head>
+<body data-page="nosotros">
+
+<div id="site-header-slot"></div>
+
+<!-- ── HERO ───────────────────────────────────────────────────────── -->
+<section class="ns-hero">
+  <div class="wrap">
+    <div class="top-row">
+      <div>
+        <span class="eyebrow" style="color: var(--gold-on-dark);">Nosotros</span>
+        <h1 style="margin-top: 22px;">Una infraestructura<br/>de <em>confianza</em><br/>nacida en Cusco.</h1>
+      </div>
+      <p class="small-lead">
+        Fundamos Arthub para resolver una paradoja: el mejor arte de Sudamérica era,
+        a la vez, el más difícil de comprar con seguridad. Hoy operamos en cuatro
+        ciudades y custodiamos el legado de 47 maestros vivos del Cusco.
+      </p>
+    </div>
+
+    <div class="stats">
+      <div class="s">
+        <div class="v">2024</div>
+        <div class="k">Año de fundación</div>
+      </div>
+      <div class="s">
+        <div class="v">47</div>
+        <div class="k">Maestros activos</div>
+      </div>
+      <div class="s">
+        <div class="v">28</div>
+        <div class="k">Países con inversionistas</div>
+      </div>
+      <div class="s">
+        <div class="v">USD 8.4<sup>M</sup></div>
+        <div class="k">Volumen colocado · Q1 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Manifesto ────────────────────────────────────────────────── -->
+<section class="manifesto">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow">Manifiesto</span>
+        <h2 style="margin-top: 14px;">Custodiar el legado.<br/>Abrir el <em>mercado</em>.</h2>
+      </div>
+      <div class="col">
+        <p>
+          El óleo cusqueño ha cargado por cuatro siglos con una contradicción cruel:
+          es una de las tradiciones pictóricas vivas más ricas del continente, y al
+          mismo tiempo la menos protegida contra la falsificación, el saqueo y la
+          fuga informal.
+        </p>
+        <p>
+          Arthub nace de la intuición de que la tecnología puede resolver lo que las
+          instituciones nunca pudieron: dar a cada obra una identidad incorruptible,
+          a cada maestro una participación perpetua en el valor que crea, y a cada
+          coleccionista la certeza de que lo que compra es lo que dice ser.
+        </p>
+        <p>
+          No reemplazamos al curador, al maestro ni al museo. Construimos la
+          infraestructura silenciosa que los conecta —y, con suerte, los hace durar
+          otros cuatrocientos años.
+        </p>
+      </div>
+    </div>
+
+    <div class="pillars-row">
+      <div class="pillar-mini">
+        <span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 L12 4 L21 9 L12 14 Z"/><path d="M7 12 V18 c0 1 2 2 5 2 s5 -1 5 -2 V12"/></svg></span>
+        <div>
+          <h5>Patrimonio primero</h5>
+          <p>Cada decisión técnica o comercial se evalúa por su impacto en el legado de los maestros vivos.</p>
+        </div>
+      </div>
+      <div class="pillar-mini">
+        <span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M2 12 H22"/><path d="M12 2 a16 16 0 0 1 0 20 a16 16 0 0 1 0 -20"/></svg></span>
+        <div>
+          <h5>Apertura institucional</h5>
+          <p>Procedencia abierta a museos, casas de subasta y reguladores. Sin barreras, sin costo.</p>
+        </div>
+      </div>
+      <div class="pillar-mini">
+        <span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/><path d="M9 12 l2 2 l4 -4"/></svg></span>
+        <div>
+          <h5>Confianza auditable</h5>
+          <p>Toda promesa de Arthub es verificable por terceros. La fe no es parte del modelo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Timeline ─────────────────────────────────────────────────── -->
+<section class="timeline-section">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Trayectoria</span>
+      <h2>De un taller<br/>en San Blas a <em>cuatro ciudades</em></h2>
+      <p>Dos años de trabajo silencioso con curadores, instituciones y los propios maestros del Cusco.</p>
+    </div>
+
+    <div class="tl-track">
+      <div class="tl-node">
+        <span class="dot">'24</span>
+        <h5>Mar · 2024</h5>
+        <p>Primer prototipo de validación biométrica en taller de San Blas. 12 obras pioneras.</p>
+      </div>
+      <div class="tl-node">
+        <span class="dot">'24</span>
+        <h5>Sep · 2024</h5>
+        <p>Convenio con UNSAAC para auditoría académica trimestral de los modelos IA.</p>
+      </div>
+      <div class="tl-node">
+        <span class="dot">'25</span>
+        <h5>Ene · 2025</h5>
+        <p>Lanzamiento del catálogo curado en Lima. Primera cohorte de 30 inversionistas.</p>
+      </div>
+      <div class="tl-node">
+        <span class="dot">'25</span>
+        <h5>Oct · 2025</h5>
+        <p>Alianza operativa con DHL Fine Art. Primera entrega internacional a Zürich.</p>
+      </div>
+      <div class="tl-node">
+        <span class="dot">'26</span>
+        <h5>Mar · 2026</h5>
+        <p>Apertura de mesa privada en Miami. USD 8.4 M colocados en el trimestre.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Team ─────────────────────────────────────────────────────── -->
+<section class="team-section">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Equipo</span>
+      <h2>Curadores, ingenieros<br/>y operadores en <em>una sola mesa</em></h2>
+      <p>Un equipo pequeño que mezcla historiadores del arte, ingenieros de visión computacional y operadores logísticos con experiencia en casas de subasta.</p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="photo t1"></div>
+        <div class="body">
+          <span class="role">CEO &amp; Co-fundadora</span>
+          <h4>Lucía Mamani Quispe</h4>
+          <p>Historiadora del arte (PUCP). 12 años curando colecciones privadas en Lima y Madrid.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="photo t2"></div>
+        <div class="body">
+          <span class="role">CTO &amp; Co-fundador</span>
+          <h4>Andrés Vargas León</h4>
+          <p>Ingeniero de visión computacional. Ex-MIT Media Lab, lideró el equipo de IA del MoMA Labs.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="photo t3"></div>
+        <div class="body">
+          <span class="role">Mesa privada · Europa</span>
+          <h4>Sofía Herrera Beltrán</h4>
+          <p>15 años en Sotheby's y Phillips. Lleva la mesa privada de Arthub en Zürich.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="photo t4"></div>
+        <div class="body">
+          <span class="role">Mesa privada · Américas</span>
+          <h4>James Carrington</h4>
+          <p>Asesor de family offices latinoamericanos por más de 18 años. Basado en Miami.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="photo t5"></div>
+        <div class="body">
+          <span class="role">Curaduría &amp; corpus</span>
+          <h4>Eduardo Cusihuamán</h4>
+          <p>Director del laboratorio forense en Lima. Especialista en escuela cusqueña colonial y contemporánea.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="photo t6"></div>
+        <div class="body">
+          <span class="role">Relaciones con maestros</span>
+          <h4>Rosa Pacheco Yupanqui</h4>
+          <p>Coordina con los 47 maestros activos. Negocia contratos, royalties y exhibiciones colectivas.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="photo t7"></div>
+        <div class="body">
+          <span class="role">Blockchain &amp; legal</span>
+          <h4>Felipe Ribeiro</h4>
+          <p>Abogado y desarrollador. Lidera la arquitectura on-chain y el cumplimiento KYC/AML.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="photo t8"></div>
+        <div class="body">
+          <span class="role">Logística internacional</span>
+          <h4>Carla Tovar Espinoza</h4>
+          <p>Ex-operations DHL Fine Art (Miami). Coordina exportación, embalaje y seguros.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Consejo curatorial ───────────────────────────────────────── -->
+<section class="council">
+  <div class="wrap">
+    <div class="sec-head-left">
+      <span class="eyebrow">Consejo curatorial</span>
+      <h2>Validado por <em>el campo</em></h2>
+      <p style="color: var(--ink-soft); margin-top: 12px; font-size: 15.5px; max-width: 60ch;">
+        Un comité independiente que aprueba cada obra antes de su ingreso al catálogo
+        y audita la curaduría trimestralmente. Sin participación accionaria en Arthub.
+      </p>
+    </div>
+
+    <div class="council-grid">
+      <div class="council-row">
+        <div>
+          <h5>Dra. Carmen Saco Lozano</h5>
+          <div class="role">Curadora y conservadora</div>
+        </div>
+        <div class="ins">MALI</div>
+      </div>
+      <div class="council-row">
+        <div>
+          <h5>Prof. Javier Núñez del Prado</h5>
+          <div class="role">Historiador del arte colonial</div>
+        </div>
+        <div class="ins">UNSAAC</div>
+      </div>
+      <div class="council-row">
+        <div>
+          <h5>Roberto Larco Hoyle</h5>
+          <div class="role">Coleccionista y filántropo</div>
+        </div>
+        <div class="ins">Museo Larco</div>
+      </div>
+      <div class="council-row">
+        <div>
+          <h5>Margaret O'Donnell</h5>
+          <div class="role">Curadora invitada</div>
+        </div>
+        <div class="ins">Sotheby's Institute</div>
+      </div>
+      <div class="council-row">
+        <div>
+          <h5>Eliana Tantaleán Ramos</h5>
+          <div class="role">Directora de conservación</div>
+        </div>
+        <div class="ins">Ministerio de Cultura</div>
+      </div>
+      <div class="council-row">
+        <div>
+          <h5>Henrik Olsen</h5>
+          <div class="role">Especialista forense de arte</div>
+        </div>
+        <div class="ins">ICOM-CC</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Alianzas ─────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head-left">
+      <span class="eyebrow">Alianzas estratégicas</span>
+      <h2>Quiénes <em>nos sostienen</em></h2>
+      <p style="color: var(--ink-soft); margin-top: 12px; font-size: 15.5px; max-width: 60ch;">
+        Trabajamos con las instituciones que históricamente han custodiado el arte cusqueño
+        y con los operadores globales que mejor entienden cómo moverlo.
+      </p>
+    </div>
+
+    <div class="alliances">
+      <div class="all-card">
+        <div class="badge-row"><span class="seal">MC</span><span class="since">Desde 2024</span></div>
+        <h5>Ministerio<br/>de Cultura</h5>
+        <p>Acompañamiento institucional, trámites CITES y registro de obras patrimoniales.</p>
+        <span class="tag">Cultural</span>
+      </div>
+      <div class="all-card">
+        <div class="badge-row"><span class="seal">UN</span><span class="since">Desde 2024</span></div>
+        <h5>UNSAAC<br/>(Univ. San Antonio Abad)</h5>
+        <p>Auditoría académica trimestral del modelo IA y acceso al archivo histórico.</p>
+        <span class="tag">Académica</span>
+      </div>
+      <div class="all-card">
+        <div class="badge-row"><span class="seal">DH</span><span class="since">Desde 2025</span></div>
+        <h5>DHL Fine Art</h5>
+        <p>Embalaje museístico, póliza total y entrega global puerta a puerta.</p>
+        <span class="tag">Logística</span>
+      </div>
+      <div class="all-card">
+        <div class="badge-row"><span class="seal">IC</span><span class="since">Desde 2025</span></div>
+        <h5>ICOM-CC<br/>International</h5>
+        <p>Estándares de conservación y validación del laboratorio forense en Lima.</p>
+        <span class="tag">Conservación</span>
+      </div>
+      <div class="all-card">
+        <div class="badge-row"><span class="seal">BN</span><span class="since">Desde 2025</span></div>
+        <h5>Banco<br/>de la Nación</h5>
+        <p>Mesa fiduciaria local para custodia económica y liquidación trimestral.</p>
+        <span class="tag">Financiera</span>
+      </div>
+      <div class="all-card">
+        <div class="badge-row"><span class="seal">PP</span><span class="since">Desde 2025</span></div>
+        <h5>PromPerú</h5>
+        <p>Difusión internacional del corpus cusqueño en ferias y misiones comerciales.</p>
+        <span class="tag">Promoción</span>
+      </div>
+      <div class="all-card">
+        <div class="badge-row"><span class="seal">ML</span><span class="since">Desde 2025</span></div>
+        <h5>MALI<br/>(Museo de Arte de Lima)</h5>
+        <p>Exhibiciones colectivas anuales del corpus contemporáneo cusqueño.</p>
+        <span class="tag">Cultural</span>
+      </div>
+      <div class="all-card">
+        <div class="badge-row"><span class="seal">SI</span><span class="since">Desde 2026</span></div>
+        <h5>Sotheby's<br/>Institute of Art</h5>
+        <p>Convenio académico para investigación curatorial y formación de coleccionistas.</p>
+        <span class="tag">Académica</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Press ────────────────────────────────────────────────────── -->
+<section class="section" style="background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+  <div class="wrap">
+    <div class="sec-head-left">
+      <span class="eyebrow">En la prensa</span>
+      <h2>Han escrito de nosotros</h2>
+    </div>
+
+    <div class="press-grid">
+      <div class="press-row">
+        <span class="source">El Comercio</span>
+        <blockquote>"Una infraestructura silenciosa que podría cambiar el modo en que se compra arte latinoamericano."</blockquote>
+        <span class="date">14 Mar 2026 · Suplemento Económico</span>
+      </div>
+      <div class="press-row">
+        <span class="source">Coindesk Latam</span>
+        <blockquote>"El primer caso de uso de blockchain peruano que parece más interesante por su mercado que por su tecnología."</blockquote>
+        <span class="date">02 Feb 2026 · Op-Ed</span>
+      </div>
+      <div class="press-row">
+        <span class="source">Apollo Magazine</span>
+        <blockquote>"Cusqueño masters quietly rebuilt around a transparent provenance protocol."</blockquote>
+        <span class="date">Apr 2026 · Issue 412</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Locations ────────────────────────────────────────────────── -->
+<section class="locations">
+  <div class="wrap">
+    <div class="sec-head-left">
+      <span class="eyebrow">Dónde encontrarnos</span>
+      <h2>Cuatro <em>mesas</em>, una sola red</h2>
+    </div>
+
+    <div class="loc-grid">
+      <div class="loc-card">
+        <div class="map">
+          <svg class="lines" viewBox="0 0 100 60" preserveAspectRatio="none">
+            <g stroke="rgba(155,136,122,0.4)" stroke-width="0.4" fill="none">
+              <path d="M0 20 Q 30 5, 60 25 T 100 30"/>
+              <path d="M0 35 Q 25 50, 55 40 T 100 45"/>
+              <path d="M10 50 L40 30 L70 40 L100 15"/>
+            </g>
+          </svg>
+          <span class="pin"></span>
+        </div>
+        <div class="body">
+          <div class="kind">Sede principal</div>
+          <h5>Cusco</h5>
+          <p>Laboratorio forense, archivo y relación con maestros. Donde todo comienza.</p>
+          <div class="addr">
+            Calle Garcilaso 215, San Blas<br/>
+            +51 84 000 000<br/>
+            <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="04677177676b446576706c71662a7461">[email&#160;protected]</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="loc-card">
+        <div class="map">
+          <svg class="lines" viewBox="0 0 100 60" preserveAspectRatio="none">
+            <g stroke="rgba(155,136,122,0.4)" stroke-width="0.4" fill="none">
+              <path d="M0 40 Q 20 20, 50 35 T 100 25"/>
+              <path d="M0 15 Q 40 30, 80 20 T 100 35"/>
+              <path d="M5 50 L30 35 L65 45 L95 30"/>
+            </g>
+          </svg>
+          <span class="pin"></span>
+        </div>
+        <div class="body">
+          <div class="kind">Oficinas centrales</div>
+          <h5>Lima</h5>
+          <p>Mesa privada, ingeniería, finanzas y bóveda climatizada de custodia.</p>
+          <div class="addr">
+            Av. El Polo 740, Surco<br/>
+            +51 1 000 0000<br/>
+            <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b6dadfdbd7f6d7c4c2dec3d498c6d3">[email&#160;protected]</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="loc-card">
+        <div class="map">
+          <svg class="lines" viewBox="0 0 100 60" preserveAspectRatio="none">
+            <g stroke="rgba(155,136,122,0.4)" stroke-width="0.4" fill="none">
+              <path d="M0 30 Q 35 10, 70 30 T 100 20"/>
+              <path d="M0 45 Q 30 55, 60 40 T 100 50"/>
+              <path d="M10 55 L40 40 L70 45 L100 25"/>
+            </g>
+          </svg>
+          <span class="pin"></span>
+        </div>
+        <div class="body">
+          <div class="kind">Mesa privada · Américas</div>
+          <h5>Miami</h5>
+          <p>Atención a family offices latinoamericanos y exhibiciones privadas.</p>
+          <div class="addr">
+            1450 Brickell Ave, suite 1900<br/>
+            +1 305 000 0000<br/>
+            <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9cf1f5fdf1f5dcfdeee8f4e9feb2fdeee8">[email&#160;protected]</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="loc-card">
+        <div class="map">
+          <svg class="lines" viewBox="0 0 100 60" preserveAspectRatio="none">
+            <g stroke="rgba(155,136,122,0.4)" stroke-width="0.4" fill="none">
+              <path d="M0 25 Q 40 5, 80 25 T 100 30"/>
+              <path d="M5 50 Q 35 35, 65 45 T 100 40"/>
+              <path d="M0 15 L25 30 L55 20 L100 45"/>
+            </g>
+          </svg>
+          <span class="pin"></span>
+        </div>
+        <div class="body">
+          <div class="kind">Mesa privada · Europa</div>
+          <h5>Zürich</h5>
+          <p>Servicios fiduciarios, bóveda externa y atención a coleccionistas europeos.</p>
+          <div class="addr">
+            Bahnhofstrasse 28, 8001<br/>
+            +41 44 000 00 00<br/>
+            <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="621817100b010a220310160a17004c031016">[email&#160;protected]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ─────────────────────────────────────────────────────── -->
+<section class="cta-band">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow" style="color: var(--gold-on-dark);">Conversemos</span>
+        <h2 style="margin-top: 14px;">Si estás construyendo algo<br/>cerca del arte y la <em>confianza</em>,<br/>queremos saber.</h2>
+        <p>Museos, casas de subasta, family offices, fondos culturales, universidades, prensa: la puerta está abierta.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-gold btn-lg btn-arrow" href="/cdn-cgi/l/email-protection#a0c8cfccc1e0c1d2d4c8d5c28ed0c5" style="justify-content: space-between;">Escríbenos</a>
+        <a class="btn btn-outline-light btn-lg" href="#" style="justify-content: space-between; border-color: rgba(237,227,204,0.35);">
+          Trabaja con nosotros
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21 c0 -4 4 -7 8 -7 s8 3 8 7"/></svg>
+        </a>
+        <div style="padding: 18px; border: 1px solid var(--rule-dark); border-radius: 8px; margin-top: 8px;">
+          <div class="kicker" style="color: var(--gold-on-dark); margin-bottom: 8px;">Prensa</div>
+          <div style="font-size: 13.5px; line-height: 1.7;">
+            <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e6969483889587a68794928e9384c89683">[email&#160;protected]</a><br/>
+            Kit de marca y portavoces<br/>
+            disponibles bajo solicitud
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer-slot"></div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="arthub-chrome.js"></script>
+</body>
+</html>
