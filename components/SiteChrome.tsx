@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/components/AuthProvider";
 
 const NAV = [
   { label: "Catálogo", href: "/catalogo" },
+  { label: "Obras", href: "/obras" },
+  { label: "Verificar", href: "/verificar" },
   { label: "Cómo funciona", href: "/como-funciona" },
   { label: "Tecnología", href: "/tecnologia" },
   { label: "Artistas", href: "/artistas" },
@@ -35,6 +38,14 @@ function Logo({ size = 48 }: { size?: number }) {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, logout, loading } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    router.push("/");
+  };
+
   return (
     <>
       <div className="utility">
@@ -76,16 +87,43 @@ export function SiteHeader() {
               </svg>
               ES <span style={{ opacity: 0.6 }}>▾</span>
             </a>
-            <a
-              className="btn btn-outline-light"
-              href="#"
-              style={{ borderColor: "rgba(237,227,204,0.35)" }}
-            >
-              Iniciar sesión
-            </a>
-            <a className="btn btn-gold" href="#">
-              Crear cuenta
-            </a>
+            {loading ? null : user ? (
+              <>
+                {user.role === "admin" ? (
+                  <Link
+                    href="/admin"
+                    className="btn btn-outline-light"
+                    style={{ borderColor: "rgba(237,227,204,0.35)" }}
+                  >
+                    Admin
+                  </Link>
+                ) : null}
+                <span style={{ color: "var(--cream-on-dark)", fontSize: 13 }}>
+                  Hola, {user.name.split(" ")[0]}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="btn btn-outline-light"
+                  style={{ borderColor: "rgba(237,227,204,0.35)" }}
+                >
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  className="btn btn-outline-light"
+                  href="/login"
+                  style={{ borderColor: "rgba(237,227,204,0.35)" }}
+                >
+                  Iniciar sesión
+                </Link>
+                <Link className="btn btn-gold" href="/registro">
+                  Crear cuenta
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
