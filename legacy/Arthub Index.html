@@ -3,257 +3,525 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Arthub — Ventanas</title>
-
+<title>Arthub — Mapa del sitio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Spectral:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet" />
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="arthub-base.css" />
 <style>
-  :root {
-    --bg: #F6F3EC;
-    --ink: #161412;
-    --ink-soft: #5C544B;
-    --rule: #1614121A;
-    --accent: #8A6A3B;
+  body { background: var(--paper); }
+
+  /* Top bar */
+  .top {
+    background: var(--dark); color: var(--cream-on-dark);
+    border-bottom: 1px solid var(--rule-dark);
   }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink);
-    font-family: 'Spectral', Georgia, serif; }
-  a { color: inherit; text-decoration: none; }
-
-  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 48px; }
-
-  header.hd { border-bottom: 1px solid var(--rule); padding: 24px 0; }
-  header.hd .row { display: flex; align-items: center; justify-content: space-between; }
-  .logo { display: flex; align-items: center; gap: 12px;
-    font-family: 'Jost', sans-serif; font-weight: 400; font-size: 13px;
-    letter-spacing: 0.28em; text-transform: uppercase; }
-  .eyebrow { font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.32em;
-    text-transform: uppercase; color: var(--ink-soft); }
-
-  section.intro { padding: 96px 0 64px; }
-  section.intro h1 {
-    margin: 0; font-family: 'Jost', sans-serif; font-weight: 300;
-    font-size: clamp(44px, 6.2vw, 96px); letter-spacing: -0.02em; line-height: 0.96;
-    max-width: 18ch;
+  .top .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0;
   }
-  section.intro h1 em { font-family: 'Spectral', serif; font-style: italic; font-weight: 300; color: var(--accent); }
-  section.intro p { color: var(--ink-soft); font-size: 17px; line-height: 1.6; max-width: 56ch;
-    margin: 32px 0 0; }
-
-  .grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
-    padding-bottom: 80px;
+  .top .brand {
+    display: flex; align-items: center; gap: 14px; color: var(--cream-on-dark);
   }
-  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
-
-  a.card {
-    display: flex; flex-direction: column;
-    background: #FFFFFF; border: 1px solid var(--rule); overflow: hidden;
-    transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s;
+  .top .brand svg { color: var(--oro-cusco); width: 44px; height: 44px; }
+  .top .brand .wm { display: flex; flex-direction: column; line-height: 1; }
+  .top .brand .name {
+    font-family: 'Cormorant Garamond', serif; font-weight: 600;
+    letter-spacing: 0.16em; font-size: 22px;
   }
-  a.card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(22,20,18,0.08); }
-
-  .preview { aspect-ratio: 16 / 10; position: relative; overflow: hidden; }
-  .preview .scale { position: absolute; inset: 0; transform-origin: top left; }
-  .preview iframe { width: 1600px; height: 1000px; border: 0; transform: scale(0.45); transform-origin: top left;
-    pointer-events: none; background: #fff; }
-
-  /* fallback preview tiles */
-  .tile { position: absolute; inset: 0; }
-  .tile.v1 { background:
-    repeating-linear-gradient(135deg, rgba(22,20,18,0.025) 0 1px, transparent 1px 9px),
-    linear-gradient(180deg,#F6F3EC,#EFEAE0); }
-  .tile.v2 { background:
-    radial-gradient(ellipse at 30% 30%, rgba(201,168,106,0.16), transparent 55%),
-    repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 10px),
-    linear-gradient(180deg,#14110D,#0B0A08); color: #EFE7D7; }
-  .tile.v3 { background:
-    repeating-linear-gradient(35deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 4px),
-    radial-gradient(circle at 20% 10%, rgba(0,0,0,0.025), transparent 40%),
-    #F2EDE2; }
-  .tile.logos { background:
-    repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 36px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 36px),
-    #FFFFFF; }
-
-  .tile .demo {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  .top .brand .tag {
+    margin-top: 6px; font-family: 'Inter', sans-serif; font-weight: 500;
+    font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--oro-cusco);
   }
-  .v1 .display-h {
-    font-family: 'Jost', sans-serif; font-weight: 300; color: #161412;
-    font-size: 64px; letter-spacing: -0.025em; line-height: 0.95; text-align: center;
+  .top .meta {
+    font-family: 'Inter', sans-serif; font-size: 11.5px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: rgba(237,227,204,0.55);
   }
-  .v1 .display-h em { font-family: 'Spectral', serif; font-style: italic; color: #8A6A3B; font-weight: 300; }
-  .v2 .display-h {
-    font-family: 'Spectral', serif; font-style: italic; font-weight: 300;
-    font-size: 84px; letter-spacing: -0.025em; line-height: 0.92; text-align: center;
-  }
-  .v2 .display-h em { color: #C9A86A; font-style: italic; }
-  .v3 .display-h {
-    font-family: 'Cormorant Garamond', serif; font-weight: 400;
-    font-size: 88px; letter-spacing: -0.025em; line-height: 0.94; text-align: center;
-  }
-  .v3 .display-h em { font-style: italic; color: #7E5A2C; }
 
-  .logos .demo { display: grid; grid-template-columns: repeat(4, auto); gap: 28px; place-content: center; }
-  .logos .demo svg { color: #161412; }
-
-  .meta { padding: 24px 28px 28px; }
-  .meta .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: 'Jost', sans-serif; font-size: 10.5px; letter-spacing: 0.28em;
-    text-transform: uppercase; color: var(--accent);
+  /* Hero */
+  .ix-hero { padding: 80px 0 56px; }
+  .ix-hero .row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; align-items: end; }
+  .ix-hero h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(40px, 5.6vw, 76px); line-height: 0.98; letter-spacing: -0.025em;
+    margin: 16px 0 0;
   }
-  .meta .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-  .meta h3 { margin: 14px 0 6px; font-family: 'Jost', sans-serif; font-weight: 400;
-    font-size: 28px; letter-spacing: -0.01em; }
-  .meta h3 em { font-family: 'Spectral', serif; font-style: italic; font-weight: 300; color: var(--accent); }
-  .meta p { margin: 6px 0 0; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
-  .meta .open {
-    margin-top: 18px; display: inline-flex; align-items: center; gap: 10px;
-    font-family: 'Jost', sans-serif; font-size: 11.5px; letter-spacing: 0.22em;
-    text-transform: uppercase; color: var(--ink);
+  .ix-hero h1 em { font-style: italic; color: var(--oro-cusco); }
+  .ix-hero p.sub {
+    color: var(--ink-soft); font-size: 17px; line-height: 1.6; max-width: 48ch;
+    margin: 24px 0 0;
   }
-  .meta .open .arrow { transition: transform .35s; }
-  a.card:hover .open .arrow { transform: translateX(4px); }
-
-  footer.ft { border-top: 1px solid var(--rule); padding: 28px 0;
+  .ix-hero .quick {
+    background: var(--dark); color: var(--cream-on-dark);
+    border-radius: 12px; padding: 22px;
+  }
+  .ix-hero .quick h5 {
+    color: var(--gold-on-dark); font-family: 'Inter', sans-serif; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.22em; font-size: 10.5px;
+    margin: 0 0 14px;
+  }
+  .ix-hero .quick a {
     display: flex; justify-content: space-between; align-items: center;
-    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.22em;
-    text-transform: uppercase; color: var(--ink-soft); }
+    padding: 10px 0; border-bottom: 1px solid var(--rule-dark);
+    color: var(--cream-on-dark); font-size: 14px;
+  }
+  .ix-hero .quick a:last-child { border-bottom: 0; }
+  .ix-hero .quick a:hover { color: var(--gold-on-dark); }
+  .ix-hero .quick a span.arrow { color: var(--oro-cusco); }
+
+  /* Page grid */
+  .pgrid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    padding-bottom: 96px;
+  }
+  @media (max-width: 1080px) { .pgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 700px) { .pgrid { grid-template-columns: 1fr; } }
+
+  a.pcard {
+    display: flex; flex-direction: column;
+    background: var(--paper-card); border: 1px solid var(--rule);
+    border-radius: 14px; overflow: hidden;
+    transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s, border-color .35s;
+  }
+  a.pcard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 50px rgba(24,19,15,0.10);
+    border-color: var(--oro-cusco);
+  }
+  a.pcard.featured {
+    grid-column: span 2;
+    background: var(--dark); border-color: var(--dark); color: var(--cream-on-dark);
+  }
+  @media (max-width: 1080px) { a.pcard.featured { grid-column: span 2; } }
+  @media (max-width: 700px) { a.pcard.featured { grid-column: span 1; } }
+
+  .pcard .preview {
+    aspect-ratio: 16 / 9; position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pcard.featured .preview { border-bottom-color: var(--rule-dark); }
+
+  /* Preview painted scenes */
+  .scene { position: absolute; inset: 0; }
+  .scene.inicio { background:
+    radial-gradient(circle at 30% 35%, rgba(232,196,140,0.5), transparent 55%),
+    linear-gradient(165deg, #2c1a10 0%, #5c3520 30%, #a07040 60%, #d8b078 100%); }
+  .scene.catalogo {
+    background: var(--paper-2);
+  }
+  .scene.catalogo .row {
+    position: absolute; inset: 18% 12% 18% 12%;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  }
+  .scene.catalogo .row div {
+    border-radius: 4px;
+  }
+  .scene.catalogo .row div:nth-child(1) { background: linear-gradient(180deg,#3a2a1f,#7a4a30,#c89058,#e9d4a8); }
+  .scene.catalogo .row div:nth-child(2) { background: linear-gradient(180deg,#1e2027,#3d4a5c,#7d8aa0,#cfd5df); }
+  .scene.catalogo .row div:nth-child(3) { background: linear-gradient(180deg,#2a1e15,#8c5a2e,#d49a4a,#f1deb6); }
+
+  .scene.como { background: var(--paper-2); }
+  .scene.como .timeline {
+    position: absolute; left: 10%; right: 10%; top: 50%; transform: translateY(-50%);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .scene.como .timeline::before {
+    content: ""; position: absolute; left: 12px; right: 12px; top: 50%;
+    border-top: 1.5px dashed var(--oro-cusco); opacity: 0.5;
+  }
+  .scene.como .timeline span {
+    position: relative; z-index: 2; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--paper); border: 2px solid var(--oro-cusco);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 12px;
+    color: var(--oro-cusco);
+  }
+
+  .scene.tecnologia {
+    background: linear-gradient(160deg, #14110C 0%, #1A2138 100%);
+  }
+  .scene.tecnologia .blocks {
+    position: absolute; left: 14%; right: 14%; top: 38%;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  }
+  .scene.tecnologia .blocks > div {
+    height: 56px; border-radius: 6px;
+    background: rgba(237,227,204,0.04); border: 1px solid rgba(224,190,110,0.25);
+    position: relative;
+  }
+  .scene.tecnologia .blocks > div.curr {
+    background: rgba(200,162,74,0.10); border-color: var(--oro-cusco);
+  }
+  .scene.tecnologia .blocks > div:not(:last-child)::after {
+    content: ""; position: absolute; right: -10px; top: 50%; width: 12px; height: 1px; background: var(--oro-cusco);
+    transform: translateY(-50%);
+  }
+  .scene.tecnologia::before {
+    content: "v3.2 — auditable"; position: absolute; left: 14%; top: 20%;
+    color: var(--gold-on-dark); font-family: 'Inter', monospace, sans-serif; font-size: 10px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+  }
+
+  .scene.artistas { background: var(--paper-card); }
+  .scene.artistas .ranks {
+    position: absolute; inset: 20% 12%;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .scene.artistas .ranks .r {
+    display: grid; grid-template-columns: 30px 36px 1fr 60px; gap: 12px;
+    align-items: center;
+    padding: 6px 0; border-bottom: 1px solid var(--rule); font-size: 11px;
+  }
+  .scene.artistas .ranks .r:last-child { border-bottom: 0; }
+  .scene.artistas .ranks .r .n { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 18px; color: var(--ink-soft); }
+  .scene.artistas .ranks .r .av {
+    width: 26px; height: 26px; border-radius: 50%;
+  }
+  .scene.artistas .ranks .r .av.a1 { background: linear-gradient(135deg,#3a2a1f,#c89058); }
+  .scene.artistas .ranks .r .av.a2 { background: linear-gradient(135deg,#1e2027,#7d8aa0); }
+  .scene.artistas .ranks .r .av.a3 { background: linear-gradient(135deg,#2a1e15,#d49a4a); }
+  .scene.artistas .ranks .r .av.a4 { background: linear-gradient(135deg,#15201a,#7a9a82); }
+  .scene.artistas .ranks .r .bar { height: 8px; border-radius: 4px; background: var(--piedra-2); position: relative; }
+  .scene.artistas .ranks .r .bar::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; background: var(--oro-cusco); border-radius: 4px; }
+  .scene.artistas .ranks .r:nth-child(1) .bar::after { width: 92%; }
+  .scene.artistas .ranks .r:nth-child(2) .bar::after { width: 76%; }
+  .scene.artistas .ranks .r:nth-child(3) .bar::after { width: 64%; }
+  .scene.artistas .ranks .r:nth-child(4) .bar::after { width: 48%; }
+  .scene.artistas .ranks .r .score { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 16px; text-align: right; }
+
+  .scene.inversionistas {
+    background: var(--dark); color: var(--cream-on-dark);
+  }
+  .scene.inversionistas svg.chart {
+    position: absolute; inset: 14% 12% 18%; width: 76%; height: 68%;
+  }
+  .scene.inversionistas .label {
+    position: absolute; left: 14%; top: 16%;
+    color: var(--gold-on-dark); font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+  }
+  .scene.inversionistas .big {
+    position: absolute; left: 14%; top: 26%;
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 36px;
+    color: var(--gold-on-dark); letter-spacing: -0.02em; line-height: 1;
+  }
+  .scene.inversionistas .big sup { font-size: 0.5em; vertical-align: 0.4em; }
+
+  .scene.nosotros {
+    background: var(--paper-2);
+  }
+  .scene.nosotros .track {
+    position: absolute; left: 8%; right: 8%; top: 50%; transform: translateY(-50%);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .scene.nosotros .track::before {
+    content: ""; position: absolute; left: 24px; right: 24px; top: 22px;
+    height: 2px; background: var(--oro-cusco); opacity: 0.5;
+  }
+  .scene.nosotros .track span {
+    width: 46px; height: 46px; border-radius: 50%; position: relative; z-index: 2;
+    background: var(--paper); border: 2px solid var(--oro-cusco); color: var(--oro-cusco);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 13px;
+  }
+
+  /* Card body */
+  .pcard .body { padding: 22px 26px 26px; flex: 1; display: flex; flex-direction: column; }
+  .pcard .head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .pcard .ix {
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 10.5px;
+    letter-spacing: 0.28em; text-transform: uppercase; color: var(--oro-cusco);
+  }
+  .pcard.featured .ix { color: var(--gold-on-dark); }
+  .pcard .meta {
+    font-family: 'Inter', sans-serif; font-size: 11px;
+    letter-spacing: 0.14em; color: var(--ink-soft); text-transform: uppercase;
+  }
+  .pcard.featured .meta { color: rgba(237,227,204,0.55); }
+  .pcard h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 28px;
+    line-height: 1.05; letter-spacing: -0.01em; margin: 4px 0 6px;
+  }
+  .pcard.featured h3 { color: var(--cream-on-dark); }
+  .pcard h3 em { font-style: italic; color: var(--oro-cusco); }
+  .pcard p {
+    color: var(--ink-soft); font-size: 14.5px; line-height: 1.55; margin: 0 0 18px;
+  }
+  .pcard.featured p { color: #C9BFA9; }
+  .pcard .ctas {
+    margin-top: auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 14px; border-top: 1px solid var(--rule);
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 12.5px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .pcard.featured .ctas { border-top-color: var(--rule-dark); }
+  .pcard .ctas .open { color: var(--ink); display: inline-flex; align-items: center; gap: 10px; }
+  .pcard.featured .ctas .open { color: var(--cream-on-dark); }
+  .pcard:hover .ctas .open { color: var(--oro-cusco); }
+  .pcard .ctas .open .ar { transition: transform .35s; }
+  .pcard:hover .ctas .open .ar { transform: translateX(6px); }
+  .pcard .ctas .tags { display: flex; gap: 6px; }
+  .pcard .ctas .tag {
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--piedra-2); color: var(--ink-2);
+    font-size: 10.5px; letter-spacing: 0.18em;
+  }
+  .pcard.featured .ctas .tag { background: rgba(200,162,74,0.16); color: var(--gold-on-dark); }
+
+  /* Footer mini */
+  .ix-footer {
+    border-top: 1px solid var(--rule);
+    padding: 32px 0; margin-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Inter', sans-serif; font-size: 11.5px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .ix-footer .right { display: flex; gap: 28px; }
+  .ix-footer a:hover { color: var(--oro-cusco); }
 </style>
 </head>
 <body>
 
-<header class="hd">
+<!-- Top bar -->
+<header class="top">
   <div class="wrap row">
-    <div class="logo">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <rect x="2" y="2" width="20" height="20" stroke="currentColor" stroke-width="1.2" />
-        <path d="M7 17 L12 7 L17 17" stroke="currentColor" stroke-width="1.2" />
-        <path d="M9.2 13 H14.8" stroke="currentColor" stroke-width="1.2" />
+    <a class="brand" href="Arthub - Inicio.html" aria-label="Arthub">
+      <svg viewBox="0 0 64 64" width="44" height="44" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">
+          <line x1="32" y1="2"  x2="32" y2="6" />
+          <line x1="22" y1="4"  x2="23.5" y2="8" />
+          <line x1="42" y1="4"  x2="40.5" y2="8" />
+          <line x1="14" y1="10" x2="17" y2="13" />
+          <line x1="50" y1="10" x2="47" y2="13" />
+        </g>
+        <circle cx="32" cy="14" r="3.4" fill="currentColor" />
+        <path d="M14 60 V36 a18 18 0 0 1 36 0 V60" stroke="currentColor" stroke-width="2.4" fill="none" />
+        <path d="M22 60 V38 a10 10 0 0 1 20 0 V60" stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.55" />
+        <g stroke="currentColor" stroke-width="2.2" fill="none">
+          <line x1="6"  y1="60" x2="58" y2="60" />
+          <line x1="2"  y1="62" x2="62" y2="62" />
+        </g>
       </svg>
-      Arthub
-    </div>
-    <span class="eyebrow">Índice de ventanas · Round 01</span>
+      <span class="wm">
+        <span class="name">ARTHUB</span>
+        <span class="tag">Arte · Tecnología · Confianza</span>
+      </span>
+    </a>
+    <span class="meta">Mapa del sitio · Round 02</span>
   </div>
 </header>
 
-<section class="intro wrap">
-  <div style="font-family:'Jost',sans-serif; font-size:11px; letter-spacing:0.22em; color:var(--accent); text-transform:uppercase; margin-bottom: 22px;">/ Round 01 · 3 landings + sistema de marca</div>
-  <h1>Cuatro ventanas para revisar la <em>identidad</em> de Arthub.</h1>
-  <p>
-    Cada tarjeta abre una hoja independiente, pensada para verse en pantalla grande.
-    Compárelas en pestañas separadas y márqueme cuáles direcciones quiere que profundicemos.
-  </p>
+<!-- Hero -->
+<section class="ix-hero">
+  <div class="wrap row">
+    <div>
+      <span class="eyebrow">Índice · 7 ventanas</span>
+      <h1>Una sola plataforma,<br/>siete <em>entradas</em>.</h1>
+      <p class="sub">
+        Cada tarjeta abre una página completa, lista para revisar en pantalla grande.
+        Las páginas están enlazadas entre sí — puedes navegarlas como un sitio real
+        usando el menú superior de cada una. Inicia por <b>Inicio</b> o salta directamente
+        a la sección que quieras revisar.
+      </p>
+    </div>
+
+    <div class="quick">
+      <h5>Atajos rápidos</h5>
+      <a href="Arthub - Inicio.html">Inicio<span class="arrow">→</span></a>
+      <a href="Arthub - Catalogo.html">Catálogo curado<span class="arrow">→</span></a>
+      <a href="Arthub - Como Funciona.html">Cómo funciona<span class="arrow">→</span></a>
+      <a href="Arthub - Tecnologia.html">Tecnología<span class="arrow">→</span></a>
+      <a href="Arthub - Artistas.html">Artistas<span class="arrow">→</span></a>
+      <a href="Arthub - Inversionistas.html">Inversionistas<span class="arrow">→</span></a>
+      <a href="Arthub - Nosotros.html">Nosotros<span class="arrow">→</span></a>
+    </div>
+  </div>
 </section>
 
-<main class="wrap grid">
+<!-- Page cards -->
+<main class="wrap">
+  <div class="pgrid">
 
-  <!-- V1 Landing -->
-  <a class="card" href="Arthub Landing.html" target="_blank" rel="noopener">
-    <div class="preview">
-      <div class="tile v1">
-        <div class="demo">
-          <div class="display-h">
-            El óleo cusqueño,<br />
-            como <em>activo institucional.</em>
+    <!-- INICIO — featured (span 2) -->
+    <a class="pcard featured" href="Arthub - Inicio.html">
+      <div class="preview">
+        <div class="scene inicio"></div>
+      </div>
+      <div class="body">
+        <div class="head">
+          <span class="ix">01 · Página de entrada</span>
+          <span class="meta">12 secciones · 1080 vh</span>
+        </div>
+        <h3>Inicio — <em>arte como activo institucional.</em></h3>
+        <p>
+          Hero con obra destacada, propuesta de valor, opciones de inversión,
+          mercado, alianzas, testimonios y FAQ. La ventana principal del sitio
+          para coleccionistas y prensa.
+        </p>
+        <div class="ctas">
+          <span class="open">Abrir página completa <span class="ar">→</span></span>
+          <span class="tags"><span class="tag">Pública</span><span class="tag">Hero</span></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CATALOGO -->
+    <a class="pcard" href="Arthub - Catalogo.html">
+      <div class="preview">
+        <div class="scene catalogo"><div class="row"><div></div><div></div><div></div></div></div>
+      </div>
+      <div class="body">
+        <div class="head">
+          <span class="ix">02 · Catálogo curado</span>
+          <span class="meta">Grid · filtros</span>
+        </div>
+        <h3>Catálogo — <em>312 obras certificadas.</em></h3>
+        <p>Grid filtrable por maestro, técnica, escuela y rango de precio. Cada tarjeta abre la ficha técnica con hash, IA y AR.</p>
+        <div class="ctas">
+          <span class="open">Abrir catálogo <span class="ar">→</span></span>
+          <span class="tags"><span class="tag">Grid</span></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- COMO FUNCIONA -->
+    <a class="pcard" href="Arthub - Como Funciona.html">
+      <div class="preview">
+        <div class="scene como">
+          <div class="timeline">
+            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
           </div>
         </div>
       </div>
-    </div>
-    <div class="meta">
-      <span class="badge"><span class="dot"></span>Landing V1 · Galería</span>
-      <h3>Museo blanco <em>+ bronce.</em></h3>
-      <p>Minimalismo de pinacoteca contemporánea. Estructura curatorial con secciones numeradas, paleta blanco museo y acento bronce. Incluye Tweaks para modo nocturno.</p>
-      <span class="open">Abrir ventana grande <span class="arrow">→</span></span>
-    </div>
-  </a>
+      <div class="body">
+        <div class="head">
+          <span class="ix">03 · Proceso</span>
+          <span class="meta">11 pasos</span>
+        </div>
+        <h3>Cómo funciona — <em>de taller a casa.</em></h3>
+        <p>El protocolo completo en 11 pasos: validación, registro, AR, pago, logística DHL y entrega asegurada.</p>
+        <div class="ctas">
+          <span class="open">Ver proceso <span class="ar">→</span></span>
+          <span class="tags"><span class="tag">Timeline</span></span>
+        </div>
+      </div>
+    </a>
 
-  <!-- V2 Nocturno -->
-  <a class="card" href="Arthub Landing v2 - Nocturno.html" target="_blank" rel="noopener">
-    <div class="preview">
-      <div class="tile v2">
-        <div class="demo">
-          <div class="display-h">
-            El óleo cusqueño,<br />
-            como <em>activo</em> sin fricción.
+    <!-- TECNOLOGIA -->
+    <a class="pcard" href="Arthub - Tecnologia.html">
+      <div class="preview">
+        <div class="scene tecnologia">
+          <div class="blocks"><div></div><div class="curr"></div><div></div></div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="head">
+          <span class="ix">04 · Stack técnico</span>
+          <span class="meta">IA · BC · AR · Forense</span>
+        </div>
+        <h3>Tecnología — <em>el stack en detalle.</em></h3>
+        <p>Cuatro pilares con demos en vivo: visión artificial, blockchain explorer, AR de sala y análisis multiespectral. Más API pública.</p>
+        <div class="ctas">
+          <span class="open">Explorar stack <span class="ar">→</span></span>
+          <span class="tags"><span class="tag">Demos</span><span class="tag">API</span></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ARTISTAS -->
+    <a class="pcard" href="Arthub - Artistas.html">
+      <div class="preview">
+        <div class="scene artistas">
+          <div class="ranks">
+            <div class="r"><span class="n">1</span><span class="av a1"></span><span class="bar"></span><span class="score">94.2</span></div>
+            <div class="r"><span class="n">2</span><span class="av a2"></span><span class="bar"></span><span class="score">88.6</span></div>
+            <div class="r"><span class="n">3</span><span class="av a3"></span><span class="bar"></span><span class="score">82.1</span></div>
+            <div class="r"><span class="n">4</span><span class="av a4"></span><span class="bar"></span><span class="score">74.8</span></div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="meta">
-      <span class="badge"><span class="dot"></span>Landing V2 · Nocturno</span>
-      <h3>Cinemático <em>+ serif italic.</em></h3>
-      <p>Atmósfera de catálogo nocturno y casa de subastas premium. Headline en Spectral italic monumental, ticker en vivo y pilares listados como un dossier.</p>
-      <span class="open">Abrir ventana grande <span class="arrow">→</span></span>
-    </div>
-  </a>
-
-  <!-- V3 Editorial -->
-  <a class="card" href="Arthub Landing v3 - Editorial.html" target="_blank" rel="noopener">
-    <div class="preview">
-      <div class="tile v3">
-        <div class="demo">
-          <div class="display-h">
-            Arthub <em>&amp;</em> Co.
-          </div>
+      <div class="body">
+        <div class="head">
+          <span class="ix">05 · Maestros</span>
+          <span class="meta">Ranking · IVA</span>
+        </div>
+        <h3>Artistas — <em>Índice de Valor.</em></h3>
+        <p>Tabla rankeada de 47 maestros activos con el Índice de Valor Artístico, métricas curatoriales y volumen colocado.</p>
+        <div class="ctas">
+          <span class="open">Ver ranking <span class="ar">→</span></span>
+          <span class="tags"><span class="tag">Tabla</span></span>
         </div>
       </div>
-    </div>
-    <div class="meta">
-      <span class="badge"><span class="dot"></span>Landing V3 · Editorial</span>
-      <h3>Revista de arte <em>impresa.</em></h3>
-      <p>Lenguaje de catálogo editorial: masthead tipo periódico, índice romano, capital iluminada, tabla de lotes, sección VI en negro y colofón. Tono institucional impreso.</p>
-      <span class="open">Abrir ventana grande <span class="arrow">→</span></span>
-    </div>
-  </a>
+    </a>
 
-  <!-- Logos -->
-  <a class="card" href="Arthub Logos.html" target="_blank" rel="noopener">
-    <div class="preview">
-      <div class="tile logos">
-        <div class="demo">
-          <!-- Frame A -->
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none">
-            <rect x="2" y="2" width="20" height="20" stroke="currentColor" stroke-width="1.4" />
-            <path d="M7 17 L12 7 L17 17" stroke="currentColor" stroke-width="1.4" />
-            <path d="M9.2 13 H14.8" stroke="currentColor" stroke-width="1.4" />
+    <!-- INVERSIONISTAS -->
+    <a class="pcard" href="Arthub - Inversionistas.html">
+      <div class="preview">
+        <div class="scene inversionistas">
+          <span class="label">Valor neto</span>
+          <span class="big">USD 184<sup>K</sup></span>
+          <svg class="chart" viewBox="0 0 200 80" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="ixg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#C8A24A" stop-opacity="0.35"/>
+                <stop offset="1" stop-color="#C8A24A" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 65 L25 58 L50 52 L75 42 L100 46 L125 36 L150 24 L175 16 L200 8"
+                  fill="none" stroke="#C8A24A" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M0 65 L25 58 L50 52 L75 42 L100 46 L125 36 L150 24 L175 16 L200 8 L200 80 L0 80 Z"
+                  fill="url(#ixg)"/>
           </svg>
-          <!-- Aperture -->
-          <svg width="56" height="56" viewBox="0 0 120 120" fill="none">
-            <circle cx="60" cy="60" r="52" stroke="#161412" stroke-width="3" />
-            <circle cx="60" cy="60" r="18" fill="#161412" />
-            <circle cx="60" cy="60" r="7" fill="#8A6A3B" />
-          </svg>
-          <!-- Cordillera -->
-          <svg width="68" height="56" viewBox="0 0 200 160" fill="none">
-            <path d="M100 24 L140 64 L180 144 L20 144 L60 64 Z" stroke="#161412" stroke-width="6" fill="none" />
-            <path d="M84 124 L100 96 L116 124 Z" fill="#8A6A3B" />
-          </svg>
-          <!-- Serif Ah -->
-          <div style="font-family:'Cormorant Garamond', serif; font-weight:500; font-size:64px; line-height:1; color:#161412; letter-spacing:-0.04em;">
-            A<span style="font-style:italic; color:#8A6A3B;">h</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="head">
+          <span class="ix">06 · Mesa privada</span>
+          <span class="meta">KYC · 3 caminos</span>
+        </div>
+        <h3>Inversionistas — <em>portafolio &amp; KYC.</em></h3>
+        <p>Tres vías de inversión, panel de portafolio, comparativa con S&amp;P, oro y bonos, y proceso de acreditación en 72 horas.</p>
+        <div class="ctas">
+          <span class="open">Ver detalle <span class="ar">→</span></span>
+          <span class="tags"><span class="tag">Dashboard</span></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- NOSOTROS -->
+    <a class="pcard" href="Arthub - Nosotros.html">
+      <div class="preview">
+        <div class="scene nosotros">
+          <div class="track">
+            <span>'24</span><span>'24</span><span>'25</span><span>'25</span><span>'26</span>
           </div>
         </div>
       </div>
-    </div>
-    <div class="meta">
-      <span class="badge"><span class="dot"></span>Sistema de marca · 8 conceptos</span>
-      <h3>Ocho aproximaciones al <em>símbolo.</em></h3>
-      <p>Marco galería, pincelada gestual, apertura de cámara, cordillera andina, sello curatorial, estratos blockchain, monograma serif y wordmark puro. Cada uno con variantes en reverso.</p>
-      <span class="open">Abrir ventana grande <span class="arrow">→</span></span>
-    </div>
-  </a>
+      <div class="body">
+        <div class="head">
+          <span class="ix">07 · La compañía</span>
+          <span class="meta">Equipo · Alianzas</span>
+        </div>
+        <h3>Nosotros — <em>manifiesto y equipo.</em></h3>
+        <p>Manifiesto, trayectoria 2024-2026, equipo de 8, consejo curatorial independiente, alianzas y cuatro mesas.</p>
+        <div class="ctas">
+          <span class="open">Conocer a Arthub <span class="ar">→</span></span>
+          <span class="tags"><span class="tag">Acerca</span></span>
+        </div>
+      </div>
+    </a>
+  </div>
 
+  <div class="ix-footer">
+    <span>© 2026 Arthub S.A.C. · Cusco · Lima · Miami · Zürich</span>
+    <div class="right">
+      <a href="Arthub - Inicio.html">Volver al inicio</a>
+      <a href="/cdn-cgi/l/email-protection#244c4b4845644556504c51460a5441"><span class="__cf_email__" data-cfemail="80e8efece1c0e1f2f4e8f5e2aef0e5">[email&#160;protected]</span></a>
+    </div>
+  </div>
 </main>
 
-<footer class="ft wrap">
-  <span>© 2026 Arthub — Conceptos internos</span>
-  <span>Round 01 / 4 ventanas / Cusco</span>
-</footer>
-
-</body>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
 </html>

@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Arthub — Tecnología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="arthub-base.css" />
+<style>
+  /* ─── Hero ───────────────────────────────────────────────────────── */
+  .tech-hero {
+    background: var(--dark); color: var(--cream-on-dark);
+    border-bottom: 1px solid var(--rule-dark);
+    padding: 72px 0 64px;
+  }
+  .tech-hero .grid {
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 64px; align-items: center;
+  }
+  .tech-hero h1 {
+    color: var(--cream-on-dark);
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(44px, 5.4vw, 72px); line-height: 1.0;
+    letter-spacing: -0.02em;
+  }
+  .tech-hero h1 em { color: var(--oro-cusco); font-style: italic; }
+  .tech-hero p { color: #C9BFA9; margin: 20px 0 0; font-size: 16px; line-height: 1.65; max-width: 56ch; }
+
+  .stack-card {
+    background: var(--dark-2); border: 1px solid var(--rule-dark); border-radius: 14px;
+    padding: 28px;
+  }
+  .stack-card h4 {
+    color: var(--gold-on-dark);
+    font-family: 'Inter', sans-serif; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.22em; font-size: 11px;
+    margin: 0 0 18px;
+  }
+  .stack-row {
+    display: grid; grid-template-columns: 36px 1fr auto; gap: 16px; align-items: center;
+    padding: 14px 0; border-bottom: 1px solid var(--rule-dark);
+  }
+  .stack-row:last-child { border-bottom: 0; }
+  .stack-row .ico {
+    width: 36px; height: 36px; border-radius: 10px; background: rgba(200,162,74,0.12);
+    color: var(--oro-cusco);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .stack-row .ico svg { width: 18px; height: 18px; }
+  .stack-row b { display: block; color: var(--cream-on-dark); font-family: 'Inter', sans-serif; font-weight: 500; font-size: 14px; }
+  .stack-row span { color: #9E957F; font-size: 12.5px; }
+  .stack-row .tag {
+    background: rgba(200,162,74,0.12); color: var(--oro-cusco);
+    padding: 4px 10px; border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.04em;
+  }
+
+  /* ─── Pillar tabs ─────────────────────────────────────────────────── */
+  .pillar-tabs {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin-bottom: 56px;
+  }
+  .pillar-tab {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 18px 20px;
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 12px;
+  }
+  .pillar-tab.active {
+    background: var(--dark); color: var(--cream-on-dark); border-color: var(--dark);
+  }
+  .pillar-tab.active h5 { color: var(--cream-on-dark); }
+  .pillar-tab.active p { color: #C9BFA9; }
+  .pillar-tab .num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--oro-cusco); color: var(--dark);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 14px;
+    flex-shrink: 0;
+  }
+  .pillar-tab h5 {
+    margin: 2px 0 4px;
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .pillar-tab p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* ─── Pillar block (alternating) ──────────────────────────────────── */
+  .pillar-block {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+    align-items: center; padding: 72px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pillar-block.flipped .copy { order: 2; }
+  .pillar-block .copy .eyebrow { color: var(--oro-cusco); }
+  .pillar-block .copy h3 {
+    margin: 14px 0 16px;
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(32px, 3.6vw, 44px); line-height: 1.05; letter-spacing: -0.02em;
+  }
+  .pillar-block .copy h3 em { font-style: italic; color: var(--oro-cusco); }
+  .pillar-block .copy p { color: var(--ink-soft); font-size: 15.5px; line-height: 1.6; }
+  .pillar-block .copy ul {
+    list-style: none; padding: 0; margin: 24px 0 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .pillar-block .copy ul li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 13.5px; line-height: 1.5;
+  }
+  .pillar-block .copy ul li .dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(200,162,74,0.16); color: var(--oro-cusco);
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .pillar-block .copy ul li .dot svg { width: 12px; height: 12px; }
+  .pillar-block .copy ul li b { display: block; font-weight: 500; color: var(--ink); }
+  .pillar-block .copy ul li span { color: var(--ink-soft); font-size: 12.5px; }
+  .pillar-block .actions { margin-top: 32px; display: flex; gap: 12px; }
+
+  /* Demo panels */
+  .demo {
+    aspect-ratio: 5/4; border-radius: 14px; overflow: hidden;
+    background: var(--dark); color: var(--cream-on-dark);
+    border: 1px solid var(--rule-dark); position: relative;
+    display: grid;
+  }
+  .demo .badge-top {
+    position: absolute; top: 16px; left: 16px;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(20,17,12,0.78); border: 1px solid rgba(224,190,110,0.45);
+    padding: 6px 12px; border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--gold-on-dark); letter-spacing: 0.04em;
+    z-index: 2;
+  }
+  .demo .badge-top .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--oro-cusco); }
+
+  /* — IA demo (overlay analysis on painting) */
+  .demo.ia {
+    background:
+      radial-gradient(circle at 35% 30%, rgba(232,196,140,0.45), transparent 55%),
+      linear-gradient(165deg, #2c1a10, #5c3520 30%, #a07040 60%, #d8b078);
+  }
+  .demo.ia .grid-overlay {
+    position: absolute; inset: 24px;
+    background-image:
+      linear-gradient(rgba(237,227,204,0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(237,227,204,0.18) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+  .demo.ia .focus {
+    position: absolute; left: 28%; top: 32%;
+    width: 120px; height: 90px;
+    border: 2px solid var(--oro-cusco);
+    box-shadow: 0 0 0 9999px rgba(20,17,12,0.32);
+  }
+  .demo.ia .focus::before, .demo.ia .focus::after {
+    content: ""; position: absolute; background: var(--oro-cusco);
+  }
+  .demo.ia .focus::before { left: -1px; top: -8px; width: 2px; height: 14px; }
+  .demo.ia .focus::after  { left: -8px; top: -1px; width: 14px; height: 2px; }
+  .demo.ia .readout {
+    position: absolute; right: 18px; bottom: 18px;
+    background: rgba(20,17,12,0.82); border: 1px solid rgba(224,190,110,0.35);
+    border-radius: 10px; padding: 14px 16px; min-width: 220px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--cream-on-dark);
+  }
+  .demo.ia .readout .ln { display: flex; justify-content: space-between; gap: 16px; padding: 3px 0; }
+  .demo.ia .readout .ln b { color: var(--gold-on-dark); font-weight: 500; }
+  .demo.ia .readout .ok { color: #9bd28a; }
+  .demo.ia .readout .head {
+    text-transform: uppercase; letter-spacing: 0.22em;
+    color: var(--gold-on-dark); margin-bottom: 8px; font-size: 10px;
+    border-bottom: 1px solid rgba(224,190,110,0.2); padding-bottom: 6px;
+  }
+
+  /* — Blockchain demo (block chain explorer) */
+  .demo.bc {
+    background: linear-gradient(160deg, #14110C 0%, #1A2138 100%);
+    padding: 22px;
+  }
+  .demo.bc .chain {
+    margin-top: 36px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+    align-items: stretch;
+  }
+  .demo.bc .blk {
+    background: rgba(237,227,204,0.04); border: 1px solid rgba(224,190,110,0.25);
+    border-radius: 8px; padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--cream-on-dark); position: relative;
+  }
+  .demo.bc .blk.current {
+    border-color: var(--oro-cusco); background: rgba(200,162,74,0.10);
+    box-shadow: 0 0 0 1px rgba(200,162,74,0.2);
+  }
+  .demo.bc .blk .label { color: var(--gold-on-dark); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .demo.bc .blk .hash { color: var(--oro-cusco); margin-top: 6px; word-break: break-all; line-height: 1.3; }
+  .demo.bc .blk .meta { margin-top: 8px; color: rgba(237,227,204,0.65); font-size: 10px; line-height: 1.5; }
+  .demo.bc .blk:not(:last-child)::after {
+    content: ""; position: absolute; right: -10px; top: 50%; width: 12px; height: 1px; background: var(--oro-cusco);
+    transform: translateY(-50%);
+  }
+  .demo.bc .header-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(237,227,204,0.7);
+    border-bottom: 1px dashed rgba(237,227,204,0.15); padding-bottom: 8px;
+    margin-top: 36px;
+  }
+  .demo.bc .header-row span.live { color: #9bd28a; }
+  .demo.bc .header-row span.live::before { content: "●"; margin-right: 6px; }
+  .demo.bc .stats-mini {
+    margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  }
+  .demo.bc .stats-mini .s {
+    background: rgba(237,227,204,0.06); border: 1px solid rgba(237,227,204,0.1);
+    border-radius: 6px; padding: 8px 10px;
+  }
+  .demo.bc .stats-mini .s .k { font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(237,227,204,0.5); }
+  .demo.bc .stats-mini .s .v { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px; color: var(--gold-on-dark); }
+
+  /* — AR demo (room with painting projected) */
+  .demo.ar {
+    background:
+      linear-gradient(180deg, #2a2520 0%, #181410 100%);
+  }
+  .demo.ar .room {
+    position: absolute; inset: 26px;
+    background:
+      linear-gradient(180deg, #3a3128 0%, #2a221b 60%, #1d1612 100%);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .demo.ar .room::before {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 32%;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.55));
+  }
+  .demo.ar .room::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 32%;
+    height: 1px; background: rgba(237,227,204,0.15);
+  }
+  .demo.ar .picframe {
+    position: absolute; left: 30%; top: 18%;
+    width: 40%; aspect-ratio: 4/5;
+    border: 6px solid #3A2A1D; outline: 1px solid #5C432F;
+    background:
+      radial-gradient(circle at 35% 30%, rgba(232,196,140,0.5), transparent 55%),
+      linear-gradient(165deg, #2c1a10, #5c3520 30%, #a07040 60%, #d8b078);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+  }
+  .demo.ar .picframe::before {
+    content: ""; position: absolute; inset: -4px;
+    border: 2px dashed var(--oro-cusco);
+  }
+  .demo.ar .handles { position: absolute; inset: 0; pointer-events: none; }
+  .demo.ar .handles span {
+    position: absolute; width: 12px; height: 12px; border-radius: 50%;
+    background: var(--oro-cusco); border: 2px solid var(--dark);
+  }
+  .demo.ar .handles .tl { left: calc(30% - 6px); top: calc(18% - 6px); }
+  .demo.ar .handles .tr { right: calc(30% - 6px); top: calc(18% - 6px); }
+  .demo.ar .handles .bl { left: calc(30% - 6px); bottom: calc(34% - 6px); }
+  .demo.ar .handles .br { right: calc(30% - 6px); bottom: calc(34% - 6px); }
+
+  .demo.ar .ar-readout {
+    position: absolute; right: 18px; bottom: 18px;
+    background: rgba(20,17,12,0.85); border: 1px solid rgba(224,190,110,0.35);
+    border-radius: 10px; padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--cream-on-dark);
+  }
+  .demo.ar .ar-readout b { color: var(--gold-on-dark); font-weight: 500; }
+
+  /* — Forensics (multi-band stripes) */
+  .demo.fr {
+    background: #14110C; padding: 22px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .demo.fr h6 {
+    margin: 22px 0 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--gold-on-dark); letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .demo.fr .strip {
+    height: 38px; border-radius: 6px; position: relative; overflow: hidden;
+    border: 1px solid rgba(237,227,204,0.12);
+  }
+  .demo.fr .strip .label {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(237,227,204,0.85); letter-spacing: 0.16em;
+    background: rgba(20,17,12,0.65); padding: 3px 8px; border-radius: 4px;
+  }
+  .demo.fr .strip .value {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--gold-on-dark);
+  }
+  .demo.fr .s1 { background: linear-gradient(90deg, #2c1a10, #5c3520, #a07040, #d8b078); }
+  .demo.fr .s2 { background: linear-gradient(90deg, #1d2030, #2a3d54, #5575a0, #b3c5dd); }
+  .demo.fr .s3 { background: linear-gradient(90deg, #1f2e16, #3d5a2d, #739a4f, #c9d6a0); }
+  .demo.fr .s4 { background: linear-gradient(90deg, #2e1418, #5d2530, #9b4a5a, #d99aa8); }
+  .demo.fr .s5 { background:
+    repeating-linear-gradient(90deg, #a07040 0 6px, #c89058 6px 14px, #2c1a10 14px 18px); }
+
+  /* ─── Specs table ──────────────────────────────────────────────────── */
+  .spec-table {
+    background: var(--paper-card); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden;
+  }
+  .spec-table .row {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    padding: 18px 24px; border-bottom: 1px solid var(--rule); align-items: center;
+  }
+  .spec-table .row:last-child { border-bottom: 0; }
+  .spec-table .row.head {
+    background: var(--ink); color: var(--gold-on-dark);
+    font-family: 'Inter', sans-serif; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.16em; font-size: 11px; padding: 14px 24px;
+  }
+  .spec-table .row b { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 18px; color: var(--ink); }
+  .spec-table .row span { color: var(--ink-soft); font-size: 13.5px; }
+  .spec-table .row .v { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-2); }
+  .spec-table .row .ok {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: #4f7d3a; font-size: 12.5px;
+  }
+  .spec-table .row .ok::before { content: "✓"; }
+
+  /* Code blocks */
+  .codecard {
+    background: #0E0C09; border: 1px solid var(--rule-dark); border-radius: 12px;
+    overflow: hidden;
+  }
+  .codecard .hd {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #16130E; padding: 12px 18px;
+    border-bottom: 1px solid var(--rule-dark);
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    color: var(--gold-on-dark); letter-spacing: 0.06em;
+  }
+  .codecard .hd .lights span {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: #4a3e2a; margin-right: 6px;
+  }
+  .codecard pre {
+    margin: 0; padding: 22px 24px;
+    color: var(--cream-on-dark);
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    line-height: 1.7; overflow-x: auto;
+  }
+  .codecard pre .kw   { color: var(--gold-on-dark); }
+  .codecard pre .str  { color: #d4b58a; }
+  .codecard pre .key  { color: #a8c8b0; }
+  .codecard pre .num  { color: #c89058; }
+  .codecard pre .cmt  { color: #6b6258; font-style: italic; }
+</style>
+</head>
+<body data-page="tecnologia">
+
+<div id="site-header-slot"></div>
+
+<!-- ── HERO ───────────────────────────────────────────────────────── -->
+<section class="tech-hero">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow" style="color: var(--gold-on-dark);">Tecnología</span>
+        <h1 style="margin-top: 18px;">Cuatro tecnologías,<br/>una sola <em>certeza</em>.</h1>
+        <p>
+          Cada obra que entra al catálogo de Arthub atraviesa una pila de validación
+          que combina visión artificial forense, huella digital biométrica, registro
+          en blockchain y visualización en realidad aumentada. El resultado: un activo
+          cultural auditable, transportable y comprable con cero ambigüedad.
+        </p>
+        <div style="display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap;">
+          <a class="btn btn-gold btn-lg btn-arrow" href="Arthub - Como Funciona.html">Ver proceso completo</a>
+          <a class="btn btn-outline-light btn-lg" href="#stack" style="border-color: rgba(237,227,204,0.35);">Explorar el stack</a>
+        </div>
+      </div>
+
+      <div class="stack-card">
+        <h4>Stack tecnológico</h4>
+        <div class="stack-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M21 12 c-2.5 3 -5.5 4.5 -9 4.5 S5.5 15 3 12 c2.5 -3 5.5 -4.5 9 -4.5 S18.5 9 21 12 z"/></svg></span>
+          <div><b>Visión artificial</b><span>CNN multiespectral · 38k obras de corpus</span></div>
+          <span class="tag">v 3.2</span>
+        </div>
+        <div class="stack-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 11 c0 -3 -2 -5 -4 -5 s-4 2 -4 5 c0 4 4 7 4 10"/><path d="M12 11 c0 -3 2 -5 4 -5 s4 2 4 5 c0 4 -4 7 -4 10"/><path d="M8 18 H16"/></svg></span>
+          <div><b>Huella digital</b><span>Firma biométrica única e irrepetible</span></div>
+          <span class="tag">SHA-256</span>
+        </div>
+        <div class="stack-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+          <div><b>Blockchain</b><span>Token ERC-721 · cadena pública L2</span></div>
+          <span class="tag">Polygon</span>
+        </div>
+        <div class="stack-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="2" width="14" height="20" rx="2"/><rect x="9" y="7" width="6" height="6"/><path d="M11 17 H13"/></svg></span>
+          <div><b>Realidad aumentada</b><span>WebXR + LiDAR (iOS / Android)</span></div>
+          <span class="tag">WebXR</span>
+        </div>
+        <div class="stack-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/></svg></span>
+          <div><b>Custodia &amp; logística</b><span>API DHL Fine Art · trazabilidad sensórica</span></div>
+          <span class="tag">DHL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pillar overview tabs ──────────────────────────────────────── -->
+<section class="section" id="stack">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Los cuatro pilares</span>
+      <h2>El protocolo <em>Arthub</em> en detalle</h2>
+      <p>Cada pieza del stack resuelve una pregunta histórica del mercado del arte: ¿es auténtica?, ¿es realmente tuya?, ¿se ve bien en mi espacio?, ¿es segura?</p>
+    </div>
+
+    <div class="pillar-tabs">
+      <a href="#ia" class="pillar-tab active">
+        <span class="num">1</span>
+        <div>
+          <h5>Visión artificial</h5>
+          <p>Análisis forense de la pincelada con IA entrenada en obras maestras cusqueñas.</p>
+        </div>
+      </a>
+      <a href="#bc" class="pillar-tab">
+        <span class="num">2</span>
+        <div>
+          <h5>Blockchain</h5>
+          <p>Título de propiedad inmutable, trazable y heredable durante generaciones.</p>
+        </div>
+      </a>
+      <a href="#ar" class="pillar-tab">
+        <span class="num">3</span>
+        <div>
+          <h5>Realidad aumentada</h5>
+          <p>Proyección a escala real en tu espacio antes de adquirir la obra.</p>
+        </div>
+      </a>
+      <a href="#fr" class="pillar-tab">
+        <span class="num">4</span>
+        <div>
+          <h5>Análisis forense</h5>
+          <p>Imagen multiespectral: UV, infrarrojo, rayos X y luz rasante.</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- IA ─────────────────────────────── -->
+    <div class="pillar-block" id="ia">
+      <div class="copy">
+        <span class="eyebrow">/ 01 · Visión artificial</span>
+        <h3>La pincelada como <em>firma biométrica</em>.</h3>
+        <p>
+          Una red neuronal convolucional entrenada con más de 38,000 obras del corpus
+          cusqueño extrae los rasgos invisibles al ojo: ritmo del trazo, presión,
+          repetición de patrones, capa pigmentaria, microfisuras. El resultado es
+          una firma única, comparable a la huella dactilar, que se almacena junto a
+          la obra y permite reautenticarla en cualquier momento futuro.
+        </p>
+        <ul>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Precisión 99.4 %</b><span>Validado contra 12,400 falsificaciones conocidas</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Resolución 1.2 µm</b><span>Captura la marca del pelo del pincel</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Firma reentrenable</b><span>Mejora con cada obra ingresada al corpus</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Falsos positivos &lt; 0.04 %</b><span>Auditado por la UNSAAC trimestralmente</span></div>
+          </li>
+        </ul>
+        <div class="actions">
+          <a class="btn btn-outline-dark" href="Arthub - Catalogo.html">Ver obras certificadas →</a>
+        </div>
+      </div>
+
+      <div class="demo ia">
+        <span class="badge-top"><span class="dot"></span>Análisis en proceso · Lote 027</span>
+        <div class="grid-overlay"></div>
+        <div class="focus"></div>
+        <div class="readout">
+          <div class="head">Visión artificial · v3.2</div>
+          <div class="ln"><span>Trazo</span><b class="ok">✓ Coincide</b></div>
+          <div class="ln"><span>Pigmento</span><b class="ok">✓ Coincide</b></div>
+          <div class="ln"><span>Capa óleo</span><b class="ok">✓ 3 estratos</b></div>
+          <div class="ln"><span>Firma</span><b>0x4a…b1c2</b></div>
+          <div class="ln"><span>Confianza</span><b>99.4 %</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blockchain ──────────────────────── -->
+    <div class="pillar-block flipped" id="bc">
+      <div class="demo bc">
+        <span class="badge-top"><span class="dot"></span>Polygon · finalized</span>
+        <div class="header-row" style="margin-top:0; padding-top: 32px;">
+          <span>Block #18,902,114</span>
+          <span class="live">live</span>
+        </div>
+        <div class="chain">
+          <div class="blk">
+            <div class="label">N-1 · Mint</div>
+            <div class="hash">0x9c14…2b8f</div>
+            <div class="meta">Maestro · 12 Mar 26<br/>Royalties 5 %</div>
+          </div>
+          <div class="blk current">
+            <div class="label">N · Custodia</div>
+            <div class="hash">0xa3f2…0c11</div>
+            <div class="meta">Bóveda Lima<br/>Validado 04 Abr 26</div>
+          </div>
+          <div class="blk">
+            <div class="label">N+1 · Pendiente</div>
+            <div class="hash">— — —</div>
+            <div class="meta">Transferencia a<br/>coleccionista</div>
+          </div>
+        </div>
+        <div class="stats-mini">
+          <div class="s"><div class="k">Gas</div><div class="v">0.0021</div></div>
+          <div class="s"><div class="k">Royalty</div><div class="v">5%</div></div>
+          <div class="s"><div class="k">Confirms</div><div class="v">142</div></div>
+        </div>
+      </div>
+
+      <div class="copy">
+        <span class="eyebrow">/ 02 · Blockchain</span>
+        <h3>Título <em>inmutable,</em><br/>historial perpetuo.</h3>
+        <p>
+          Cada obra recibe un token ERC-721 anclado a una cadena pública. Compras,
+          ventas, exhibiciones, restauraciones y movimientos quedan registrados con
+          marca de tiempo y firma criptográfica. El maestro cobra royalties automáticos
+          en cada reventa secundaria, durante toda la vida del activo.
+        </p>
+        <ul>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Custodia multisig 4/7</b><span>Auditada por firma independiente</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Royalties 5 % al maestro</b><span>Perpetuo · ejecutado on-chain</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Bajo carbono</b><span>Polygon · 99.95 % menos energía que L1</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Explorer público</b><span>Cualquiera puede auditar la procedencia</span></div>
+          </li>
+        </ul>
+        <div class="actions">
+          <a class="btn btn-outline-dark" href="#">Ver explorer →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- AR ──────────────────────────────── -->
+    <div class="pillar-block" id="ar">
+      <div class="copy">
+        <span class="eyebrow">/ 03 · Realidad aumentada</span>
+        <h3>Proyecta la obra <em>en tu sala</em>.</h3>
+        <p>
+          Antes de adquirir, escanea tu espacio desde el navegador del móvil o iPad
+          y proyecta cualquier obra del catálogo a escala real con iluminación
+          consistente con la habitación. WebXR + LiDAR para anclado preciso al milímetro,
+          sin instalar ninguna aplicación.
+        </p>
+        <ul>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Escala 1:1</b><span>Dimensiones reales de la obra</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Iluminación adaptativa</b><span>Ajuste de luz según ambiente</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Sin app</b><span>Funciona en navegador iOS / Android</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Sala virtual</b><span>Compara hasta 4 obras simultáneas</span></div>
+          </li>
+        </ul>
+        <div class="actions">
+          <a class="btn btn-outline-dark" href="Arthub - Catalogo.html">Probar demo AR →</a>
+        </div>
+      </div>
+
+      <div class="demo ar">
+        <span class="badge-top"><span class="dot"></span>WebXR · sala 4.2 × 3.1 m</span>
+        <div class="room">
+          <div class="picframe"></div>
+          <div class="handles">
+            <span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span>
+          </div>
+        </div>
+        <div class="ar-readout">
+          <div><b>Procesión en Sacsayhuamán</b></div>
+          <div>90 × 120 cm · <b>1:1</b></div>
+          <div>Pared norte · 1.7 m del suelo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forensics ──────────────────────── -->
+    <div class="pillar-block flipped" id="fr" style="border-bottom: 0;">
+      <div class="demo fr">
+        <span class="badge-top"><span class="dot"></span>Multiespectral · 16 bandas</span>
+        <h6 style="margin-top: 50px;">RGB · Visible</h6>
+        <div class="strip s1"><span class="label">RGB</span><span class="value">400-700 nm</span></div>
+        <h6>UV · Capas superpuestas</h6>
+        <div class="strip s2"><span class="label">UV</span><span class="value">365 nm</span></div>
+        <h6>Infrarrojo · Underdrawing</h6>
+        <div class="strip s3"><span class="label">IR</span><span class="value">950 nm</span></div>
+        <h6>Rayos X · Capas internas</h6>
+        <div class="strip s4"><span class="label">X-RAY</span><span class="value">40 kV</span></div>
+        <h6>Luz rasante · Topografía</h6>
+        <div class="strip s5"><span class="label">RASANTE</span><span class="value">12°</span></div>
+      </div>
+
+      <div class="copy">
+        <span class="eyebrow">/ 04 · Análisis forense</span>
+        <h3>Lo que el <em>ojo no ve</em>.</h3>
+        <p>
+          Antes de la firma biométrica, cada obra pasa por un laboratorio físico
+          en Lima donde se capturan 16 bandas espectrales: ultravioleta para detectar
+          retoques recientes, infrarrojo para el dibujo subyacente, rayos X para los
+          estratos internos y luz rasante para la topografía de la pincelada. Todo
+          archivado y firmado on-chain.
+        </p>
+        <ul>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>16 bandas espectrales</b><span>UV · IR · X-Ray · Raman</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Detección de retoques</b><span>Distingue intervenciones modernas</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Dibujo subyacente</b><span>Revela bocetos ocultos del maestro</span></div>
+          </li>
+          <li>
+            <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7"/></svg></span>
+            <div><b>Dataset abierto</b><span>Archivo disponible a UNSAAC y MinCul</span></div>
+          </li>
+        </ul>
+        <div class="actions">
+          <a class="btn btn-outline-dark" href="#">Descargar muestra · PDF →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Specs table ──────────────────────────────────────────────── -->
+<section class="section" style="background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+  <div class="wrap">
+    <div class="sec-head-left">
+      <span class="eyebrow">Especificaciones</span>
+      <h2>Comparado con el <em>estándar de mercado</em></h2>
+    </div>
+
+    <div class="spec-table">
+      <div class="row head">
+        <span>Capacidad</span>
+        <span>Galería tradicional</span>
+        <span>Plataforma digital genérica</span>
+        <span>Arthub</span>
+      </div>
+      <div class="row">
+        <div><b>Autenticación</b><span>Antes de la compra</span></div>
+        <span class="v">Certificado en papel</span>
+        <span class="v">Declaración del vendedor</span>
+        <span class="ok">IA + multiespectral + curador</span>
+      </div>
+      <div class="row">
+        <div><b>Procedencia</b><span>Historial verificable</span></div>
+        <span class="v">Documentos físicos</span>
+        <span class="v">Base de datos privada</span>
+        <span class="ok">Blockchain pública</span>
+      </div>
+      <div class="row">
+        <div><b>Visualización previa</b><span>Cómo se verá en tu espacio</span></div>
+        <span class="v">Visita presencial</span>
+        <span class="v">Imágenes 2D</span>
+        <span class="ok">AR 1:1 · WebXR</span>
+      </div>
+      <div class="row">
+        <div><b>Trazabilidad</b><span>Después de la compra</span></div>
+        <span class="v">No disponible</span>
+        <span class="v">Limitada</span>
+        <span class="ok">Vitalicia · on-chain</span>
+      </div>
+      <div class="row">
+        <div><b>Royalties al maestro</b><span>En reventas secundarias</span></div>
+        <span class="v">Ninguno</span>
+        <span class="v">Ninguno</span>
+        <span class="ok">5 % automáticos</span>
+      </div>
+      <div class="row">
+        <div><b>Logística asegurada</b><span>Entrega global puerta a puerta</span></div>
+        <span class="v">Tercerizada</span>
+        <span class="v">Tercerizada</span>
+        <span class="ok">DHL Fine Art integrado</span>
+      </div>
+      <div class="row">
+        <div><b>Reautenticación</b><span>Cuando lo necesites</span></div>
+        <span class="v">Costo adicional</span>
+        <span class="v">No disponible</span>
+        <span class="ok">Gratuita y on-demand</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Developer / API ─────────────────────────────────────────── -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head-left">
+      <span class="eyebrow">Para desarrolladores e instituciones</span>
+      <h2>API de procedencia <em>abierta</em></h2>
+      <p style="color: var(--ink-soft); max-width: 60ch; margin-top: 14px; font-size: 16px; line-height: 1.55;">
+        Museos, casas de subastas y plataformas de seguros pueden consultar
+        la procedencia de cualquier obra de Arthub mediante una llamada simple a la
+        API. Sin barreras, sin costo, sin fricción.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start;">
+      <div class="codecard">
+        <div class="hd">
+          <div><span class="lights"><span></span><span></span><span></span></span>verify.sh</div>
+          <span style="opacity: 0.6;">cURL</span>
+        </div>
+<pre><span class="cmt"># Verifica la procedencia de una obra</span>
+<span class="kw">curl</span> -X GET https://api.arthub.pe/v1/works/<span class="num">0x4a3f2b1c</span> \
+  -H <span class="str">"Accept: application/json"</span>
+</pre>
+      </div>
+
+      <div class="codecard">
+        <div class="hd">
+          <div><span class="lights"><span></span><span></span><span></span></span>response.json</div>
+          <span style="opacity: 0.6;">200 OK · 142 ms</span>
+        </div>
+<pre>{
+  <span class="key">"work_id"</span>: <span class="str">"0x4a3f2b1c"</span>,
+  <span class="key">"title"</span>: <span class="str">"Procesión en Sacsayhuamán"</span>,
+  <span class="key">"master"</span>: <span class="str">"Hilario Mendívil"</span>,
+  <span class="key">"year"</span>: <span class="num">2024</span>,
+  <span class="key">"medium"</span>: <span class="str">"Óleo sobre lienzo, 90 × 120 cm"</span>,
+  <span class="key">"verification"</span>: {
+    <span class="key">"ia_confidence"</span>: <span class="num">0.994</span>,
+    <span class="key">"multispectral"</span>: <span class="str">"completed"</span>,
+    <span class="key">"curator"</span>: <span class="str">"UNSAAC · 12 Mar 2026"</span>
+  },
+  <span class="key">"provenance"</span>: <span class="kw">[ … 4 transferencias ]</span>,
+  <span class="key">"royalty_to_master"</span>: <span class="num">0.05</span>,
+  <span class="key">"chain"</span>: <span class="str">"polygon"</span>
+}</pre>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 12px; margin-top: 36px;">
+      <a class="btn btn-outline-dark" href="#">Documentación completa →</a>
+      <a class="btn btn-ghost" href="#">Solicitar API key</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ─────────────────────────────────────────────────────── -->
+<section class="cta-band">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow" style="color: var(--gold-on-dark);">Tecnología auditable</span>
+        <h2 style="margin-top: 14px;">Confianza no es una promesa.<br/><em>Es código verificable.</em></h2>
+        <p>El protocolo completo está abierto a museos, casas de subasta, aseguradoras y reguladores. Solicita acceso a la documentación técnica o agenda una demo con el equipo de ingeniería.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-gold btn-lg btn-arrow" href="Arthub - Catalogo.html" style="justify-content: space-between;">Explorar obras certificadas</a>
+        <a class="btn btn-outline-light btn-lg" href="#" style="justify-content: space-between; border-color: rgba(237,227,204,0.35);">
+          Agendar demo técnica
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2 V6"/><path d="M8 2 V6"/><path d="M3 10 H21"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer-slot"></div>
+<script src="arthub-chrome.js"></script>
+</body>
+</html>

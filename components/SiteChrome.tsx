@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 const NAV = [
   { label: "Catálogo", href: "/catalogo" },
   { label: "Cómo funciona", href: "/como-funciona" },
-  { label: "Tecnología", href: "#" },
+  { label: "Tecnología", href: "/tecnologia" },
   { label: "Artistas", href: "/artistas" },
-  { label: "Inversionistas", href: "#" },
-  { label: "Nosotros", href: "#" },
+  { label: "Inversionistas", href: "/inversionistas" },
+  { label: "Nosotros", href: "/nosotros" },
 ];
 
 function Logo({ size = 48 }: { size?: number }) {
@@ -116,10 +116,10 @@ export function SiteFooter() {
             <ul>
               <li><Link href="/catalogo">Catálogo</Link></li>
               <li><Link href="/como-funciona">Cómo funciona</Link></li>
-              <li><a href="#">Tecnología</a></li>
+              <li><Link href="/tecnologia">Tecnología</Link></li>
               <li><Link href="/artistas">Artistas</Link></li>
-              <li><a href="#">Inversionistas</a></li>
-              <li><a href="#">Nosotros</a></li>
+              <li><Link href="/inversionistas">Inversionistas</Link></li>
+              <li><Link href="/nosotros">Nosotros</Link></li>
             </ul>
           </div>
           <div>
