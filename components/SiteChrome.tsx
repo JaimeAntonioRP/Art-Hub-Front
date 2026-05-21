@@ -5,11 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { api, type SiteSettings } from "@/lib/api";
+import VerifyModal from "@/components/VerifyModal";
 
 const NAV = [
   { label: "Catálogo", href: "/catalogo" },
   { label: "Obras", href: "/obras" },
-  { label: "Verificar", href: "/verificar" },
   { label: "Cómo funciona", href: "/como-funciona" },
   { label: "Tecnología", href: "/tecnologia" },
   { label: "Artistas", href: "/artistas" },
@@ -100,6 +100,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout, loading } = useAuth();
+  const [verifyOpen, setVerifyOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -108,6 +109,7 @@ export function SiteHeader() {
 
   return (
     <>
+      <VerifyModal open={verifyOpen} onClose={() => setVerifyOpen(false)} />
       <div className="utility">
         <div className="wrap row">
           <div>Cusco · Lima · Miami · Zürich</div>
@@ -131,6 +133,17 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
+            <button
+              type="button"
+              onClick={() => setVerifyOpen(true)}
+              style={{
+                background: "none", border: "none", padding: 0,
+                font: "inherit", cursor: "pointer",
+                color: "inherit", fontSize: "inherit",
+              }}
+            >
+              Verificar
+            </button>
           </nav>
           <div className="nav-aside">
             <a className="lang" href="#" title="Idioma">
