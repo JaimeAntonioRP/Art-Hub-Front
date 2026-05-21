@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ArtHub - Authentication</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#082b72",
+                        "on-tertiary-fixed": "#00174b",
+                        "primary-fixed": "#ffe088",
+                        "on-primary-fixed": "#241a00",
+                        "inverse-on-surface": "#313030",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131313",
+                        "on-secondary-fixed": "#002113",
+                        "on-tertiary-fixed-variant": "#27438a",
+                        "surface": "#131313",
+                        "background": "#131313",
+                        "on-primary": "#3c2f00",
+                        "surface-container-highest": "#353534",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#554300",
+                        "secondary-container": "#00a572",
+                        "outline": "#99907c",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-secondary-container": "#00311f",
+                        "tertiary-fixed": "#dbe1ff",
+                        "on-primary-fixed-variant": "#574500",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container": "#201f1f",
+                        "on-tertiary-container": "#254188",
+                        "error-container": "#93000a",
+                        "primary-container": "#d4af37",
+                        "surface-container-low": "#1c1b1b",
+                        "tertiary-container": "#97b0ff",
+                        "surface-variant": "#353534",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-tint": "#e9c349",
+                        "on-secondary": "#003824",
+                        "secondary-fixed-dim": "#4edea3",
+                        "tertiary": "#bfcdff",
+                        "error": "#ffb4ab",
+                        "secondary": "#4edea3",
+                        "on-background": "#e5e2e1",
+                        "secondary-fixed": "#6ffbbe",
+                        "primary-fixed-dim": "#e9c349",
+                        "on-surface-variant": "#d0c5af",
+                        "inverse-surface": "#e5e2e1",
+                        "primary": "#f2ca50",
+                        "outline-variant": "#4d4635",
+                        "inverse-primary": "#735c00",
+                        "surface-bright": "#393939"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "container-max": "1440px",
+                        "gutter": "32px",
+                        "stack-lg": "48px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "stack-sm": "12px",
+                        "stack-md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "body-lg": ["Geist"],
+                        "label-caps": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "body-md": ["Geist"],
+                        "headline-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["28px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "label-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            overflow: hidden; /* Prevent scrolling during animation */
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Scanning Animation */
+        .scan-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border: 2px solid theme('colors.primary-container');
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .scan-container::before, .scan-container::after,
+        .scan-corners::before, .scan-corners::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-color: theme('colors.primary');
+            border-style: solid;
+        }
+        
+        .scan-container::before { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
+        .scan-container::after { top: -2px; right: -2px; border-width: 3px 3px 0 0; }
+        .scan-corners::before { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; }
+        .scan-corners::after { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: theme('colors.primary');
+            box-shadow: 0 0 10px theme('colors.primary'), 0 0 20px theme('colors.primary');
+            opacity: 0;
+        }
+
+        @keyframes scanMove {
+            0% { top: 0; opacity: 1; }
+            50% { top: 100%; opacity: 1; }
+            100% { top: 0; opacity: 1; }
+        }
+
+        /* Validation Card */
+        .validation-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 400px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 10;
+        }
+        
+        .validation-card.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Particle Flow */
+        .particle {
+            position: absolute;
+            color: theme('colors.primary');
+            font-family: monospace;
+            font-size: 10px;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        @keyframes flowUp {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+        }
+
+        /* Progress Bar */
+        .progress-track {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: theme('colors.primary');
+            width: 0%;
+            box-shadow: 0 0 10px theme('colors.primary');
+        }
+
+        /* Success Image */
+        .success-image-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 20;
+        }
+        
+        .success-image-container.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+        
+        /* Spinner */
+        .spinner {
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-top: 2px solid theme('colors.primary');
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="relative w-full h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/5">
+<div class="font-headline-md text-headline-md tracking-widest text-primary dark:text-primary uppercase">ARTHUB</div>
+<div class="hidden md:flex gap-8">
+<a class="text-on-surface-variant/70 hover:text-primary transition-all duration-300 font-label-caps text-label-caps" href="#">Gallery</a>
+<a class="text-on-surface-variant/70 hover:text-primary transition-all duration-300 font-label-caps text-label-caps" href="#">Vault</a>
+<button class="text-primary border-b border-primary pb-1 font-label-caps text-label-caps hover:text-primary transition-all duration-300" id="startVerifyBtn">Verify</button>
+</div>
+<button class="text-on-surface-variant/70 hover:text-primary transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</nav>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden bg-surface/90 dark:bg-surface/90 backdrop-blur-2xl border-t border-white/10 rounded-t-xl shadow-2xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/50 hover:text-on-surface hover:bg-white/5 rounded-full transition-all p-2 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined mb-1 text-[20px]" data-icon="grid_view">grid_view</span>
+            Discover
+        </a>
+<button class="flex flex-col items-center justify-center text-primary font-bold scale-110 transition-transform p-2 font-label-caps text-label-caps" id="mobileStartVerifyBtn">
+<span class="material-symbols-outlined mb-1 text-[20px]" data-icon="qr_code_scanner">qr_code_scanner</span>
+            Authenticate
+        </button>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/50 hover:text-on-surface hover:bg-white/5 rounded-full transition-all p-2 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined mb-1 text-[20px]" data-icon="inventory_2">inventory_2</span>
+            Collection
+        </a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/50 hover:text-on-surface hover:bg-white/5 rounded-full transition-all p-2 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined mb-1 text-[20px]" data-icon="person">person</span>
+            Profile
+        </a>
+</nav>
+<!-- Background Artwork Image -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center opacity-40 transition-opacity duration-1000" id="bgImage" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCYhngSHq4Hh8q3D3LjumikSO-E_FCvlPs5RrfoeeY4ZEixxfzVjr1XvbZ-G3olv-O4E1yH63AN3-IX-O9y32Cn_e7sqrwmnLS_oluEo_ozhlxt_NvdgHOmD9bd_msIG8e9Yg3-L5j5L5XhHblgd-qHN_wKKvkAg3m35qX0zf7kZA1sFK7KhlS2loHGCL3CZicBF_u7qRNDjEl531LuNp4Y6w4B_f3Wv0QUA4HgS4FnXktkr-iOp48HnxnqMZdSiJN-P8zfuA2ps7g');"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/90"></div>
+</div>
+<!-- Main Animation Canvas -->
+<main class="relative w-full h-full z-10 flex items-center justify-center">
+<!-- 1. Scanning Viewfinder -->
+<div class="scan-container" id="scanOverlay">
+<div class="scan-corners absolute inset-0"></div>
+<!-- 2. Scan Line -->
+<div class="scan-line" id="scanLine"></div>
+</div>
+<!-- 3. Particle Container (Populated via JS) -->
+<div class="absolute inset-0 pointer-events-none z-15" id="particleContainer"></div>
+<!-- 4. Validation Card -->
+<div class="validation-card glass-panel rounded-xl p-8 flex flex-col items-center text-center" id="validationCard">
+<div class="w-16 h-16 rounded-full glass-panel flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="shield">shield</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2" id="validationTitle">Validating Token</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 font-mono text-sm tracking-wider" id="validationSubtitle">0x7a...9f2e</p>
+<div class="w-full space-y-4">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
+<span id="progressText">Analyzing Metadata</span>
+<div class="spinner opacity-0 transition-opacity" id="validSpinner"></div>
+</div>
+<div class="progress-track rounded-full">
+<div class="progress-fill rounded-full" id="progressFill"></div>
+</div>
+</div>
+</div>
+<!-- 5. Success State -->
+<div class="success-image-container flex flex-col items-center" id="successState">
+<div class="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-xl overflow-hidden glass-panel p-2 shadow-2xl border border-primary/30">
+<img alt="A professional, high-security digital certificate seal for ArtHub. Minimalist gold and white design on a dark charcoal background. Features a stylized 'A' monogram, the text 'AUTHENTICITY VERIFIED', and a delicate guilloche pattern. Premium, sharp, and official." class="w-full h-full object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMyezkuIO_0nehStbo8q1CkfFRvBo0rwY40L1zYT9Vr-UiJzLIQmJ-KANabqSU1x2WvF_RGc7TMPQbotgqwb7Mdr7dNOUdv2pO7It8QSEFfNnpFRZCfrVy9Y-vxTN1TGJkYWJQlzdjANUb-15MrtWLNtNH0Q6Pjd5ZD77poRAGYr--RDdRCQosfn_UUjZ8RD6Jl--HoIiYk9yvcHdL6T30z6BP7FnX4bxRNrdVwWYRnxsPC7GpqXTBKPOOdDCcH4pmQgiduzOTISE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent flex items-end justify-center p-6">
+<div class="flex items-center gap-2 bg-background/80 backdrop-blur-md px-4 py-2 rounded-full border border-primary/50">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="verified">verified</span>
+<span class="font-label-caps text-label-caps text-primary tracking-widest">AUTHENTICITY VERIFIED</span>
+</div>
+</div>
+</div>
+<button class="mt-8 px-8 py-3 bg-primary-container text-on-primary-container font-label-caps text-label-caps rounded-[4px] hover:bg-primary transition-colors uppercase tracking-widest" id="closeBtn">Done</button>
+</div>
+</main>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startBtn = document.getElementById('startVerifyBtn');
+            const mobileStartBtn = document.getElementById('mobileStartVerifyBtn');
+            const scanOverlay = document.getElementById('scanOverlay');
+            const scanLine = document.getElementById('scanLine');
+            const validationCard = document.getElementById('validationCard');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const validationTitle = document.getElementById('validationTitle');
+            const validSpinner = document.getElementById('validSpinner');
+            const successState = document.getElementById('successState');
+            const closeBtn = document.getElementById('closeBtn');
+            const bgImage = document.getElementById('bgImage');
+            const particleContainer = document.getElementById('particleContainer');
+
+            let animationTimeout;
+
+            function startSequence() {
+                // Reset
+                clearTimeout(animationTimeout);
+                scanOverlay.style.opacity = '0';
+                scanLine.style.animation = 'none';
+                validationCard.classList.remove('active');
+                successState.classList.remove('active');
+                progressFill.style.width = '0%';
+                particleContainer.innerHTML = '';
+                bgImage.style.filter = 'brightness(0.3) blur(2px)';
+
+                // 1. Show Scanning Viewfinder
+                setTimeout(() => {
+                    scanOverlay.style.opacity = '1';
+                    scanLine.style.animation = 'scanMove 2s ease-in-out infinite';
+                    createParticles();
+                }, 500);
+
+                // 2. Hide Scan, Show Validation Card
+                setTimeout(() => {
+                    scanOverlay.style.opacity = '0';
+                    scanLine.style.animation = 'none';
+                    validationCard.classList.add('active');
+                    validSpinner.style.opacity = '1';
+                    
+                    // Progress Animation
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 15;
+                        if (progress > 100) progress = 100;
+                        progressFill.style.width = `${progress}%`;
+                        
+                        if (progress > 50) {
+                            progressText.textContent = "Verifying Certificate";
+                            validationTitle.textContent = "Checking Provenance";
+                        }
+                        
+                        if (progress === 100) {
+                            clearInterval(interval);
+                            finishSequence();
+                        }
+                    }, 400);
+
+                }, 3000);
+            }
+
+            function finishSequence() {
+                setTimeout(() => {
+                    validationCard.classList.remove('active');
+                    successState.classList.add('active');
+                    bgImage.style.filter = 'brightness(0.1) blur(10px)';
+                    createSuccessParticles();
+                }, 800);
+            }
+
+            function createParticles() {
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const p = document.createElement('div');
+                        p.className = 'particle';
+                        p.textContent = Math.random().toString(16).substring(2, 8);
+                        p.style.left = `${50 + (Math.random() * 10 - 5)}%`;
+                        p.style.top = `${50 + (Math.random() * 10 - 5)}%`;
+                        p.style.animation = `flowUp ${2 + Math.random()}s ease-out forwards`;
+                        particleContainer.appendChild(p);
+                        
+                        setTimeout(() => p.remove(), 3000);
+                    }, i * 150);
+                }
+            }
+            
+            function createSuccessParticles() {
+                for (let i = 0; i < 30; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'absolute w-1 h-1 bg-primary rounded-full opacity-0';
+                    p.style.left = '50%';
+                    p.style.top = '50%';
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 100 + Math.random() * 150;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+                    
+                    p.animate([
+                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                        { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                    ], {
+                        duration: 1000 + Math.random() * 1000,
+                        easing: 'cubic-bezier(0.19, 1, 0.22, 1)'
+                    });
+                    
+                    particleContainer.appendChild(p);
+                    setTimeout(() => p.remove(), 2000);
+                }
+            }
+
+            startBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                startSequence();
+            });
+            
+            mobileStartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                startSequence();
+            });
+            
+            closeBtn.addEventListener('click', () => {
+                successState.classList.remove('active');
+                bgImage.style.filter = 'brightness(0.4) blur(0px)';
+            });
+        });
+    </script>
+</body></html>
