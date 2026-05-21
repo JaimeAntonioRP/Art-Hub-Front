@@ -90,33 +90,24 @@ export function SiteHeader() {
             {loading ? null : user ? (
               <>
                 {user.role === "admin" ? (
-                  <Link
-                    href="/admin"
-                    className="btn btn-outline-light"
-                    style={{ borderColor: "rgba(237,227,204,0.35)" }}
-                  >
+                  <Link href="/admin" className="btn btn-outline-dark">
                     Admin
                   </Link>
                 ) : null}
-                <span style={{ color: "var(--cream-on-dark)", fontSize: 13 }}>
+                <span style={{ color: "var(--ink-soft)", fontSize: 13 }}>
                   Hola, {user.name.split(" ")[0]}
                 </span>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="btn btn-outline-light"
-                  style={{ borderColor: "rgba(237,227,204,0.35)" }}
+                  className="btn btn-outline-dark"
                 >
                   Cerrar sesión
                 </button>
               </>
             ) : (
               <>
-                <Link
-                  className="btn btn-outline-light"
-                  href="/login"
-                  style={{ borderColor: "rgba(237,227,204,0.35)" }}
-                >
+                <Link className="btn btn-outline-dark" href="/login">
                   Iniciar sesión
                 </Link>
                 <Link className="btn btn-gold" href="/registro">

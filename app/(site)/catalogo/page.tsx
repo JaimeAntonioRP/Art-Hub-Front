@@ -222,10 +222,10 @@ export default function CatalogoPage() {
   }, [artworks, search, artist, sort, minPrice, maxPrice, certified]);
 
   const inputSt: React.CSSProperties = {
-    background: "rgba(237,227,204,0.08)",
-    border: "1px solid rgba(237,227,204,0.2)",
+    background: "#FFFFFF",
+    border: "1px solid var(--piedra-andina)",
     borderRadius: 6,
-    color: "#EDE3CC",
+    color: "var(--ink)",
     fontFamily: "'Inter', sans-serif",
     fontSize: 13,
     padding: "9px 12px",
@@ -248,7 +248,7 @@ export default function CatalogoPage() {
           <h1
             className="h-display"
             style={{
-              color: "var(--cream-on-dark)",
+              color: "var(--ink-soft)",
               fontSize: "clamp(40px, 5vw, 68px)",
               maxWidth: 680,
               marginBottom: 16,
@@ -256,7 +256,7 @@ export default function CatalogoPage() {
           >
             Catálogo de <em>Obras Maestras</em>
           </h1>
-          <p style={{ color: "#C9BFA9", maxWidth: 560, marginTop: 0, marginBottom: 36, fontSize: 15.5 }}>
+          <p style={{ color: "var(--ink-soft)", maxWidth: 560, marginTop: 0, marginBottom: 36, fontSize: 15.5 }}>
             Cada obra ha sido autenticada biométricamente y certificada en blockchain.
             Adquiere arte cusqueño con respaldo tecnológico y trazabilidad completa.
           </p>
@@ -322,7 +322,7 @@ export default function CatalogoPage() {
                 display: "flex",
                 alignItems: "center",
                 gap: 7,
-                color: "var(--cream-on-dark)",
+                color: "var(--ink-soft)",
                 fontSize: 13,
                 cursor: "pointer",
                 padding: "0 4px",
@@ -339,8 +339,8 @@ export default function CatalogoPage() {
           </div>
         </div>
 
-        {/* dividing wave */}
-        <div style={{ height: 28, background: "var(--dark)", position: "relative" }}>
+        {/* wave de transición */}
+        <div style={{ height: 28, background: "var(--arena)", position: "relative" }}>
           <div
             style={{
               position: "absolute",
@@ -348,7 +348,7 @@ export default function CatalogoPage() {
               left: 0,
               right: 0,
               height: 28,
-              background: "var(--paper)",
+              background: "var(--marfil)",
               borderTopLeftRadius: "50% 100%",
               borderTopRightRadius: "50% 100%",
             }}
