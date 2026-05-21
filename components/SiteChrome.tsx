@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
+import { api, type SiteSettings } from "@/lib/api";
 
 const NAV = [
   { label: "Catálogo", href: "/catalogo" },
@@ -14,6 +16,44 @@ const NAV = [
   { label: "Inversionistas", href: "/inversionistas" },
   { label: "Nosotros", href: "/nosotros" },
 ];
+
+/* caché a nivel de módulo para no re-pedir settings en cada render */
+let settingsCache: SiteSettings | null = null;
+let settingsPromise: Promise<SiteSettings> | null = null;
+
+function useSiteSettings(): SiteSettings {
+  const [settings, setSettings] = useState<SiteSettings>(settingsCache ?? {});
+  useEffect(() => {
+    if (settingsCache) return;
+    if (!settingsPromise) settingsPromise = api.getSettings().catch(() => ({}));
+    settingsPromise.then((s) => {
+      settingsCache = s;
+      setSettings(s);
+    });
+  }, []);
+  return settings;
+}
+
+function Brand({ logoSize = 48 }: { logoSize?: number }) {
+  const { brand_name, brand_tagline, logo_url } = useSiteSettings();
+  return (
+    <Link className="brand" href="/" aria-label={brand_name || "Arthub"}>
+      {logo_url ? (
+        <img
+          src={logo_url}
+          alt={brand_name || "Arthub"}
+          style={{ height: logoSize, width: "auto", maxWidth: logoSize * 2.6, objectFit: "contain" }}
+        />
+      ) : (
+        <Logo size={logoSize} />
+      )}
+      <span className="wm">
+        <span className="name">{brand_name || "ARTHUB"}</span>
+        <span className="tag">{brand_tagline || "Arte · Tecnología · Confianza"}</span>
+      </span>
+    </Link>
+  );
+}
 
 function Logo({ size = 48 }: { size?: number }) {
   return (
@@ -60,13 +100,7 @@ export function SiteHeader() {
 
       <header className="site-header">
         <div className="wrap row">
-          <Link className="brand" href="/" aria-label="Arthub">
-            <Logo size={48} />
-            <span className="wm">
-              <span className="name">ARTHUB</span>
-              <span className="tag">Arte · Tecnología · Confianza</span>
-            </span>
-          </Link>
+          <Brand logoSize={48} />
           <nav className="nav-links">
             {NAV.map((n) => (
               <Link
@@ -128,13 +162,7 @@ export function SiteFooter() {
       <div className="wrap">
         <div className="grid">
           <div>
-            <Link className="brand" href="/" style={{ marginBottom: 8 }}>
-              <Logo size={44} />
-              <span className="wm">
-                <span className="name">ARTHUB</span>
-                <span className="tag">Arte · Tecnología · Confianza</span>
-              </span>
-            </Link>
+            <Brand logoSize={44} />
             <p className="about">
               Plataforma global que certifica, protege y conecta el arte
               cusqueño con el mundo a través de tecnología.

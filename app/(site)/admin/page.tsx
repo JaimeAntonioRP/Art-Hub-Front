@@ -166,6 +166,17 @@ export default function AdminPage() {
 
   return (
     <section className="section" style={{ background: "var(--paper-2)" }}>
+      <div className="wrap" style={{ marginBottom: 28, display: "flex", gap: 10 }}>
+        <Link href="/admin" className="btn btn-gold" style={{ padding: "9px 18px", fontSize: 13 }}>
+          Obras
+        </Link>
+        <Link href="/admin/artistas" className="btn btn-outline-dark" style={{ padding: "9px 18px", fontSize: 13 }}>
+          Artistas
+        </Link>
+        <Link href="/admin/marca" className="btn btn-outline-dark" style={{ padding: "9px 18px", fontSize: 13 }}>
+          Logo / Marca
+        </Link>
+      </div>
       <div className="wrap" style={{ display: "grid", gridTemplateColumns: "1fr 1.3fr", gap: 36 }}>
         <div
           style={{

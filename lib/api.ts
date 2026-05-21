@@ -79,10 +79,39 @@ export type Artist = {
   total_obras?: number;
 };
 
+export type SiteSettings = {
+  brand_name?: string | null;
+  brand_tagline?: string | null;
+  logo_url?: string | null;
+};
+
+export type ArtistPayload = {
+  name: string;
+  slug: string;
+  origin: string;
+  birth_year?: number | null;
+  death_year?: number | null;
+  specialty: string;
+  bio: string;
+  profile_image_url: string;
+  featured?: boolean;
+};
+
 export const api = {
   listArtists: () => request<Artist[]>("/artists"),
   getArtist: (slug: string) =>
     request<{ artist: Artist; artworks: Artwork[] }>(`/artists/${slug}`),
+
+  createArtist: (token: string, payload: ArtistPayload) =>
+    request<Artist>("/artists", { method: "POST", token, body: payload }),
+  updateArtist: (token: string, id: number, payload: Partial<ArtistPayload>) =>
+    request<Artist>(`/artists/${id}`, { method: "PUT", token, body: payload }),
+  deleteArtist: (token: string, id: number) =>
+    request<{ message: string }>(`/artists/${id}`, { method: "DELETE", token }),
+
+  getSettings: () => request<SiteSettings>("/settings"),
+  updateSettings: (token: string, payload: SiteSettings) =>
+    request<SiteSettings>("/settings", { method: "PUT", token, body: payload }),
 
   listArtworks: () => request<Artwork[]>("/artworks"),
   getArtwork: (id: number) => request<Artwork>(`/artworks/${id}`),
