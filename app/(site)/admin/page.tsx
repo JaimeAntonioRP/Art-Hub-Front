@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
-import { api, type Artwork } from "@/lib/api";
+import { api, type Artwork, type Certificate } from "@/lib/api";
 import {
   errorBoxStyle,
   fieldStyle,
@@ -78,6 +78,21 @@ export default function AdminPage() {
       setMessage("Imagen subida correctamente.");
     } catch {
       setError("No fue posible subir la imagen.");
+      setMessage(null);
+    }
+  };
+
+  const handleModelUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !token) return;
+    setError(null);
+    setMessage("Subiendo modelo 3D...");
+    try {
+      const result = await api.uploadModel(token, file);
+      setForm((f) => ({ ...f, model_3d_url: result.url }));
+      setMessage("Modelo 3D subido. No olvides Guardar.");
+    } catch {
+      setError("No fue posible subir el modelo 3D.");
       setMessage(null);
     }
   };
@@ -273,8 +288,24 @@ export default function AdminPage() {
               )}
             </div>
             <div style={fieldStyle}>
-              <label style={labelStyle}>URL modelo 3D (opcional)</label>
-              <input style={inputStyle} type="url" value={form.model_3d_url} onChange={update("model_3d_url")} />
+              <label style={labelStyle}>Modelo 3D (opcional · .glb / .gltf)</label>
+              <input
+                type="file"
+                accept=".glb,.gltf"
+                onChange={handleModelUpload}
+                style={{ ...inputStyle, padding: "8px", background: "var(--paper-2)" }}
+              />
+              <input
+                style={{ ...inputStyle, marginTop: 8, fontSize: 12 }}
+                value={form.model_3d_url}
+                onChange={update("model_3d_url")}
+                placeholder="o pega una URL del modelo .glb"
+              />
+              {form.model_3d_url ? (
+                <p className="muted" style={{ fontSize: 12, marginTop: 4 }}>
+                  ✓ {form.model_3d_url.split("/").pop()}
+                </p>
+              ) : null}
             </div>
 
             <div style={{ display: "flex", gap: 10 }}>

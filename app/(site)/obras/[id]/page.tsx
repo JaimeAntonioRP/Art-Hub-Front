@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
-import { api, type Artwork } from "@/lib/api";
+import { api, type Artwork, type Certificate } from "@/lib/api";
 
 /* <model-viewer> es un web component; lo tipamos como componente React */
 const ModelViewer = "model-viewer" as unknown as React.FC<
@@ -189,6 +189,138 @@ function MediaViewer({ artwork }: { artwork: Artwork }) {
   );
 }
 
+/* ── certificado con QR ───────────────────────────────────────────────────── */
+
+function CertificateCard({ cert, artworkId }: { cert: Certificate; artworkId: number }) {
+  const [origin, setOrigin] = useState("");
+  useEffect(() => { setOrigin(window.location.origin); }, []);
+
+  const verifyUrl = cert.verification_token && origin
+    ? `${origin}/verificar/${cert.verification_token}`
+    : null;
+
+  const qrSrc = verifyUrl
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(verifyUrl)}&bgcolor=ffffff&color=14110C&margin=6`
+    : null;
+
+  const matchPct = Number(cert.match_percentage);
+  const authentic = matchPct >= 85;
+
+  return (
+    <div
+      style={{
+        marginTop: 18,
+        border: "1.5px solid var(--oro-cusco, #CBA24A)",
+        borderRadius: 14,
+        overflow: "hidden",
+        fontSize: 13.5,
+      }}
+    >
+      {/* encabezado dorado */}
+      <div
+        style={{
+          background: "var(--oro-cusco, #CBA24A)",
+          padding: "10px 18px",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+        }}
+      >
+        {/* icono escudo */}
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#14110C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        <span style={{ fontWeight: 700, fontSize: 13, letterSpacing: "0.06em", color: "#14110C", textTransform: "uppercase" }}>
+          Certificado de Autenticidad
+        </span>
+        <span
+          style={{
+            marginLeft: "auto",
+            background: authentic ? "#2D5016" : "#7B2E18",
+            color: "#fff",
+            fontSize: 11,
+            padding: "3px 10px",
+            borderRadius: 20,
+            fontWeight: 600,
+          }}
+        >
+          {authentic ? "AUTÉNTICO" : "EN REVISIÓN"}
+        </span>
+      </div>
+
+      {/* cuerpo */}
+      <div style={{ background: "#fff", padding: "16px 18px", display: "flex", gap: 18, alignItems: "flex-start" }}>
+        {/* columna datos */}
+        <div style={{ flex: 1 }}>
+          <div style={{ display: "flex", gap: 20, marginBottom: 12 }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 28, fontFamily: "'Cormorant Garamond', serif", fontWeight: 700, color: "var(--oro-cusco, #CBA24A)" }}>
+                {matchPct.toFixed(1)}%
+              </div>
+              <div style={{ fontSize: 11, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                Coincidencia IA
+              </div>
+            </div>
+            <div style={{ width: 1, background: "var(--rule)" }} />
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 11, color: "var(--ink-soft)", marginBottom: 3 }}>Hash biométrico</div>
+              <code style={{ fontSize: 11, wordBreak: "break-all", color: "var(--ink)" }}>
+                {cert.biometric_hash.slice(0, 40)}…
+              </code>
+            </div>
+          </div>
+
+          {cert.blockchain_tx_id ? (
+            <div style={{ marginBottom: 10 }}>
+              <div style={{ fontSize: 11, color: "var(--ink-soft)", marginBottom: 2 }}>TX Blockchain</div>
+              <code style={{ fontSize: 11, wordBreak: "break-all" }}>
+                {cert.blockchain_tx_id.slice(0, 44)}…
+              </code>
+            </div>
+          ) : null}
+
+          {verifyUrl ? (
+            <Link
+              href={`/verificar/${cert.verification_token}`}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                fontSize: 12,
+                color: "var(--oro-cusco, #CBA24A)",
+                textDecoration: "none",
+                fontWeight: 600,
+                marginTop: 6,
+              }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+              </svg>
+              Ver certificado completo
+            </Link>
+          ) : null}
+        </div>
+
+        {/* QR */}
+        {qrSrc ? (
+          <div style={{ flexShrink: 0, textAlign: "center" }}>
+            <img
+              src={qrSrc}
+              alt="QR verificación"
+              width={88}
+              height={88}
+              style={{ borderRadius: 8, border: "1px solid var(--rule)" }}
+            />
+            <div style={{ fontSize: 10, color: "var(--ink-soft)", marginTop: 4 }}>Escanea para verificar</div>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 export default function ObraDetallePage({
   params,
 }: {
@@ -300,29 +432,7 @@ export default function ObraDetallePage({
           </div>
 
           {artwork.certificate ? (
-            <div
-              style={{
-                marginTop: 18,
-                padding: "16px 20px",
-                background: "#fff",
-                border: "1px solid var(--rule)",
-                borderRadius: 12,
-                fontSize: 13.5,
-              }}
-            >
-              <div className="kicker" style={{ marginBottom: 6 }}>Certificado biometrico</div>
-              <div>
-                Match IA: <strong>{artwork.certificate.match_percentage}%</strong>
-              </div>
-              <div style={{ marginTop: 4, wordBreak: "break-all" }}>
-                Hash: <code>{artwork.certificate.biometric_hash.slice(0, 32)}...</code>
-              </div>
-              {artwork.certificate.blockchain_tx_id ? (
-                <div style={{ marginTop: 4, wordBreak: "break-all" }}>
-                  Tx: <code>{artwork.certificate.blockchain_tx_id.slice(0, 32)}...</code>
-                </div>
-              ) : null}
-            </div>
+            <CertificateCard cert={artwork.certificate} artworkId={artwork.id} />
           ) : null}
 
           {message ? (
