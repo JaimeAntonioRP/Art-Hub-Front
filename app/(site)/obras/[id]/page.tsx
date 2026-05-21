@@ -6,6 +6,11 @@ import { use, useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { api, type Artwork } from "@/lib/api";
 
+/* <model-viewer> es un web component; lo tipamos como componente React */
+const ModelViewer = "model-viewer" as unknown as React.FC<
+  React.HTMLAttributes<HTMLElement> & Record<string, unknown>
+>;
+
 function formatPrice(value: string | number): string {
   const num = typeof value === "string" ? Number(value) : value;
   return new Intl.NumberFormat("es-PE", {
@@ -13,6 +18,175 @@ function formatPrice(value: string | number): string {
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(num);
+}
+
+/* ── visor de imagen + 3D ─────────────────────────────────────────────────── */
+
+const PLACEHOLDER = "/placeholder-obra.svg";
+
+function MediaViewer({ artwork }: { artwork: Artwork }) {
+  const [view, setView] = useState<"image" | "3d">("image");
+  const [scriptReady, setScriptReady] = useState(false);
+  const [modelOk, setModelOk] = useState<boolean | null>(null);
+  const has3D = Boolean(artwork.model_3d_url);
+
+  // carga el script de model-viewer una sola vez (al cambiar a vista 3D)
+  useEffect(() => {
+    if (view !== "3d" || !has3D) return;
+    const ID = "model-viewer-script";
+    if (document.getElementById(ID)) {
+      setScriptReady(true);
+      return;
+    }
+    const s = document.createElement("script");
+    s.id = ID;
+    s.type = "module";
+    s.src = "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js";
+    s.onload = () => setScriptReady(true);
+    document.head.appendChild(s);
+  }, [view, has3D]);
+
+  // verifica que el .glb exista antes de mostrar el visor
+  useEffect(() => {
+    if (view !== "3d" || !artwork.model_3d_url) return;
+    setModelOk(null);
+    fetch(artwork.model_3d_url, { method: "HEAD" })
+      .then((r) => {
+        const ct = r.headers.get("content-type") ?? "";
+        setModelOk(r.ok && !ct.includes("text/html"));
+      })
+      .catch(() => setModelOk(false));
+  }, [view, artwork.model_3d_url]);
+
+  return (
+    <div>
+      <div
+        style={{
+          position: "relative",
+          aspectRatio: "4 / 5",
+          borderRadius: 12,
+          border: "1px solid var(--rule)",
+          overflow: "hidden",
+          background: "var(--arena, #EFE6D5)",
+        }}
+      >
+        {view === "image" ? (
+          <img
+            src={artwork.image_url}
+            alt={artwork.title}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+            onError={(e) => {
+              const el = e.currentTarget;
+              if (!el.src.endsWith(PLACEHOLDER)) el.src = PLACEHOLDER;
+            }}
+          />
+        ) : modelOk === false ? (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+              textAlign: "center",
+              padding: 24,
+              color: "var(--ink-soft, #6B7A8A)",
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#CBA24A" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8, marginBottom: 4 }}>
+              <path d="M12 2 2 7l10 5 10-5-10-5Z" />
+              <path d="m2 17 10 5 10-5" />
+              <path d="m2 12 10 5 10-5" />
+            </svg>
+            <strong style={{ fontSize: 14, color: "var(--ink, #0D1B2A)" }}>Modelo 3D no disponible aún</strong>
+            <span style={{ fontSize: 12.5, maxWidth: 240 }}>
+              El archivo del modelo todavía no fue cargado para esta obra.
+            </span>
+          </div>
+        ) : scriptReady && modelOk ? (
+          <ModelViewer
+            src={artwork.model_3d_url as string}
+            alt={`Modelo 3D de ${artwork.title}`}
+            poster={artwork.image_url}
+            camera-controls=""
+            auto-rotate=""
+            ar=""
+            ar-modes="webxr scene-viewer quick-look"
+            shadow-intensity="1"
+            exposure="1"
+            style={{ width: "100%", height: "100%", background: "#15110c" }}
+          />
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--ink-soft, #6B7A8A)",
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 13,
+            }}
+          >
+            Cargando visor 3D…
+          </div>
+        )}
+
+        {/* etiqueta 3D/AR */}
+        {has3D && (
+          <span
+            style={{
+              position: "absolute",
+              top: 12,
+              right: 12,
+              background: "rgba(20,17,12,0.72)",
+              backdropFilter: "blur(6px)",
+              border: "1px solid rgba(237,227,204,0.25)",
+              color: "#EDE3CC",
+              fontSize: 9,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              padding: "4px 8px",
+              borderRadius: 4,
+            }}
+          >
+            3D / AR
+          </span>
+        )}
+      </div>
+
+      {/* toggle imagen ↔ 3D */}
+      {has3D && (
+        <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+          <button
+            type="button"
+            onClick={() => setView("image")}
+            className={view === "image" ? "btn btn-outline-dark" : "btn btn-ghost"}
+            style={{ fontSize: 12.5, padding: "7px 14px", flex: 1 }}
+          >
+            Imagen
+          </button>
+          <button
+            type="button"
+            onClick={() => setView("3d")}
+            className={view === "3d" ? "btn btn-gold" : "btn btn-ghost"}
+            style={{ fontSize: 12.5, padding: "7px 14px", flex: 1 }}
+          >
+            Ver en 3D / AR
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function ObraDetallePage({
@@ -89,24 +263,7 @@ export default function ObraDetallePage({
   return (
     <section className="section">
       <div className="wrap" style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 48 }}>
-        <div>
-          <div
-            style={{
-              aspectRatio: "4 / 5",
-              background: `center/cover no-repeat url(${artwork.image_url})`,
-              borderRadius: 12,
-              border: "1px solid var(--rule)",
-            }}
-          />
-          {artwork.model_3d_url ? (
-            <p className="muted" style={{ marginTop: 12, fontSize: 13 }}>
-              Modelo 3D disponible:{" "}
-              <a href={artwork.model_3d_url} target="_blank" rel="noreferrer">
-                ver en AR
-              </a>
-            </p>
-          ) : null}
-        </div>
+        <MediaViewer artwork={artwork} />
 
         <div>
           <div className="kicker">{artwork.artist_name}</div>

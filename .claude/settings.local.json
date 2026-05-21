@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"D:/ls/\")",
+      "PowerShell(try { \\(Invoke-WebRequest -UseBasicParsing -Uri \"http://127.0.0.1:8001/api/artworks\" -Headers @{Accept=\"application/json\"} -TimeoutSec 3\\).StatusCode } catch { \"FALLO: $\\($_.Exception.Message\\)\" })",
+      "PowerShell($r = Invoke-WebRequest -UseBasicParsing -Uri \"http://127.0.0.1:8001/api/artworks\" -Headers @{Accept=\"application/json\"}; $obras = $r.Content | ConvertFrom-Json; $obras | Group-Object artist_name | Select-Object Name, Count | Sort-Object Count -Descending)",
+      "PowerShell($r = Invoke-WebRequest -UseBasicParsing -Uri \"http://127.0.0.1:8001/api/artworks\" -Headers @{Accept=\"application/json\"}; \\($r.Content | ConvertFrom-Json\\) | ForEach-Object { $_.artist_name } | Sort-Object -Unique)",
+      "Bash(cd /d D:\\\\ls\\\\Art-Hub-Back)",
+      "Bash(php artisan *)",
+      "Bash(mkdir \"D:\\\\ls\\\\Art-Hub-Front\\\\app\\\\\\(site\\)\\\\artistas\\\\[slug]\" 2>&1; echo done)",
+      "Bash(curl -s \"http://127.0.0.1:8001/api/artists\" -H \"Accept: application/json\")",
+      "Bash(python -c \"import sys,json; data=json.load\\(sys.stdin\\); print\\(f'{len\\(data\\)} artists'\\); [print\\(f'  - {a[\\\\\"name\\\\\"]} \\({a[\\\\\"total_obras\\\\\"]} obras\\)'\\) for a in data[:4]]\")",
+      "Bash(mv \"Confidencias-al-Viento.jpeg\"        \"../obras/confidencias-al-viento.jpg\")",
+      "Bash(mv \"Ecos-de-la-Montaña.jpeg\"            \"../obras/ecos-de-la-montana.jpg\")",
+      "Bash(mv \"El-Calor-de-la-Hermandad.jpeg\"      \"../obras/el-calor-de-la-hermandad.jpg\")",
+      "Bash(mv \"El-Latido-del-Reposo.jpeg\"          \"../obras/el-latido-del-reposo.jpg\")",
+      "Bash(mv \"El-Primer-Fruto-de-la-Tierra.jpeg\"  \"../obras/el-primer-fruto-de-la-tierra.jpg\")",
+      "Bash(mv \"Confidencias-al-Viento.glb\"  \"../3d/confidencias-al-viento.glb\")",
+      "Bash(mv \"Ecos-de-la-Montaña.glb\"      \"../3d/ecos-de-la-montana.glb\")",
+      "Bash(mv \"El-Latido-del-Reposo.glb\"    \"../3d/el-latido-del-reposo.glb\")",
+      "Bash(mv \"Hijas-del-Apu.glb\"           \"../3d/hijas-del-apu.glb\")",
+      "Bash(mv \"madrecusqueña.glb\"           \"../3d/madre-cusquena.glb\")",
+      "Bash(curl -s -o /dev/null -w \"status=%{http_code} type=%{content_type}\\\\n\" \"http://localhost:3000/obras/madre-cusquena.jpg\")",
+      "Bash(curl -s -o /dev/null -w \"status=%{http_code} type=%{content_type}\\\\n\" \"http://localhost:3000/3d/madre-cusquena.glb\")",
+      "Bash(curl -s \"http://127.0.0.1:8001/api/artists/jaime-antonio-rodriguez\" -H \"Accept: application/json\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['artist']['name'], '->', d['artist']['total_obras'], 'obras; con 3D:', sum\\(1 for a in d['artworks'] if a['model_3d_url']\\)\\)\")"
+    ]
+  }
+}
