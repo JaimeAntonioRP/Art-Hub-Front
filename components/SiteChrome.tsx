@@ -57,9 +57,9 @@ function Brand({ logoSize = 48 }: { logoSize?: number }) {
   const [imgError, setImgError] = useState(false);
   return (
     <Link className="brand" href="/" aria-label={brand_name || "Arthub"}>
-      {logo_url && !imgError ? (
+      {!imgError ? (
         <img
-          src={logo_url}
+          src={logo_url || "/logifinal.png"}
           alt={brand_name || "Arthub"}
           style={{ height: logoSize, width: "auto", maxWidth: logoSize * 2.6, objectFit: "contain" }}
           onError={() => setImgError(true)}
