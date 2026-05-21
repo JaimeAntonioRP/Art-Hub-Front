@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ArtHub - Authentication</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#082b72",
+                        "on-tertiary-fixed": "#00174b",
+                        "primary-fixed": "#ffe088",
+                        "on-primary-fixed": "#241a00",
+                        "inverse-on-surface": "#313030",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131313",
+                        "on-secondary-fixed": "#002113",
+                        "on-tertiary-fixed-variant": "#27438a",
+                        "surface": "#131313",
+                        "background": "#131313",
+                        "on-primary": "#3c2f00",
+                        "surface-container-highest": "#353534",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#554300",
+                        "secondary-container": "#00a572",
+                        "outline": "#99907c",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-secondary-container": "#00311f",
+                        "tertiary-fixed": "#dbe1ff",
+                        "on-primary-fixed-variant": "#574500",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container": "#201f1f",
+                        "on-tertiary-container": "#254188",
+                        "error-container": "#93000a",
+                        "primary-container": "#d4af37",
+                        "surface-container-low": "#1c1b1b",
+                        "tertiary-container": "#97b0ff",
+                        "surface-variant": "#353534",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-tint": "#e9c349",
+                        "on-secondary": "#003824",
+                        "secondary-fixed-dim": "#4edea3",
+                        "tertiary": "#bfcdff",
+                        "error": "#ffb4ab",
+                        "secondary": "#4edea3",
+                        "on-background": "#e5e2e1",
+                        "secondary-fixed": "#6ffbbe",
+                        "primary-fixed-dim": "#e9c349",
+                        "on-surface-variant": "#d0c5af",
+                        "inverse-surface": "#e5e2e1",
+                        "primary": "#d4af37", /* Changed to specified gold */
+                        "outline-variant": "#4d4635",
+                        "inverse-primary": "#735c00",
+                        "surface-bright": "#393939"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "container-max": "1440px",
+                        "gutter": "32px",
+                        "stack-lg": "48px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "stack-sm": "12px",
+                        "stack-md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "body-lg": ["Geist"],
+                        "label-caps": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "body-md": ["Geist"],
+                        "headline-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["28px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "label-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            overflow: hidden;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Viewfinder Scanning */
+        .scan-container {
+            position: absolute;
+            top: 50%;
+            left: 70%; /* Position roughly over QR code in bg */
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            z-index: 20;
+        }
+        
+        .scan-container.active {
+            opacity: 1;
+        }
+        
+        .scan-corners::before, .scan-corners::after,
+        .scan-corners-bottom::before, .scan-corners-bottom::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: theme('colors.primary');
+            border-style: solid;
+        }
+        
+        .scan-corners::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+        .scan-corners::after { top: 0; right: 0; border-width: 2px 2px 0 0; }
+        .scan-corners-bottom::before { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+        .scan-corners-bottom::after { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: theme('colors.primary');
+            box-shadow: 0 0 10px theme('colors.primary'), 0 0 20px theme('colors.primary');
+            animation: scanMove 1.5s ease-in-out infinite;
+        }
+
+        @keyframes scanMove {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+
+        .pulsing-text {
+            animation: pulseText 1.5s infinite;
+        }
+        
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Validation Phase */
+        .validation-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            width: 450px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 30;
+        }
+        
+        .validation-card.active {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+        
+        .status-row.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-icon .spinner {
+            display: none;
+        }
+        .status-icon .check {
+            display: none;
+            color: theme('colors.primary');
+        }
+        
+        .status-row.loading .status-icon .spinner {
+            display: block;
+        }
+        .status-row.done .status-icon .spinner {
+            display: none;
+        }
+        .status-row.done .status-icon .check {
+            display: block;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        /* Success Phase */
+        .success-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .success-state.active {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            pointer-events: auto;
+        }
+
+        .certificate-seal {
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+            border-radius: 50%; /* Image appears round */
+        }
+
+        .stamp-badge {
+            opacity: 0;
+            transform: scale(2);
+        }
+        
+        .stamp-badge.stamped {
+            animation: stampAnim 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes stampAnim {
+            0% { opacity: 0; transform: scale(2) rotate(5deg); }
+            70% { opacity: 1; transform: scale(0.9) rotate(-2deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        /* Spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top: 2px solid theme('colors.primary');
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Particles */
+        .particle {
+            position: absolute;
+            background-color: theme('colors.primary');
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        #bgImage {
+            transition: all 1.5s ease;
+        }
+        .bg-blurred {
+            filter: blur(12px) brightness(0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="relative w-full h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/5">
+<div class="font-headline-md text-headline-md tracking-widest text-primary dark:text-primary uppercase">ARTHUB</div>
+<div class="hidden md:flex gap-8">
+<a class="text-on-surface-variant/70 hover:text-primary transition-all duration-300 font-label-caps text-label-caps" href="#">Gallery</a>
+<a class="text-on-surface-variant/70 hover:text-primary transition-all duration-300 font-label-caps text-label-caps" href="#">Vault</a>
+<button class="text-primary border-b border-primary pb-1 font-label-caps text-label-caps hover:text-primary transition-all duration-300" id="navVerifyBtn">Verify</button>
+</div>
+<button class="text-on-surface-variant/70 hover:text-primary transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</nav>
+<!-- Background Image -->
+<div class="absolute inset-0 z-0 overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" id="bgImage" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCYhngSHq4Hh8q3D3LjumikSO-E_FCvlPs5RrfoeeY4ZEixxfzVjr1XvbZ-G3olv-O4E1yH63AN3-IX-O9y32Cn_e7sqrwmnLS_oluEo_ozhlxt_NvdgHOmD9bd_msIG8e9Yg3-L5j5L5XhHblgd-qHN_wKKvkAg3m35qX0zf7kZA1sFK7KhlS2loHGCL3CZicBF_u7qRNDjEl531LuNp4Y6w4B_f3Wv0QUA4HgS4FnXktkr-iOp48HnxnqMZdSiJN-P8zfuA2ps7g');"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background/60"></div>
+</div>
+<main class="relative w-full h-full z-10">
+<!-- 1. Scanning Viewfinder -->
+<div class="scan-container" id="scanOverlay">
+<div class="scan-corners absolute inset-0"></div>
+<div class="scan-corners-bottom absolute inset-0"></div>
+<div class="scan-line"></div>
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 font-label-caps text-primary tracking-widest pulsing-text whitespace-nowrap">Scanning...</div>
+</div>
+<!-- 2. Validation Phase -->
+<div class="validation-card glass-panel rounded-xl p-8" id="validationCard">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-8 text-center border-b border-white/10 pb-4">Verifying Authenticity</h2>
+<div class="flex flex-col gap-2" id="statusList">
+<div class="status-row" id="status1">
+<div class="status-icon">
+<div class="spinner"></div>
+<span class="material-symbols-outlined check" data-icon="check_circle">check_circle</span>
+</div>
+<span class="font-body-md text-on-surface-variant">Reading Blockchain Token...</span>
+</div>
+<div class="status-row" id="status2">
+<div class="status-icon">
+<div class="spinner"></div>
+<span class="material-symbols-outlined check" data-icon="check_circle">check_circle</span>
+</div>
+<span class="font-body-md text-on-surface-variant">Verifying Digital Signature...</span>
+</div>
+<div class="status-row" id="status3">
+<div class="status-icon">
+<div class="spinner"></div>
+<span class="material-symbols-outlined check" data-icon="check_circle">check_circle</span>
+</div>
+<span class="font-body-md text-on-surface-variant">Authenticating Provenance...</span>
+</div>
+</div>
+</div>
+<!-- 3. Final Success Phase -->
+<div class="success-state" id="successState">
+<div class="relative w-64 h-64 md:w-80 md:h-80 mb-8">
+<img alt="Certificate Seal" class="w-full h-full object-cover rounded-full certificate-seal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMyezkuIO_0nehStbo8q1CkfFRvBo0rwY40L1zYT9Vr-UiJzLIQmJ-KANabqSU1x2WvF_RGc7TMPQbotgqwb7Mdr7dNOUdv2pO7It8QSEFfNnpFRZCfrVy9Y-vxTN1TGJkYWJQlzdjANUb-15MrtWLNtNH0Q6Pjd5ZD77poRAGYr--RDdRCQosfn_UUjZ8RD6Jl--HoIiYk9yvcHdL6T30z6BP7FnX4bxRNrdVwWYRnxsPC7GpqXTBKPOOdDCcH4pmQgiduzOTISE"/>
+<div class="absolute -bottom-4 left-1/2 -translate-x-1/2 stamp-badge bg-primary text-on-primary-fixed font-label-caps px-6 py-2 rounded shadow-xl tracking-widest font-bold border-2 border-primary-container" id="verifiedBadge">
+                VERIFIED
+            </div>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-2 text-center text-primary drop-shadow-md">Artwork Authenticity Confirmed</h3>
+<p class="font-body-md text-on-surface-variant text-center mb-8 max-w-md">The digital signature matches the blockchain record. This physical artwork is authenticated.</p>
+<button class="px-8 py-3 bg-white/10 hover:bg-white/20 text-on-surface border border-white/20 font-label-caps text-label-caps rounded transition-colors uppercase tracking-widest backdrop-blur-sm" onclick="location.reload()">View Details</button>
+</div>
+<!-- Particle Container -->
+<div class="absolute inset-0 pointer-events-none z-50 overflow-hidden" id="particleContainer"></div>
+</main>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scanOverlay = document.getElementById('scanOverlay');
+            const bgImage = document.getElementById('bgImage');
+            const validationCard = document.getElementById('validationCard');
+            const successState = document.getElementById('successState');
+            const verifiedBadge = document.getElementById('verifiedBadge');
+            const particleContainer = document.getElementById('particleContainer');
+            
+            const statuses = [
+                document.getElementById('status1'),
+                document.getElementById('status2'),
+                document.getElementById('status3')
+            ];
+
+            function startSequence() {
+                // 1. Scanning Phase
+                setTimeout(() => {
+                    scanOverlay.classList.add('active');
+                }, 500);
+
+                // 2. Validation Phase Transition
+                setTimeout(() => {
+                    scanOverlay.classList.remove('active');
+                    bgImage.classList.add('bg-blurred');
+                    
+                    setTimeout(() => {
+                        validationCard.classList.add('active');
+                        runValidationSteps();
+                    }, 800);
+                }, 3500);
+            }
+
+            function runValidationSteps() {
+                let currentStep = 0;
+                
+                function processNext() {
+                    if (currentStep < statuses.length) {
+                        const row = statuses[currentStep];
+                        row.classList.add('visible', 'loading');
+                        
+                        setTimeout(() => {
+                            row.classList.remove('loading');
+                            row.classList.add('done');
+                            currentStep++;
+                            setTimeout(processNext, 800); // Wait before starting next
+                        }, 1200); // Simulate processing time
+                    } else {
+                        // All done, move to success
+                        setTimeout(() => {
+                            validationCard.classList.remove('active');
+                            showSuccess();
+                        }, 1000);
+                    }
+                }
+                
+                processNext();
+            }
+
+            function showSuccess() {
+                successState.classList.add('active');
+                
+                setTimeout(() => {
+                    verifiedBadge.classList.add('stamped');
+                    createGoldParticles();
+                }, 600);
+            }
+
+            function createGoldParticles() {
+                for (let i = 0; i < 60; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    
+                    // Random size
+                    const size = Math.random() * 6 + 2;
+                    p.style.width = `${size}px`;
+                    p.style.height = `${size}px`;
+                    
+                    // Start at center
+                    p.style.left = '50%';
+                    p.style.top = '40%';
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = 50 + Math.random() * 200;
+                    const tx = Math.cos(angle) * velocity;
+                    const ty = Math.sin(angle) * velocity + 100; // slight downward bias for gravity feel
+                    
+                    p.animate([
+                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                        { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                    ], {
+                        duration: 1500 + Math.random() * 1500,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    });
+                    
+                    particleContainer.appendChild(p);
+                    setTimeout(() => p.remove(), 3000);
+                }
+            }
+
+            // Start sequence automatically on load
+            startSequence();
+        });
+    </script>
+</body></html>

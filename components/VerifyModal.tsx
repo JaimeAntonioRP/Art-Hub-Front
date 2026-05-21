@@ -59,11 +59,13 @@ const CSS = `
 export default function VerifyModal({
   open,
   onClose,
+  autoStart = false,   // si true arranca directo en scanning (sin idle)
 }: {
   open: boolean;
   onClose: () => void;
+  autoStart?: boolean;
 }) {
-  const [token, setToken]         = useState("");
+  const [token, setToken]         = useState("verificando...");
   const [phase, setPhase]         = useState<Phase>("idle");
   const [progress, setProgress]   = useState(0);
   const [stepsDone, setStepsDone] = useState<number[]>([]);
@@ -81,10 +83,18 @@ export default function VerifyModal({
     }
   }, []);
 
-  /* lock body scroll when open */
+  /* lock body scroll + auto-arrancar si autoStart */
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    if (open && autoStart) {
+      setPhase("idle");          // reset
+      setProgress(0); setStepsDone([]); setActiveStep(-1);
+      // pequeño delay para que el overlay aparezca primero
+      const t = setTimeout(() => startSequence(), 200);
+      return () => clearTimeout(t);
+    }
     return () => { document.body.style.overflow = ""; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   /* close on Escape */

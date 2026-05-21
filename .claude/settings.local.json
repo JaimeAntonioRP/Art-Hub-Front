@@ -30,7 +30,10 @@
       "Bash(php -l app/Http/Controllers/Api/UploadController.php)",
       "Bash(php -l app/Models/Certificate.php)",
       "Bash(php -l routes/api.php)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(dir \"D:\\\\ls\\\\Art-Hub-Front\\\\public\" /b)"
     ]
   }
 }
