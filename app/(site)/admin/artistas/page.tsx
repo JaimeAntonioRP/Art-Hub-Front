@@ -83,21 +83,6 @@ export default function AdminArtistasPage() {
       });
     };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !token) return;
-    setError(null);
-    setMessage("Subiendo imagen...");
-    try {
-      const result = await api.uploadImage(token, file);
-      setForm((f) => ({ ...f, profile_image_url: result.url }));
-      setMessage("Imagen subida.");
-    } catch {
-      setError("No fue posible subir la imagen.");
-      setMessage(null);
-    }
-  };
-
   const startEdit = (a: Artist) => {
     setEditingId(a.id);
     setSlugTouched(true);
@@ -283,34 +268,39 @@ export default function AdminArtistasPage() {
             </div>
             <div style={fieldStyle}>
               <label style={labelStyle}>Foto del artista</label>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={handleFileUpload}
-                style={{ ...inputStyle, padding: "8px", background: "var(--paper-2)" }}
-              />
+
+              {/* preview si ya hay URL */}
               {form.profile_image_url ? (
-                <div style={{ marginTop: 10, display: "flex", gap: 10, alignItems: "center" }}>
+                <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 8 }}>
                   <img
                     src={form.profile_image_url}
                     alt="preview"
-                    style={{ width: 72, height: 72, objectFit: "cover", borderRadius: 6, border: "1px solid var(--rule)" }}
+                    style={{ width: 64, height: 64, objectFit: "cover", objectPosition: "center top", borderRadius: 8, border: "1px solid var(--rule)", flexShrink: 0 }}
+                    onError={(e) => { const el = e.currentTarget; if (!el.src.endsWith("/placeholder-obra.svg")) el.src = "/placeholder-obra.svg"; }}
                   />
                   <input
                     style={{ ...inputStyle, flex: 1, fontSize: 12 }}
                     value={form.profile_image_url}
                     onChange={update("profile_image_url")}
-                    placeholder="o pega una URL / ruta"
+                    placeholder="/artistas/nombre.jpg  o  https://..."
                   />
                 </div>
               ) : (
                 <input
-                  style={{ ...inputStyle, marginTop: 8, fontSize: 12 }}
+                  style={{ ...inputStyle, fontSize: 13 }}
                   value={form.profile_image_url}
                   onChange={update("profile_image_url")}
-                  placeholder="o pega una URL o ruta (ej. /artistas/nombre.jpg)"
+                  placeholder="/artistas/nombre.jpg  o  https://..."
                 />
               )}
+
+              {/* instrucciones */}
+              <div style={{ marginTop: 8, padding: "9px 12px", background: "#F5F0E8", border: "1px solid #CBA24A55", borderRadius: 8, fontSize: 12, lineHeight: 1.7, color: "var(--ink)" }}>
+                <strong>¿Cómo agregar la foto?</strong><br />
+                <strong>Opción 1 (permanente):</strong> guarda la imagen como <code>public/artistas/nombre.jpg</code> en el proyecto, haz commit+push y escribe <code>/artistas/nombre.jpg</code> aquí.<br />
+                <strong>Opción 2:</strong> sube la foto a{" "}
+                <a href="https://imgur.com" target="_blank" rel="noreferrer" style={{ color: "var(--oro-cusco)" }}>imgur.com</a> y pega la URL directa.
+              </div>
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18, fontSize: 14, cursor: "pointer" }}>
               <input
