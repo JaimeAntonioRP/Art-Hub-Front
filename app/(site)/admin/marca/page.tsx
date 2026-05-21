@@ -39,21 +39,6 @@ export default function AdminMarcaPage() {
       .finally(() => setLoaded(true));
   }, []);
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !token) return;
-    setError(null);
-    setMessage("Subiendo logo...");
-    try {
-      const result = await api.uploadImage(token, file);
-      setLogoUrl(result.url);
-      setMessage("Logo subido. No olvides Guardar.");
-    } catch {
-      setError("No fue posible subir el logo.");
-      setMessage(null);
-    }
-  };
-
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!token) return;
@@ -158,21 +143,43 @@ export default function AdminMarcaPage() {
                 />
               </div>
               <div style={fieldStyle}>
-                <label style={labelStyle}>Logo (imagen)</label>
+                <label style={labelStyle}>Logo (URL o ruta)</label>
                 <input
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp,image/svg+xml"
-                  onChange={handleFileUpload}
-                  style={{ ...inputStyle, padding: "8px", background: "var(--paper-2)" }}
-                />
-                <input
-                  style={{ ...inputStyle, marginTop: 8, fontSize: 12 }}
+                  style={{ ...inputStyle, fontSize: 13 }}
                   value={logoUrl}
                   onChange={(e) => setLogoUrl(e.target.value)}
-                  placeholder="o pega una URL / ruta (ej. /logo.png)"
+                  placeholder="https://... · o ruta /logo.png"
                 />
+                {/* instrucciones para subir logo */}
+                <div
+                  style={{
+                    marginTop: 10,
+                    padding: "10px 12px",
+                    background: "#F5F0E8",
+                    border: "1px solid #CBA24A55",
+                    borderRadius: 8,
+                    fontSize: 12,
+                    lineHeight: 1.7,
+                    color: "var(--ink)",
+                  }}
+                >
+                  <strong style={{ display: "block", marginBottom: 4 }}>
+                    ¿Cómo poner mi logo?
+                  </strong>
+                  <strong>Opción 1 — Carpeta Vercel (recomendado, permanente):</strong><br />
+                  Sube tu logo a la carpeta <code>public/</code> del proyecto frontend (ej. <code>public/logo.png</code>),
+                  haz commit y push. Luego escribe <code>/logo.png</code> aquí.
+                  <br /><br />
+                  <strong>Opción 2 — URL externa:</strong><br />
+                  Sube la imagen a{" "}
+                  <a href="https://imgur.com" target="_blank" rel="noreferrer" style={{ color: "var(--oro-cusco)" }}>imgur.com</a>
+                  {" "}o{" "}
+                  <a href="https://cloudinary.com" target="_blank" rel="noreferrer" style={{ color: "var(--oro-cusco)" }}>Cloudinary</a>
+                  {" "}y pega la URL directa (<code>https://...</code>).
+                </div>
                 <p className="muted" style={{ fontSize: 12, marginTop: 6 }}>
-                  Recomendado: PNG/SVG horizontal con fondo transparente. Déjalo vacío para usar el logo por defecto.
+                  Recomendado: PNG/SVG horizontal con fondo transparente, 200–600 px de ancho.
+                  Déjalo vacío para usar el logo por defecto.
                 </p>
               </div>
 
