@@ -76,7 +76,7 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: `url(${artwork.image_url})`,
+            backgroundImage: `url(${artwork.image_url}), url(/placeholder-obra.svg)`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             transition: "transform .4s",

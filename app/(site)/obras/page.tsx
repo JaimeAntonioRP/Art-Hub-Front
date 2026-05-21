@@ -65,7 +65,11 @@ export default function ObrasPage() {
                 <div
                   style={{
                     aspectRatio: "4 / 3",
-                    background: `center/cover no-repeat url(${a.image_url})`,
+                    backgroundColor: "var(--arena, #EFE6D5)",
+                    backgroundImage: `url(${a.image_url}), url(/placeholder-obra.svg)`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
                   }}
                 />
                 <div style={{ padding: 18, display: "flex", flexDirection: "column", gap: 6 }}>

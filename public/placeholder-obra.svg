@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#EFE6D5"/>
+  <rect x="40" y="40" width="720" height="920" fill="none" stroke="#CBA24A" stroke-width="2" stroke-dasharray="10 8" opacity="0.5"/>
+  <g transform="translate(400 440)" fill="none" stroke="#CBA24A" stroke-width="6" opacity="0.7">
+    <rect x="-110" y="-90" width="220" height="180" rx="8"/>
+    <circle cx="-50" cy="-30" r="22"/>
+    <path d="M-110 70 L-30 0 L20 40 L70 -10 L110 30 L110 90 L-110 90 Z" fill="#CBA24A" stroke="none" opacity="0.85"/>
+  </g>
+  <text x="400" y="600" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#6B7A8A">Imagen pendiente</text>
+  <text x="400" y="645" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" letter-spacing="3" fill="#A3A29B">ARTHUB</text>
+</svg>

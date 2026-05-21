@@ -65,7 +65,25 @@ export type AuthResponse = {
   token: string;
 };
 
+export type Artist = {
+  id: number;
+  name: string;
+  slug: string;
+  origin: string;
+  birth_year: number | null;
+  death_year: number | null;
+  specialty: string;
+  bio: string;
+  profile_image_url: string;
+  featured: boolean;
+  total_obras?: number;
+};
+
 export const api = {
+  listArtists: () => request<Artist[]>("/artists"),
+  getArtist: (slug: string) =>
+    request<{ artist: Artist; artworks: Artwork[] }>(`/artists/${slug}`),
+
   listArtworks: () => request<Artwork[]>("/artworks"),
   getArtwork: (id: number) => request<Artwork>(`/artworks/${id}`),
   adminListArtworks: (token: string) =>
