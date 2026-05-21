@@ -21,28 +21,48 @@ const NAV = [
 let settingsCache: SiteSettings | null = null;
 let settingsPromise: Promise<SiteSettings> | null = null;
 
+/** Llama a esto después de guardar settings en admin para forzar re-fetch */
+export function clearSettingsCache() {
+  settingsCache = null;
+  settingsPromise = null;
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event("arthub:settings-updated"));
+  }
+}
+
 function useSiteSettings(): SiteSettings {
   const [settings, setSettings] = useState<SiteSettings>(settingsCache ?? {});
-  useEffect(() => {
-    if (settingsCache) return;
-    if (!settingsPromise) settingsPromise = api.getSettings().catch(() => ({}));
+
+  const fetchFresh = () => {
+    settingsPromise = api.getSettings().catch(() => ({}));
     settingsPromise.then((s) => {
       settingsCache = s;
       setSettings(s);
     });
+  };
+
+  useEffect(() => {
+    if (!settingsCache) fetchFresh();
+    const handler = () => fetchFresh();
+    window.addEventListener("arthub:settings-updated", handler);
+    return () => window.removeEventListener("arthub:settings-updated", handler);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return settings;
 }
 
 function Brand({ logoSize = 48 }: { logoSize?: number }) {
   const { brand_name, brand_tagline, logo_url } = useSiteSettings();
+  const [imgError, setImgError] = useState(false);
   return (
     <Link className="brand" href="/" aria-label={brand_name || "Arthub"}>
-      {logo_url ? (
+      {logo_url && !imgError ? (
         <img
           src={logo_url}
           alt={brand_name || "Arthub"}
           style={{ height: logoSize, width: "auto", maxWidth: logoSize * 2.6, objectFit: "contain" }}
+          onError={() => setImgError(true)}
         />
       ) : (
         <Logo size={logoSize} />

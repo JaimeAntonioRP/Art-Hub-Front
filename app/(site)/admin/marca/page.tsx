@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { api } from "@/lib/api";
+import { clearSettingsCache } from "@/components/SiteChrome";
 import { errorBoxStyle, fieldStyle, inputStyle, labelStyle } from "@/components/AuthCard";
 
 export default function AdminMarcaPage() {
@@ -65,8 +66,9 @@ export default function AdminMarcaPage() {
         brand_tagline: brandTagline || null,
         logo_url: logoUrl || null,
       });
-      // limpia el caché del header para que tome los cambios al navegar
-      setMessage("Marca actualizada. Recarga la página para ver el nuevo logo en el encabezado.");
+      // invalida el caché y notifica a los componentes montados para re-fetch
+      clearSettingsCache();
+      setMessage("¡Marca actualizada! El logo y nombre en el encabezado se actualizaron.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error desconocido.");
     } finally {

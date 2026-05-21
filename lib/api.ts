@@ -58,6 +58,8 @@ export type Certificate = {
   match_percentage: string;
   blockchain_tx_id: string | null;
   contract_address: string | null;
+  verification_token: string | null;
+  created_at?: string;
 };
 
 export type AuthResponse = {
@@ -159,10 +161,23 @@ export const api = {
     },
   ) => request<Artwork>("/artworks", { method: "POST", token, body: payload }),
 
+  getCertificateByToken: (token: string) =>
+    request<{ certificate: Certificate; artwork: Artwork }>(`/certificates/${token}`),
+
   uploadImage: (token: string, file: File) => {
     const form = new FormData();
     form.append("image", file);
     return request<{ path: string; url: string }>("/uploads/image", {
+      method: "POST",
+      token,
+      body: form,
+    });
+  },
+
+  uploadModel: (token: string, file: File) => {
+    const form = new FormData();
+    form.append("model", file);
+    return request<{ path: string; url: string }>("/uploads/model", {
       method: "POST",
       token,
       body: form,

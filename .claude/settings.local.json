@@ -23,7 +23,14 @@
       "Bash(curl -s -o /dev/null -w \"status=%{http_code} type=%{content_type}\\\\n\" \"http://localhost:3000/obras/madre-cusquena.jpg\")",
       "Bash(curl -s -o /dev/null -w \"status=%{http_code} type=%{content_type}\\\\n\" \"http://localhost:3000/3d/madre-cusquena.glb\")",
       "Bash(curl -s \"http://127.0.0.1:8001/api/artists/jaime-antonio-rodriguez\" -H \"Accept: application/json\")",
-      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['artist']['name'], '->', d['artist']['total_obras'], 'obras; con 3D:', sum\\(1 for a in d['artworks'] if a['model_3d_url']\\)\\)\")"
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['artist']['name'], '->', d['artist']['total_obras'], 'obras; con 3D:', sum\\(1 for a in d['artworks'] if a['model_3d_url']\\)\\)\")",
+      "Bash(curl -s \"http://127.0.0.1:8001/api/settings\" -H \"Accept: application/json\")",
+      "Bash(npx tsc *)",
+      "Bash(php -l app/Http/Controllers/Api/ValidationController.php)",
+      "Bash(php -l app/Http/Controllers/Api/UploadController.php)",
+      "Bash(php -l app/Models/Certificate.php)",
+      "Bash(php -l routes/api.php)",
+      "Bash(git add *)"
     ]
   }
 }
