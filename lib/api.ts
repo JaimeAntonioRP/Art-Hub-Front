@@ -45,6 +45,9 @@ export type Artwork = {
   artist_name: string;
   price: string;
   description: string;
+  technique?: string | null;
+  year?: number | null;
+  dimensions?: string | null;
   image_url: string;
   model_3d_url: string | null;
   status: "available" | "sold";
