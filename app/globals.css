@@ -658,6 +658,10 @@ h1, h2, h3, h4, h5 {
 
   .nav-links { display: none; }
   .hamburger { display: flex; }
+  /* hide desktop auth buttons — they live in the mobile drawer */
+  .nav-auth-desktop { display: none !important; }
+  /* hide brand tagline on small screens */
+  .brand .wm .tag { display: none; }
 }
 
 /* ── Responsivo — Móvil (≤600px) ─────────────────────────────────────── */
@@ -673,6 +677,7 @@ h1, h2, h3, h4, h5 {
   /* header */
   .site-header .row { padding: 13px 0; }
   .lang { display: none; }
+  .brand .wm .name { font-size: 18px; letter-spacing: 0.12em; }
 
   /* hero */
   .hero .hero-grid { grid-template-columns: 1fr; padding-top: 32px; gap: 28px; }
