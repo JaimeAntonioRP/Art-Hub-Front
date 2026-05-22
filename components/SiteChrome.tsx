@@ -367,7 +367,7 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <header className="site-header" style={{ position: "relative", zIndex: 999 }}>
+      <header className="site-header">
         <div className="wrap row">
           <Brand logoSize={48} />
           <nav className="nav-links">
