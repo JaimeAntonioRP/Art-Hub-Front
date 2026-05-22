@@ -735,3 +735,17 @@ h1, h2, h3, h4, h5 {
   /* buttons */
   .btn-lg { padding: 11px 18px; font-size: 13.5px; }
 }
+
+/* ── Página de obra (detalle) ─────────────────────────────────────────── */
+.obra-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 48px;
+}
+@media (max-width: 760px) {
+  .obra-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .obra-grid h1 { font-size: 36px !important; }
+}
