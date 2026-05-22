@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { api, type Artwork, type Certificate } from "@/lib/api";
@@ -369,14 +368,11 @@ export default function ObraDetallePage({
 }) {
   const { id } = use(params);
   const artworkId = Number(id);
-  const router = useRouter();
-  const { user, token } = useAuth();
+  const { user } = useAuth();
 
   const [artwork, setArtwork] = useState<Artwork | null>(null);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [buying, setBuying] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [purchaseOpen, setPurchaseOpen] = useState(false);
 
@@ -391,12 +387,7 @@ export default function ObraDetallePage({
 
   useEffect(load, [artworkId]);
 
-  const handlePurchase = async () => {
-    if (!token) {
-      router.push(`/login?redirect=/obras/${artworkId}`);
-      return;
-    }
-    // Open the animated purchase modal (MVP simulation)
+  const handlePurchase = () => {
     setPurchaseOpen(true);
   };
 
@@ -485,22 +476,6 @@ export default function ObraDetallePage({
             />
           ) : null}
 
-          {message ? (
-            <div
-              style={{
-                marginTop: 18,
-                padding: "10px 14px",
-                background: "#EAF2E6",
-                border: "1px solid #7A846B55",
-                color: "#3D4A2E",
-                borderRadius: 8,
-                fontSize: 13.5,
-              }}
-            >
-              {message}
-            </div>
-          ) : null}
-
           {error ? (
             <div
               style={{
@@ -527,7 +502,7 @@ export default function ObraDetallePage({
             >
               {artwork.status !== "available" ? (
                 "No disponible"
-              ) : user ? (
+              ) : (
                 <>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
                     <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
@@ -535,8 +510,6 @@ export default function ObraDetallePage({
                   </svg>
                   Simular compra
                 </>
-              ) : (
-                "Iniciar sesión para comprar"
               )}
             </button>
             <Link href="/obras" className="btn btn-outline-dark btn-lg">
