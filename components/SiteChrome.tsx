@@ -7,8 +7,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { api, type SiteSettings } from "@/lib/api";
 
 const NAV = [
-  { label: "Catálogo", href: "/catalogo" },
-  { label: "Obras", href: "/obras" },
+  { label: "Catálogo", href: "/obras" },
   { label: "Verificar", href: "/verificar" },
   { label: "Cómo funciona", href: "/como-funciona" },
   { label: "Tecnología", href: "/tecnologia" },
