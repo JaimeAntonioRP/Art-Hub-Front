@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { api, type Artwork, type Certificate } from "@/lib/api";
+import ArtworkLightbox from "@/components/ArtworkLightbox";
 
 /* <model-viewer> es un web component; lo tipamos como componente React */
 const ModelViewer = "model-viewer" as unknown as React.FC<
@@ -24,7 +25,13 @@ function formatPrice(value: string | number): string {
 
 const PLACEHOLDER = "/placeholder-obra.svg";
 
-function MediaViewer({ artwork }: { artwork: Artwork }) {
+function MediaViewer({
+  artwork,
+  onExpand,
+}: {
+  artwork: Artwork;
+  onExpand: () => void;
+}) {
   const [view, setView] = useState<"image" | "3d">("image");
   const [scriptReady, setScriptReady] = useState(false);
   const [modelOk, setModelOk] = useState<boolean | null>(null);
@@ -139,6 +146,48 @@ function MediaViewer({ artwork }: { artwork: Artwork }) {
           >
             Cargando visor 3D…
           </div>
+        )}
+
+        {/* botón pantalla completa */}
+        {view === "image" && (
+          <button
+            type="button"
+            onClick={onExpand}
+            aria-label="Ver en pantalla completa"
+            title="Ver en pantalla completa"
+            style={{
+              position: "absolute",
+              top: 12,
+              left: 12,
+              background: "rgba(10,10,10,0.65)",
+              backdropFilter: "blur(6px)",
+              border: "1px solid rgba(237,227,204,0.2)",
+              borderRadius: 6,
+              color: "#EDE3CC",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              padding: "6px 10px",
+              fontSize: 11,
+              letterSpacing: "0.06em",
+              transition: "background 0.15s, border-color 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "rgba(203,162,74,0.18)";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(203,162,74,0.5)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "rgba(10,10,10,0.65)";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(237,227,204,0.2)";
+            }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+              <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+            </svg>
+            Ampliar
+          </button>
         )}
 
         {/* etiqueta 3D/AR */}
@@ -327,6 +376,7 @@ export default function ObraDetallePage({
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [buying, setBuying] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const load = () => {
     setLoading(true);
@@ -386,7 +436,14 @@ export default function ObraDetallePage({
   return (
     <section className="section">
       <div className="wrap" style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 48 }}>
-        <MediaViewer artwork={artwork} />
+        <MediaViewer artwork={artwork} onExpand={() => setLightboxOpen(true)} />
+        {lightboxOpen && (
+          <ArtworkLightbox
+            artwork={artwork}
+            open={lightboxOpen}
+            onClose={() => setLightboxOpen(false)}
+          />
+        )}
 
         <div>
           <div className="kicker">{artwork.artist_name}</div>
