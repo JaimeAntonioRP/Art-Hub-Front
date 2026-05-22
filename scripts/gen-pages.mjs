@@ -172,15 +172,6 @@ for (const [key, file] of Object.entries(pages)) {
       `<tbody id="rank-body">${artistasRows()}</tbody>`
     );
   }
-  if (key === "inicio") {
-    // replace the ENTIRE .painting div (open+content+close) with a slot marker
-    // so React can render the complete wrapper without dangerouslySetInnerHTML
-    // splitting an unclosed tag across two separate innerHTML blocks
-    body = body.replace(
-      /<div class="painting">[\s\S]*?<\/div>/,
-      "__PAINTING_SLOT__"
-    );
-  }
   // strip any leftover <script> blocks
   body = body.replace(/<script[\s\S]*?<\/script>/g, "");
   const full = rewriteLinks(`<style>${style}</style>\n${body}`);
