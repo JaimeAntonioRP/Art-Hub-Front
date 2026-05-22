@@ -392,7 +392,9 @@ export function SiteHeader() {
               ES <span style={{ opacity: 0.6 }}>▾</span>
             </a>
 
-            <UserMenuOrButtons />
+            <span className="nav-auth-desktop">
+              <UserMenuOrButtons />
+            </span>
 
             {/* hamburger — shown on mobile via CSS */}
             <button
