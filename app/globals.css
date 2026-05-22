@@ -138,9 +138,6 @@ h1, h2, h3, h4, h5 {
   color: var(--nav-color);
   border-bottom: 1px solid var(--header-border);
   box-shadow: 0 1px 12px rgba(13,27,42,0.06);
-  position: sticky;
-  top: 0;
-  z-index: 100;
 }
 .site-header .row {
   display: flex; align-items: center; justify-content: space-between;
