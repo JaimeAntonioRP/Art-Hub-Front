@@ -34,7 +34,8 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "Bash(dir \"D:\\\\ls\\\\Art-Hub-Front\\\\public\" /b)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(node -e \"const {tecnologiaHtml} = require\\('./lib/pages.ts'\\); console.log\\(tecnologiaHtml\\)\")"
     ]
   }
 }
