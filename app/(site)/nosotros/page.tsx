@@ -23,7 +23,7 @@ const TEAM: Member[] = [
     roleLabel: "Chief Executive Officer",
     photo: "/equipo/johana.png",
     bio: "Lidera la visión estratégica de Arthub, conectando el arte cusqueño con mercados globales de inversión. Impulsa el crecimiento sostenible y la identidad de la plataforma.",
-    institutions: [],
+    institutions: ["UNSAAC", "UAUTONOMA", "Univ. Norbert Wiener", "PEI Consultores"],
     color: "#CBA24A",
   },
   {
@@ -32,7 +32,7 @@ const TEAM: Member[] = [
     roleLabel: "Chief Art Officer",
     photo: "/equipo/augusto.png",
     bio: "Máxima autoridad en curaduría y autenticación artística. Con formación en tres universidades de prestigio, garantiza el rigor académico y cultural de cada obra certificada en Arthub.",
-    institutions: ["UNSA", "Univ. Autónoma de Chile", "Univ. Norbert Wiener"],
+    institutions: ["UNADQTC", "Ministerio de Cultura Perú", "UNESCO"],
     color: "#4F7A5E",
   },
   {
