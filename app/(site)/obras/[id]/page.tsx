@@ -416,7 +416,7 @@ export default function ObraDetallePage({
 
   return (
     <section className="section">
-      <div className="wrap" style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 48 }}>
+      <div className="wrap obra-grid">
         <MediaViewer artwork={artwork} onExpand={() => setLightboxOpen(true)} />
         {lightboxOpen && (
           <ArtworkLightbox
