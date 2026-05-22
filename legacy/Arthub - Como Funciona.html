@@ -169,6 +169,39 @@
   .partners-strip .pill .sq { width: 24px; height: 24px; flex-shrink: 0; background: var(--oro-cusco); border-radius: 4px; color: var(--dark);
     display: inline-flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11px; }
   .partners-strip .pill em { font-style: italic; color: var(--oro-cusco); }
+
+  /* ── Responsivo ── */
+  @media (max-width: 980px) {
+    .cf-hero { padding: 48px 0 0; }
+    .cf-hero .frame-row { grid-template-columns: 1fr; gap: 40px; padding: 48px 0; }
+    .cf-hero .left .quick { grid-template-columns: 1fr 1fr; }
+    .process .timeline { grid-template-columns: repeat(3, 1fr); gap: 28px 16px; }
+    .process-step:not(:nth-child(6n+1))::before { display: none; }
+    .process-step:not(:nth-child(3n+1))::before {
+      content: ""; position: absolute; top: 16px; left: -50%; right: 50%;
+      border-top: 1.5px dashed rgba(200,162,74,0.45);
+    }
+    .tech-cards { grid-template-columns: 1fr 1fr; }
+    .log-flow { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .log-step:nth-child(3)::after { display: none; }
+    .partners-strip { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  }
+  @media (max-width: 600px) {
+    .cf-hero { padding: 36px 0 0; }
+    .cf-hero h1 { font-size: clamp(32px, 9vw, 48px); }
+    .cf-hero .left .quick { grid-template-columns: 1fr; gap: 12px; }
+    .cf-hero .frame-row { gap: 28px; padding: 36px 0; }
+    .process .timeline { grid-template-columns: 1fr 1fr; }
+    .process-step:not(:nth-child(3n+1))::before { display: none; }
+    .process-step:not(:nth-child(2n+1))::before {
+      content: ""; position: absolute; top: 16px; left: -50%; right: 50%;
+      border-top: 1.5px dashed rgba(200,162,74,0.45);
+    }
+    .tech-cards { grid-template-columns: 1fr; }
+    .log-flow { grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
+    .log-step::after { display: none !important; }
+    .partners-strip { grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 16px; }
+  }
 </style>
 </head>
 <body data-page="como">

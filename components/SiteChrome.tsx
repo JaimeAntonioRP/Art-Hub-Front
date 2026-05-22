@@ -337,6 +337,24 @@ function UserMenu() {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  // close menu on route change
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
+
+  // lock body scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const handleMobileLogout = async () => {
+    setMenuOpen(false);
+    await logout();
+    router.push("/");
+  };
 
   return (
     <>
@@ -350,7 +368,7 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <header className="site-header">
+      <header className="site-header" style={{ position: "relative", zIndex: 999 }}>
         <div className="wrap row">
           <Brand logoSize={48} />
           <nav className="nav-links">
@@ -375,9 +393,141 @@ export function SiteHeader() {
             </a>
 
             <UserMenuOrButtons />
+
+            {/* hamburger — shown on mobile via CSS */}
+            <button
+              className={`hamburger${menuOpen ? " open" : ""}`}
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              type="button"
+            >
+              <span /><span /><span />
+            </button>
           </div>
         </div>
       </header>
+
+      {/* ── Mobile full-screen nav ── */}
+      <div className={`mobile-nav${menuOpen ? " open" : ""}`} style={{ zIndex: 998 }}>
+        {/* sticky top bar with brand + close */}
+        <div className="mnav-header">
+          <Brand logoSize={36} />
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              background: "transparent",
+              border: "1px solid var(--rule)",
+              borderRadius: 8,
+              width: 36,
+              height: 36,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "var(--ink)",
+            }}
+            aria-label="Cerrar menú"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        {/* nav links */}
+        <nav className="mnav-links">
+          {NAV.map((n) => (
+            <Link
+              key={n.label}
+              href={n.href}
+              className={pathname === n.href ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* auth section */}
+        <div className="mnav-footer">
+          {user ? (
+            <>
+              <div style={{
+                padding: "12px 0",
+                fontSize: 13,
+                color: "var(--ink-soft)",
+                fontFamily: "'Inter',sans-serif",
+              }}>
+                {user.name} · {user.role === "admin" ? "Administrador" : "Inversionista"}
+              </div>
+              {user.role === "admin" && (
+                <Link
+                  href="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    padding: "11px 16px", borderRadius: 8,
+                    border: "1px solid var(--rule)",
+                    fontSize: 14, fontWeight: 500,
+                    color: "var(--ink)", textDecoration: "none",
+                    fontFamily: "'Inter',sans-serif",
+                  }}
+                >
+                  Panel de administración
+                </Link>
+              )}
+              <button
+                type="button"
+                onClick={handleMobileLogout}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  padding: "11px 16px", borderRadius: 8,
+                  border: "none", background: "#FEF0EE",
+                  fontSize: 14, fontWeight: 500,
+                  color: "#C0392B", cursor: "pointer",
+                  fontFamily: "'Inter',sans-serif",
+                  width: "100%",
+                }}
+              >
+                Cerrar sesión
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  padding: "11px 16px", borderRadius: 8,
+                  border: "1px solid var(--rule)",
+                  fontSize: 14, fontWeight: 500,
+                  color: "var(--ink)", textDecoration: "none",
+                  fontFamily: "'Inter',sans-serif",
+                }}
+              >
+                Iniciar sesión
+              </Link>
+              <Link
+                href="/registro"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  padding: "11px 16px", borderRadius: 8,
+                  border: "1px solid var(--oro-cusco)",
+                  background: "var(--oro-cusco)",
+                  fontSize: 14, fontWeight: 600,
+                  color: "#0D1B2A", textDecoration: "none",
+                  fontFamily: "'Inter',sans-serif",
+                }}
+              >
+                Crear cuenta
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
     </>
   );
 }
