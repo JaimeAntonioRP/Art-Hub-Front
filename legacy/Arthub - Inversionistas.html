@@ -261,6 +261,8 @@
     .risk-grid { grid-template-columns: 1fr 1fr !important; }
     .cmp-table .row { grid-template-columns: 1fr 1fr !important; }
     .cmp-table .row.head { display: none; }
+    /* paths cards: 2 columns on tablet */
+    .paths { grid-template-columns: 1fr 1fr !important; }
   }
   @media (max-width: 600px) {
     .inv-hero { padding: 36px 0 28px; }
@@ -270,6 +272,9 @@
     .dashboard { padding: 16px; }
     .dashboard .holdings .hd,
     .dashboard .holdings .rowh { grid-template-columns: 1fr auto; }
+    /* paths cards: 1 column on mobile */
+    .paths { grid-template-columns: 1fr !important; }
+    .path .body { padding: 14px 18px 22px; }
   }
 </style>
 </head>
