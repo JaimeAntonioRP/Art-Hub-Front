@@ -172,6 +172,13 @@ for (const [key, file] of Object.entries(pages)) {
       `<tbody id="rank-body">${artistasRows()}</tbody>`
     );
   }
+  if (key === "inicio") {
+    // replace inner content of .painting with a slot marker
+    body = body.replace(
+      /(<div class="painting">)([\s\S]*?)(<\/div>)/,
+      "$1__PAINTING_SLOT__$3"
+    );
+  }
   // strip any leftover <script> blocks
   body = body.replace(/<script[\s\S]*?<\/script>/g, "");
   const full = rewriteLinks(`<style>${style}</style>\n${body}`);
