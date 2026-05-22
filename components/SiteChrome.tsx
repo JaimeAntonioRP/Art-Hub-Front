@@ -357,17 +357,19 @@ export function SiteHeader() {
 
   return (
     <>
-      <div className="utility">
-        <div className="wrap row">
-          <div>Cusco · Lima · Miami · Zürich</div>
-          <div style={{ display: "flex", gap: 24 }}>
-            <span>Próxima cohorte · 14 Jun 2026</span>
-            <Link href="/ventanas">↩ Volver al índice</Link>
+      {/* sticky wrapper — inline style so it can't be overridden by any CSS */}
+      <div style={{ position: "sticky", top: 0, zIndex: 200, willChange: "transform" }}>
+        <div className="utility">
+          <div className="wrap row">
+            <div>Cusco · Lima · Miami · Zürich</div>
+            <div style={{ display: "flex", gap: 24 }}>
+              <span>Próxima cohorte · 14 Jun 2026</span>
+              <Link href="/ventanas">↩ Volver al índice</Link>
+            </div>
           </div>
         </div>
-      </div>
 
-      <header className="site-header">
+        <header className="site-header" style={{ position: "relative", zIndex: "auto" }}>
         <div className="wrap row">
           <Brand logoSize={48} />
           <nav className="nav-links">
@@ -406,7 +408,8 @@ export function SiteHeader() {
             </button>
           </div>
         </div>
-      </header>
+        </header>
+      </div>{/* /sticky wrapper */}
 
       {/* ── Mobile full-screen nav ── */}
       <div className={`mobile-nav${menuOpen ? " open" : ""}`} style={{ zIndex: 998 }}>
