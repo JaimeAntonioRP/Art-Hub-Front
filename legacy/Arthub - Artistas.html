@@ -150,6 +150,21 @@
   .cta-rich h3 em { font-style: italic; color: var(--oro-cusco); }
   .cta-rich p { color: #C9BFA9; margin: 14px 0 0; font-size: 14px; line-height: 1.55; }
   .cta-rich .actions { display: flex; flex-direction: column; gap: 12px; }
+
+  /* ── Responsivo ── */
+  @media (max-width: 980px) {
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .tbl { min-width: 700px; }
+    /* hide less important columns */
+    .tbl td:nth-child(4),
+    .tbl th:nth-child(4) { display: none; }
+  }
+  @media (max-width: 600px) {
+    .tbl td:nth-child(3),
+    .tbl th:nth-child(3),
+    .tbl td:nth-child(5),
+    .tbl th:nth-child(5) { display: none; }
+  }
 </style>
 </head>
 <body data-page="artistas">
@@ -225,6 +240,7 @@
 <!-- Table -->
 <section style="padding-bottom: 56px;">
   <div class="wrap">
+    <div class="tbl-wrap">
     <table class="tbl">
       <thead>
         <tr>
@@ -240,6 +256,7 @@
       </thead>
       <tbody id="rank-body"></tbody>
     </table>
+    </div>
 
     <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 22px;">
       <span class="muted" style="font-size: 13px;">Mostrando 1–8 de 128 artistas evaluados</span>
