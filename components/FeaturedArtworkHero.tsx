@@ -48,190 +48,99 @@ export default function FeaturedArtworkHero() {
     document.head.appendChild(s);
   }, [view, artwork?.model_3d_url]);
 
-  if (!artwork) {
-    /* loading state — keep gradient visible, add spinner */
-    return (
-      <>
-        <span className="label">Vista actual</span>
-        <div style={{
-          position: "absolute", inset: 0,
-          display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: "50%",
-            border: "2px solid rgba(237,227,204,0.2)",
-            borderTopColor: "rgba(203,162,74,0.7)",
-            animation: "featured-spin 0.8s linear infinite",
-          }} />
-        </div>
-        <style>{`@keyframes featured-spin { to { transform: rotate(360deg); } }`}</style>
-        <span className="badge">
-          <svg className="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-            <path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/>
-            <path d="M9 12 l2 2 l4 -4"/>
-          </svg>
-          <span className="t">
-            Activo Cultural Validado
-            <b>Autenticidad · Propiedad · Logística</b>
-          </span>
-        </span>
-      </>
-    );
-  }
+  const has3D = Boolean(artwork?.model_3d_url);
 
-  const has3D = Boolean(artwork.model_3d_url);
-
-  return (
+  /* ── inner content (shared between loading and loaded states) ── */
+  const inner = !artwork ? (
+    /* loading skeleton */
     <>
-      <style>{`@keyframes featured-fade { from { opacity:0 } to { opacity:1 } }`}</style>
+      <style>{`@keyframes featured-spin{to{transform:rotate(360deg)}}`}</style>
+      <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
+        <div style={{ width:32, height:32, borderRadius:"50%", border:"2px solid rgba(237,227,204,0.18)", borderTopColor:"rgba(203,162,74,0.7)", animation:"featured-spin 0.8s linear infinite" }} />
+      </div>
+      <span className="label">Vista actual</span>
+      <span className="badge">
+        <svg className="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+          <path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/><path d="M9 12 l2 2 l4 -4"/>
+        </svg>
+        <span className="t">Activo Cultural Validado<b>Autenticidad · Propiedad · Logística</b></span>
+      </span>
+    </>
+  ) : (
+    <>
+      <style>{`@keyframes featured-fade{from{opacity:0}to{opacity:1}} @keyframes featured-spin{to{transform:rotate(360deg)}}`}</style>
 
-      {/* ── image / 3D viewer ── */}
+      {/* image */}
       {view === "image" ? (
-        <>
-          {/* gradient shimmer while image loads */}
-          {!imgLoaded && (
-            <div style={{ position: "absolute", inset: 0, background: "inherit" }} />
-          )}
-          <img
-            src={artwork.image_url}
-            alt={artwork.title}
-            onLoad={() => setImgLoaded(true)}
-            onError={() => setImgLoaded(true)}
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-              opacity: imgLoaded ? 1 : 0,
-              transition: "opacity 0.5s ease",
-              animation: "featured-fade 0.6s ease",
-            }}
-          />
-        </>
+        <img
+          src={artwork.image_url}
+          alt={artwork.title}
+          onLoad={() => setImgLoaded(true)}
+          onError={() => setImgLoaded(true)}
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", display:"block", opacity: imgLoaded ? 1 : 0, transition:"opacity 0.5s ease", animation:"featured-fade 0.6s ease" }}
+        />
       ) : scriptReady && artwork.model_3d_url ? (
         <ModelViewer
           src={artwork.model_3d_url}
           alt={`Modelo 3D de ${artwork.title}`}
           poster={artwork.image_url}
-          camera-controls=""
-          auto-rotate=""
-          ar=""
+          camera-controls="" auto-rotate="" ar=""
           ar-modes="webxr scene-viewer quick-look"
-          shadow-intensity="1"
-          exposure="0.9"
-          style={{
-            position: "absolute", inset: 0,
-            width: "100%", height: "100%",
-            background: "#15110c",
-          }}
+          shadow-intensity="1" exposure="0.9"
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", background:"#15110c" }}
         />
       ) : (
-        /* loading 3D */
-        <div style={{
-          position: "absolute", inset: 0,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          background: "#15110c",
-        }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: "50%",
-            border: "2px solid rgba(237,227,204,0.15)",
-            borderTopColor: "#CBA24A",
-            animation: "featured-spin 0.8s linear infinite",
-          }} />
-          <style>{`@keyframes featured-spin { to { transform: rotate(360deg); } }`}</style>
+        <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", background:"#15110c" }}>
+          <div style={{ width:32, height:32, borderRadius:"50%", border:"2px solid rgba(237,227,204,0.15)", borderTopColor:"#CBA24A", animation:"featured-spin 0.8s linear infinite" }} />
         </div>
       )}
 
-      {/* ── top-left: title label ── */}
-      <span className="label" style={{ maxWidth: "calc(100% - 100px)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+      {/* title label top-left */}
+      <span className="label" style={{ maxWidth:"calc(100% - 110px)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
         {artwork.title}
       </span>
 
-      {/* ── top-right: 3D toggle (only if model exists) ── */}
+      {/* 3D toggle top-right */}
       {has3D && (
-        <button
-          type="button"
-          onClick={() => setView(view === "image" ? "3d" : "image")}
-          style={{
-            position: "absolute",
-            top: 12,
-            right: 12,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 5,
+        <button type="button" onClick={() => setView(view === "image" ? "3d" : "image")}
+          style={{ position:"absolute", top:12, right:12, display:"inline-flex", alignItems:"center", gap:5,
             background: view === "3d" ? "rgba(203,162,74,0.25)" : "rgba(20,17,12,0.7)",
-            backdropFilter: "blur(6px)",
-            border: `1px solid ${view === "3d" ? "rgba(203,162,74,0.6)" : "rgba(237,227,204,0.25)"}`,
-            borderRadius: 4,
-            color: view === "3d" ? "#CBA24A" : "#EDE3CC",
-            fontSize: 10,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            padding: "6px 10px",
-            cursor: "pointer",
-            fontFamily: "'Inter', sans-serif",
-            transition: "background 0.2s, border-color 0.2s",
-          }}
-        >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            backdropFilter:"blur(6px)",
+            border:`1px solid ${view === "3d" ? "rgba(203,162,74,0.6)" : "rgba(237,227,204,0.25)"}`,
+            borderRadius:4, color: view === "3d" ? "#CBA24A" : "#EDE3CC",
+            fontSize:10, letterSpacing:"0.18em", textTransform:"uppercase",
+            padding:"6px 10px", cursor:"pointer", fontFamily:"'Inter',sans-serif" }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
             <path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>
           </svg>
           {view === "3d" ? "Ver imagen" : "Ver en 3D"}
         </button>
       )}
 
-      {/* ── bottom-left: artist badge ── */}
-      <div style={{
-        position: "absolute",
-        bottom: 16,
-        left: 16,
-        right: 16,
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "space-between",
-        gap: 10,
-      }}>
-        <span className="badge" style={{ position: "static", maxWidth: "70%" }}>
+      {/* bottom: artist badge + ver obra */}
+      <div style={{ position:"absolute", bottom:16, left:16, right:16, display:"flex", alignItems:"flex-end", justifyContent:"space-between", gap:10 }}>
+        <span className="badge" style={{ position:"static", maxWidth:"70%" }}>
           <svg className="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-            <path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/>
-            <path d="M9 12 l2 2 l4 -4"/>
+            <path d="M12 22 s8 -4 8 -10 V5 l-8 -3 -8 3 v7 c0 6 8 10 8 10 z"/><path d="M9 12 l2 2 l4 -4"/>
           </svg>
           <span className="t">
             {artwork.artist_name}
-            <b style={{ display: "block" }}>
-              {formatPrice(artwork.price)}
-              {artwork.technique ? ` · ${artwork.technique.split("·")[0].trim()}` : ""}
-            </b>
+            <b>{formatPrice(artwork.price)}{artwork.technique ? ` · ${artwork.technique.split("·")[0].trim()}` : ""}</b>
           </span>
         </span>
-
-        {/* ver detalle link */}
-        <Link
-          href={`/obras/${artwork.id}`}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 5,
-            background: "rgba(203,162,74,0.15)",
-            backdropFilter: "blur(6px)",
-            border: "1px solid rgba(203,162,74,0.45)",
-            borderRadius: 4,
-            color: "#CBA24A",
-            fontSize: 10,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            padding: "7px 11px",
-            textDecoration: "none",
-            fontFamily: "'Inter', sans-serif",
-            whiteSpace: "nowrap",
-            flexShrink: 0,
-          }}
-        >
+        <Link href={`/obras/${artwork.id}`}
+          style={{ display:"inline-flex", alignItems:"center", gap:5,
+            background:"rgba(203,162,74,0.15)", backdropFilter:"blur(6px)",
+            border:"1px solid rgba(203,162,74,0.45)", borderRadius:4,
+            color:"#CBA24A", fontSize:10, letterSpacing:"0.12em", textTransform:"uppercase",
+            padding:"7px 11px", textDecoration:"none", fontFamily:"'Inter',sans-serif",
+            whiteSpace:"nowrap", flexShrink:0 }}>
           Ver obra →
         </Link>
       </div>
     </>
   );
+
+  /* ── always wrap in .painting so CSS frame styles apply ── */
+  return <div className="painting">{inner}</div>;
 }

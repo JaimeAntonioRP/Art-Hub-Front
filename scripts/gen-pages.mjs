@@ -173,10 +173,12 @@ for (const [key, file] of Object.entries(pages)) {
     );
   }
   if (key === "inicio") {
-    // replace inner content of .painting with a slot marker
+    // replace the ENTIRE .painting div (open+content+close) with a slot marker
+    // so React can render the complete wrapper without dangerouslySetInnerHTML
+    // splitting an unclosed tag across two separate innerHTML blocks
     body = body.replace(
-      /(<div class="painting">)([\s\S]*?)(<\/div>)/,
-      "$1__PAINTING_SLOT__$3"
+      /<div class="painting">[\s\S]*?<\/div>/,
+      "__PAINTING_SLOT__"
     );
   }
   // strip any leftover <script> blocks
