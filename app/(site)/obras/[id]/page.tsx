@@ -6,6 +6,7 @@ import { use, useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { api, type Artwork, type Certificate } from "@/lib/api";
 import ArtworkLightbox from "@/components/ArtworkLightbox";
+import PurchaseModal from "@/components/PurchaseModal";
 
 /* <model-viewer> es un web component; lo tipamos como componente React */
 const ModelViewer = "model-viewer" as unknown as React.FC<
@@ -377,6 +378,7 @@ export default function ObraDetallePage({
   const [error, setError] = useState<string | null>(null);
   const [buying, setBuying] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [purchaseOpen, setPurchaseOpen] = useState(false);
 
   const load = () => {
     setLoading(true);
@@ -394,20 +396,8 @@ export default function ObraDetallePage({
       router.push(`/login?redirect=/obras/${artworkId}`);
       return;
     }
-    setBuying(true);
-    setError(null);
-    setMessage(null);
-    try {
-      const result = await api.purchase(token, artworkId);
-      setArtwork(result.artwork);
-      setMessage(
-        `Compra confirmada. Transaccion blockchain: ${result.blockchain_tx_id.slice(0, 22)}...`,
-      );
-    } catch {
-      setError("No fue posible completar la compra.");
-    } finally {
-      setBuying(false);
-    }
+    // Open the animated purchase modal (MVP simulation)
+    setPurchaseOpen(true);
   };
 
   if (loading) {
@@ -442,6 +432,14 @@ export default function ObraDetallePage({
             artwork={artwork}
             open={lightboxOpen}
             onClose={() => setLightboxOpen(false)}
+          />
+        )}
+
+        {purchaseOpen && (
+          <PurchaseModal
+            open={purchaseOpen}
+            artwork={artwork}
+            onClose={() => setPurchaseOpen(false)}
           />
         )}
 
@@ -523,17 +521,23 @@ export default function ObraDetallePage({
             <button
               type="button"
               onClick={handlePurchase}
-              disabled={buying || artwork.status !== "available"}
+              disabled={artwork.status !== "available"}
               className="btn btn-gold btn-lg"
-              style={{ opacity: buying || artwork.status !== "available" ? 0.55 : 1 }}
+              style={{ opacity: artwork.status !== "available" ? 0.55 : 1, display: "flex", alignItems: "center", gap: 8 }}
             >
-              {artwork.status !== "available"
-                ? "No disponible"
-                : buying
-                  ? "Procesando..."
-                  : user
-                    ? "Comprar ahora"
-                    : "Iniciar sesion para comprar"}
+              {artwork.status !== "available" ? (
+                "No disponible"
+              ) : user ? (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
+                  Simular compra
+                </>
+              ) : (
+                "Iniciar sesión para comprar"
+              )}
             </button>
             <Link href="/obras" className="btn btn-outline-dark btn-lg">
               ← Catalogo
