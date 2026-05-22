@@ -1,7 +1,18 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import { tecnologiaHtml } from "@/lib/pages";
 
-export const metadata = { title: "Arthub — Tecnología" };
+const TecnologiaVideo = dynamic(
+  () => import("@/components/TecnologiaVideo"),
+  { ssr: false }
+);
 
 export default function TecnologiaPage() {
-  return <div dangerouslySetInnerHTML={{ __html: tecnologiaHtml }} />;
+  return (
+    <>
+      <div dangerouslySetInnerHTML={{ __html: tecnologiaHtml }} />
+      <TecnologiaVideo />
+    </>
+  );
 }
