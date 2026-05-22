@@ -83,6 +83,52 @@ export default function AdminArtistasPage() {
       });
     };
 
+  /* ── subida a Cloudinary (sin backend) ────────────────────────────────── */
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const cloudName   = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+    if (!cloudName || !uploadPreset) {
+      // fallback: subida al backend de Render si no hay Cloudinary configurado
+      if (!token) return;
+      setError(null);
+      setMessage("Subiendo imagen...");
+      try {
+        const result = await api.uploadImage(token, file);
+        setForm(f => ({ ...f, profile_image_url: result.url }));
+        setMessage("Imagen subida. Guarda los cambios.");
+      } catch {
+        setError("No fue posible subir la imagen. Configura Cloudinary o pega una URL.");
+        setMessage(null);
+      }
+      return;
+    }
+
+    setError(null);
+    setMessage("Subiendo imagen...");
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", uploadPreset);
+      data.append("folder", "arthub/artistas");
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: "POST",
+        body: data,
+      });
+      if (!res.ok) throw new Error("Error Cloudinary");
+      const json = await res.json();
+      setForm(f => ({ ...f, profile_image_url: json.secure_url }));
+      setMessage("Imagen subida. No olvides Guardar.");
+    } catch {
+      setError("No fue posible subir la imagen.");
+      setMessage(null);
+    }
+  };
+
   const startEdit = (a: Artist) => {
     setEditingId(a.id);
     setSlugTouched(true);
