@@ -391,10 +391,48 @@ function UserMenuOrButtons() {
 
   return (
     <>
-      <Link className="btn btn-outline-dark" href="/login">
+      <Link
+        href="/login"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          padding: "7px 16px",
+          fontSize: 13,
+          fontWeight: 500,
+          fontFamily: "'Geist','Inter',sans-serif",
+          border: "1px solid var(--rule, #D9CFBE)",
+          borderRadius: 6,
+          color: "var(--ink, #0D1B2A)",
+          background: "transparent",
+          textDecoration: "none",
+          whiteSpace: "nowrap",
+          transition: "background 0.15s, border-color 0.15s",
+        }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2,#F0E8D8)"; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
+      >
         Iniciar sesión
       </Link>
-      <Link className="btn btn-gold" href="/registro">
+      <Link
+        href="/registro"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          padding: "7px 16px",
+          fontSize: 13,
+          fontWeight: 600,
+          fontFamily: "'Geist','Inter',sans-serif",
+          border: "1px solid var(--oro-cusco, #CBA24A)",
+          borderRadius: 6,
+          color: "#0D1B2A",
+          background: "var(--oro-cusco, #CBA24A)",
+          textDecoration: "none",
+          whiteSpace: "nowrap",
+          transition: "opacity 0.15s",
+        }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.88"; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
+      >
         Crear cuenta
       </Link>
     </>
