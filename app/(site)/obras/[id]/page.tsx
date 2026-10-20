@@ -1,494 +1,167 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
-import { useAuth } from "@/components/AuthProvider";
-import { api, AVAILABILITY_LABEL, type Artwork, type Certificate } from "@/lib/api";
+import { notFound } from "next/navigation";
+import { ArtworkCard } from "@/components/ArtworkCard";
+import { ArtworkGallery } from "@/components/catalog/ArtworkGallery";
+import { RequestForm } from "@/components/catalog/RequestForm";
+import { Paragraphs } from "@/components/blocks/shared";
+import { AVAILABILITY_LABEL, type ArtworkDetail } from "@/lib/api";
+import { getArtwork } from "@/lib/catalog";
 import { formatArtworkPrice } from "@/lib/format";
-import ArtworkLightbox from "@/components/ArtworkLightbox";
+import "@/components/catalog/catalog.css";
+import "@/components/catalog/artwork.css";
 
-/* <model-viewer> es un web component; lo tipamos como componente React */
-const ModelViewer = "model-viewer" as unknown as React.FC<
-  React.HTMLAttributes<HTMLElement> & Record<string, unknown>
->;
+type Params = Promise<{ id: string }>;
 
-/* ── visor de imagen + 3D ─────────────────────────────────────────────────── */
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const artwork = await getArtwork(Number((await params).id));
+  if (!artwork) return {};
 
-const PLACEHOLDER = "/placeholder-obra.svg";
+  const description = artwork.description?.slice(0, 160)
+    ?? [artwork.artist_name, artwork.technique, artwork.dimensions].filter(Boolean).join(" · ");
 
-function MediaViewer({
-  artwork,
-  onExpand,
-}: {
-  artwork: Artwork;
-  onExpand: () => void;
-}) {
-  const [view, setView] = useState<"image" | "3d">("image");
-  const [scriptReady, setScriptReady] = useState(false);
-  const [modelOk, setModelOk] = useState<boolean | null>(null);
-  const has3D = Boolean(artwork.model_3d_url);
-
-  // carga el script de model-viewer una sola vez (al cambiar a vista 3D)
-  useEffect(() => {
-    if (view !== "3d" || !has3D) return;
-    const ID = "model-viewer-script";
-    if (document.getElementById(ID)) {
-      setScriptReady(true);
-      return;
-    }
-    const s = document.createElement("script");
-    s.id = ID;
-    s.type = "module";
-    s.src = "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js";
-    s.onload = () => setScriptReady(true);
-    document.head.appendChild(s);
-  }, [view, has3D]);
-
-  // verifica que el .glb exista antes de mostrar el visor
-  useEffect(() => {
-    if (view !== "3d" || !artwork.model_3d_url) return;
-    setModelOk(null);
-    fetch(artwork.model_3d_url, { method: "HEAD" })
-      .then((r) => {
-        const ct = r.headers.get("content-type") ?? "";
-        setModelOk(r.ok && !ct.includes("text/html"));
-      })
-      .catch(() => setModelOk(false));
-  }, [view, artwork.model_3d_url]);
-
-  return (
-    <div>
-      <div
-        style={{
-          position: "relative",
-          aspectRatio: "4 / 5",
-          borderRadius: 12,
-          border: "1px solid var(--rule)",
-          overflow: "hidden",
-          background: "var(--arena)",
-        }}
-      >
-        {view === "image" ? (
-          <img
-            src={artwork.image_url ?? PLACEHOLDER}
-            alt={artwork.title}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-            }}
-            onError={(e) => {
-              const el = e.currentTarget;
-              if (!el.src.endsWith(PLACEHOLDER)) el.src = PLACEHOLDER;
-            }}
-          />
-        ) : modelOk === false ? (
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 6,
-              textAlign: "center",
-              padding: 24,
-              color: "var(--ink-soft)",
-              fontFamily: "'Inter', sans-serif",
-            }}
-          >
-            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--oro-500)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8, marginBottom: 4 }}>
-              <path d="M12 2 2 7l10 5 10-5-10-5Z" />
-              <path d="m2 17 10 5 10-5" />
-              <path d="m2 12 10 5 10-5" />
-            </svg>
-            <strong style={{ fontSize: 14, color: "var(--ink)" }}>Modelo 3D no disponible aún</strong>
-            <span style={{ fontSize: 12.5, maxWidth: 240 }}>
-              El archivo del modelo todavía no fue cargado para esta obra.
-            </span>
-          </div>
-        ) : scriptReady && modelOk ? (
-          <ModelViewer
-            src={artwork.model_3d_url as string}
-            alt={`Modelo 3D de ${artwork.title}`}
-            poster={artwork.image_url}
-            camera-controls=""
-            auto-rotate=""
-            ar=""
-            ar-modes="webxr scene-viewer quick-look"
-            shadow-intensity="1"
-            exposure="1"
-            style={{ width: "100%", height: "100%", background: "var(--azul-900)" }}
-          />
-        ) : (
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "var(--ink-soft)",
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 13,
-            }}
-          >
-            Cargando visor 3D…
-          </div>
-        )}
-
-        {/* botón pantalla completa */}
-        {view === "image" && (
-          <button
-            type="button"
-            onClick={onExpand}
-            aria-label="Ver en pantalla completa"
-            title="Ver en pantalla completa"
-            style={{
-              position: "absolute",
-              top: 12,
-              left: 12,
-              background: "rgba(13,27,42,0.65)",
-              backdropFilter: "blur(6px)",
-              border: "1px solid rgba(239,230,213,0.2)",
-              borderRadius: 6,
-              color: "var(--piedra-100)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-              padding: "6px 10px",
-              fontSize: 11,
-              letterSpacing: "0.06em",
-              transition: "background 0.15s, border-color 0.15s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "rgba(203,162,74,0.18)";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(203,162,74,0.5)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "rgba(13,27,42,0.65)";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(239,230,213,0.2)";
-            }}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
-              <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
-            </svg>
-            Ampliar
-          </button>
-        )}
-
-        {/* etiqueta 3D/AR */}
-        {has3D && (
-          <span
-            style={{
-              position: "absolute",
-              top: 12,
-              right: 12,
-              background: "rgba(13,27,42,0.72)",
-              backdropFilter: "blur(6px)",
-              border: "1px solid rgba(239,230,213,0.25)",
-              color: "var(--piedra-100)",
-              fontSize: 9,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              padding: "4px 8px",
-              borderRadius: 4,
-            }}
-          >
-            3D / AR
-          </span>
-        )}
-      </div>
-
-      {/* toggle imagen ↔ 3D */}
-      {has3D && (
-        <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-          <button
-            type="button"
-            onClick={() => setView("image")}
-            className={view === "image" ? "btn btn-outline-dark" : "btn btn-ghost"}
-            style={{ fontSize: 12.5, padding: "7px 14px", flex: 1 }}
-          >
-            Imagen
-          </button>
-          <button
-            type="button"
-            onClick={() => setView("3d")}
-            className={view === "3d" ? "btn btn-gold" : "btn btn-ghost"}
-            style={{ fontSize: 12.5, padding: "7px 14px", flex: 1 }}
-          >
-            Ver en 3D / AR
-          </button>
-        </div>
-      )}
-    </div>
-  );
+  return {
+    title: `${artwork.title} · ${artwork.artist_name}`,
+    description,
+    openGraph: artwork.image_url ? { images: [{ url: artwork.image_url, alt: artwork.title }] } : undefined,
+  };
 }
 
-/* ── certificado compacto con QR ─────────────────────────────────────────── */
+/** Ficha pública de una obra (§13) con su solicitud comercial (§14). */
+export default async function ArtworkPage({ params }: { params: Params }) {
+  const artwork = await getArtwork(Number((await params).id));
+  if (!artwork) notFound();
 
-function CertificateCard({
-  cert,
-  artwork,
-  isAdmin,
-}: {
-  cert: Certificate;
-  artwork: Artwork;
-  isAdmin: boolean;
-}) {
-  const [origin, setOrigin] = useState("");
-  useEffect(() => { setOrigin(window.location.origin); }, []);
-
-  const verifyUrl = cert.verification_token && origin
-    ? `${origin}/verificar/${cert.verification_token}`
-    : null;
-
-  // QR grande para descarga, pequeño para mostrar
-  const qrDisplay = verifyUrl
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(verifyUrl)}&bgcolor=ffffff&color=14110C&margin=4`
-    : null;
-  const qrDownload = verifyUrl
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(verifyUrl)}&bgcolor=ffffff&color=14110C&margin=10`
-    : null;
-
-  const handleDownload = async () => {
-    if (!qrDownload || !verifyUrl) return;
-    // descarga el QR como PNG
-    const res = await fetch(qrDownload);
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `certificado-${cert.verification_token?.slice(0, 8)}.png`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  if (!cert.verification_token) return null;
+  const canBuy = artwork.availability === "disponible" || artwork.availability === "reservada";
+  const artist = artwork.artist;
 
   return (
-    <div
-      style={{
-        marginTop: 18,
-        border: "1px solid var(--oro-cusco)",
-        borderRadius: 12,
-        background: "var(--piedra-0)",
-        overflow: "hidden",
-      }}
-    >
-      {/* fila principal */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px" }}>
-        {/* miniatura de la obra */}
-        <img
-          src={artwork.image_url ?? PLACEHOLDER}
-          alt={artwork.title}
-          width={52}
-          height={52}
-          style={{ borderRadius: 7, objectFit: "cover", border: "1px solid var(--rule)", flexShrink: 0 }}
-          onError={(e) => { const el = e.currentTarget; if (!el.src.endsWith("/placeholder-obra.svg")) el.src = "/placeholder-obra.svg"; }}
-        />
+    <>
+      <section className="art-top">
+        <div className="wrap">
+          <nav className="art-crumbs" aria-label="Ruta">
+            <Link href="/obras">Colección</Link>
+            {artist?.has_page ? <><span aria-hidden="true">/</span><Link href={`/artistas/${artist.slug}`}>{artist.name}</Link></> : null}
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{artwork.title}</span>
+          </nav>
 
-        {/* token + label */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              <path d="m9 12 2 2 4-4" />
-            </svg>
-            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--ink-soft)" }}>
-              Token de autenticidad
-            </span>
+          <div className="art-layout">
+            <ArtworkGallery title={artwork.title} images={artwork.images} modelUrl={artwork.model_3d_url} />
+
+            <div className="art-info">
+              {artist?.has_page
+                ? <Link href={`/artistas/${artist.slug}`} className="art-artist">{artwork.artist_name}</Link>
+                : <span className="art-artist">{artwork.artist_name}</span>}
+              <h1>{artwork.title}</h1>
+              <p className="art-sub">{[artwork.technique, artwork.year].filter(Boolean).join(", ")}</p>
+
+              <div className="art-buy">
+                <strong className="art-price">{formatArtworkPrice(artwork)}</strong>
+                <span className={`art-status is-${artwork.availability}`}>{AVAILABILITY_LABEL[artwork.availability]}</span>
+              </div>
+              <div className="art-ctas">
+                <a href="#solicitud" className="btn btn-gold btn-lg">
+                  {canBuy ? "Me interesa esta obra" : "Pedir información"}
+                </a>
+                {artwork.certificate?.verification_token && artwork.certificate.status === "vigente" ? (
+                  <Link href={`/verificar/${artwork.certificate.verification_token}`} className="btn btn-outline-dark btn-lg">
+                    Verificar autenticidad
+                  </Link>
+                ) : null}
+              </div>
+              <p className="art-trust">Expediente revisado por ArtHub · Sin pagos en línea: un asesor te acompaña en la compra.</p>
+
+              <Details artwork={artwork} />
+
+              {artwork.description ? (
+                <div className="art-text">
+                  <h2>Sobre la obra</h2>
+                  <Paragraphs text={artwork.description} />
+                </div>
+              ) : null}
+              {artwork.history_notes ? (
+                <div className="art-text">
+                  <h2>Historia y procedencia</h2>
+                  <Paragraphs text={artwork.history_notes} />
+                </div>
+              ) : null}
+            </div>
           </div>
-          <code style={{ fontSize: 12, color: "var(--ink)", wordBreak: "break-all" }}>
-            {cert.verification_token}
-          </code>
         </div>
+      </section>
 
-        {/* QR */}
-        {qrDisplay ? (
-          <img
-            src={qrDisplay}
-            alt="QR verificación"
-            width={64}
-            height={64}
-            style={{ flexShrink: 0, borderRadius: 6, border: "1px solid var(--rule)" }}
-          />
-        ) : null}
-      </div>
-
-      {/* pie: solo admin descarga */}
-      {isAdmin && qrDownload ? (
-        <div
-          style={{
-            borderTop: "1px solid var(--rule)",
-            padding: "9px 16px",
-            background: "var(--paper-2)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <span style={{ fontSize: 11, color: "var(--ink-soft)" }}>Solo visible para administradores</span>
-          <button
-            type="button"
-            onClick={handleDownload}
-            className="btn btn-outline-dark"
-            style={{ fontSize: 11, padding: "5px 12px", display: "flex", alignItems: "center", gap: 5 }}
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            Descargar QR
-          </button>
+      <section id="solicitud" className="art-request">
+        <div className="wrap art-request-grid">
+          <div>
+            <div className="eyebrow">Solicitud</div>
+            <h2>{canBuy ? "¿Te interesa esta obra?" : "¿Quieres saber más?"}</h2>
+            <p>
+              Déjanos tus datos y un asesor de ArtHub te escribirá para resolver tus dudas
+              {canBuy ? ", reservarla y coordinar el pago y la entrega" : ""}. No cobramos nada por consultar.
+            </p>
+            <div className="art-request-work">
+              {artwork.image_url ? <img src={artwork.image_url} alt="" /> : null}
+              <div>
+                <strong>{artwork.title}</strong>
+                <span>{artwork.artist_name} · {artwork.code}</span>
+              </div>
+            </div>
+          </div>
+          <RequestForm artworkId={artwork.id} artworkTitle={artwork.title} canBuy={canBuy} />
         </div>
+      </section>
+
+      {artist ? (
+        <section className="art-more">
+          <div className="wrap">
+            <div className="art-artist-card">
+              {artist.photo_url ? <img src={artist.photo_url} alt={artist.name} /> : <span aria-hidden="true">{artist.name.charAt(0)}</span>}
+              <div>
+                <div className="eyebrow">El artista</div>
+                <h2>{artist.name}</h2>
+                <p>{[artist.specialty, artist.origin].filter(Boolean).join(" · ")}</p>
+              </div>
+              {artist.has_page ? <Link href={`/artistas/${artist.slug}`} className="blk-more">Ver perfil →</Link> : null}
+            </div>
+
+            {artwork.related.length ? (
+              <>
+                <div className="blk-row-head">
+                  <h2>Más obras de {artist.name}</h2>
+                  {artist.has_page ? <Link href={`/obras?artist=${artist.slug}`} className="blk-more">Ver todas →</Link> : null}
+                </div>
+                <div className="blk-works">
+                  {artwork.related.map((a) => <ArtworkCard key={a.id} artwork={a} />)}
+                </div>
+              </>
+            ) : null}
+          </div>
+        </section>
       ) : null}
-    </div>
+    </>
   );
 }
 
-export default function ObraDetallePage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = use(params);
-  const artworkId = Number(id);
-  const { user } = useAuth();
-
-  const [artwork, setArtwork] = useState<Artwork | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-
-  const load = () => {
-    setLoading(true);
-    api
-      .getArtwork(artworkId)
-      .then((a) => setArtwork(a))
-      .catch(() => setError("No se encontro la obra."))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(load, [artworkId]);
-
-  if (loading) {
-    return (
-      <section className="section">
-        <div className="wrap">
-          <p className="muted">Cargando obra...</p>
-        </div>
-      </section>
-    );
-  }
-
-  if (!artwork) {
-    return (
-      <section className="section">
-        <div className="wrap">
-          <p className="muted">{error ?? "Obra no encontrada."}</p>
-          <Link href="/obras" className="btn btn-outline-dark" style={{ marginTop: 16 }}>
-            ← Volver al catalogo
-          </Link>
-        </div>
-      </section>
-    );
-  }
+/** Ficha técnica: solo las filas con dato. */
+function Details({ artwork }: { artwork: ArtworkDetail }) {
+  const rows: [string, string | null | undefined][] = [
+    ["Código", artwork.code],
+    ["Técnica", artwork.technique],
+    ["Soporte", artwork.support],
+    ["Medidas", artwork.dimensions],
+    ["Peso", artwork.weight_kg ? `${Number(artwork.weight_kg)} kg` : null],
+    ["Año", artwork.year ? String(artwork.year) : null],
+  ];
 
   return (
-    <section className="section">
-      <div className="wrap obra-grid">
-        <MediaViewer artwork={artwork} onExpand={() => setLightboxOpen(true)} />
-        {lightboxOpen && (
-          <ArtworkLightbox
-            artwork={artwork}
-            open={lightboxOpen}
-            onClose={() => setLightboxOpen(false)}
-          />
-        )}
-
-        <div>
-          <div className="kicker">{artwork.artist_name}</div>
-          <h1 className="h-display" style={{ fontSize: 44, margin: "8px 0 12px" }}>
-            {artwork.title}
-          </h1>
-          <p style={{ marginTop: 0 }}>{artwork.description}</p>
-
-          <div
-            style={{
-              marginTop: 24,
-              padding: "20px 22px",
-              background: "var(--paper-2)",
-              border: "1px solid var(--rule)",
-              borderRadius: 12,
-            }}
-          >
-            <div className="eyebrow">Precio · {artwork.code}</div>
-            <div
-              style={{
-                fontSize: 32,
-                fontFamily: "'Cormorant Garamond', serif",
-                color: "var(--accent-text)",
-              }}
-            >
-              {formatArtworkPrice(artwork)}
-            </div>
-            <div className="kicker" style={{ marginTop: 12 }}>
-              Estado:{" "}
-              <strong style={{ color: artwork.availability === "disponible" ? "var(--success)" : "var(--danger)" }}>
-                {AVAILABILITY_LABEL[artwork.availability]}
-              </strong>
-            </div>
-          </div>
-
-          {artwork.certificate ? (
-            <CertificateCard
-              cert={artwork.certificate}
-              artwork={artwork}
-              isAdmin={user?.role === "admin"}
-            />
-          ) : null}
-
-          {error ? (
-            <div
-              style={{
-                marginTop: 18,
-                padding: "10px 14px",
-                background: "var(--danger-bg)",
-                border: "1px solid rgba(147,70,42,0.35)",
-                color: "var(--danger)",
-                borderRadius: 8,
-                fontSize: 13.5,
-              }}
-            >
-              {error}
-            </div>
-          ) : null}
-
-          <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
-            {/* Provisional: el formulario de solicitudes comerciales (§14) llega en la semana 4. */}
-            <a
-              href={`mailto:info@arthub.pe?subject=${encodeURIComponent(`Solicitud de información · ${artwork.code} · ${artwork.title}`)}`}
-              className="btn btn-gold btn-lg"
-              style={{ display: "flex", alignItems: "center", gap: 8 }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <path d="m22 7-10 6L2 7"/>
-              </svg>
-              Solicitar información
-            </a>
-            <Link href="/obras" className="btn btn-outline-dark btn-lg">
-              ← Catalogo
-            </Link>
-          </div>
+    <dl className="art-details">
+      {rows.filter(([, v]) => v).map(([label, value]) => (
+        <div key={label}>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
         </div>
-      </div>
-    </section>
+      ))}
+    </dl>
   );
 }

@@ -90,6 +90,69 @@ export type Artwork = {
   certificate?: Certificate | null;
 };
 
+/** Obra tal como aparece en el catálogo y en las listas de obras. */
+export type ArtworkCard = Pick<
+  Artwork,
+  "id" | "code" | "title" | "technique" | "year" | "price" | "currency" | "show_price"
+  | "availability" | "model_3d_url" | "artist_name" | "image_url" | "dimensions"
+> & { artist_slug: string | null };
+
+export type CatalogResponse = {
+  data: ArtworkCard[];
+  meta: { current_page: number; last_page: number; per_page: number; total: number };
+  /** Opciones de los filtros, calculadas sobre todo el catálogo publicado. */
+  facets: {
+    artists: { slug: string; name: string; total: number }[];
+    techniques: string[];
+    price: { min: number; max: number };
+  };
+};
+
+export const CATALOG_SORTS = {
+  recent: "Más recientes",
+  price_asc: "Precio: menor a mayor",
+  price_desc: "Precio: mayor a menor",
+  title: "Título (A–Z)",
+} as const;
+
+export type CatalogFilters = {
+  q?: string;
+  artist?: string;
+  technique?: string;
+  availability?: Availability;
+  price_min?: string;
+  price_max?: string;
+  sort?: keyof typeof CATALOG_SORTS;
+  page?: string;
+};
+
+/** Ficha pública de una obra (§13). */
+export type ArtworkDetail = ArtworkCard & {
+  support: string | null;
+  height_cm: string | null;
+  width_cm: string | null;
+  depth_cm: string | null;
+  weight_kg: string | null;
+  description: string | null;
+  history_notes: string | null;
+  status: ArtworkStatus;
+  images: Pick<ArtworkImage, "id" | "kind" | "url" | "is_primary">[];
+  artist: {
+    name: string;
+    artistic_name: string | null;
+    slug: string;
+    origin: string | null;
+    specialty: string | null;
+    photo_url: string | null;
+    /** Solo los perfiles aprobados tienen página pública. */
+    has_page: boolean;
+  } | null;
+  certificate: Pick<Certificate, "verification_token" | "status"> | null;
+  related: ArtworkCard[];
+};
+
+export type CommercialRequestType = "informacion" | "intencion_compra";
+
 export type Certificate = {
   id: number;
   artwork_id: number;
@@ -139,8 +202,6 @@ export const api = {
   getArtist: (slug: string) =>
     request<{ artist: Artist; artworks: Artwork[] }>(`/artists/${slug}`),
 
-  listArtworks: () => request<Artwork[]>("/artworks"),
-  getArtwork: (id: number) => request<Artwork>(`/artworks/${id}`),
   me: (token: string) => request<AuthResponse["user"]>("/me", { token }),
 
   register: (payload: {
