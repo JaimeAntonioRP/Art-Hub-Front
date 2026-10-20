@@ -70,7 +70,7 @@ export default function VerificarTokenPage({
             height="56"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#C56A4A"
+            stroke="var(--danger)"
             strokeWidth="1.4"
             style={{ marginBottom: 16 }}
           >
@@ -110,8 +110,8 @@ export default function VerificarTokenPage({
         {/* tarjeta principal */}
         <div
           style={{
-            background: "#fff",
-            border: "2px solid var(--oro-cusco, #CBA24A)",
+            background: "var(--piedra-0)",
+            border: "2px solid var(--oro-cusco)",
             borderRadius: 18,
             overflow: "hidden",
           }}
@@ -119,7 +119,7 @@ export default function VerificarTokenPage({
           {/* banda dorada */}
           <div
             style={{
-              background: "var(--oro-cusco, #CBA24A)",
+              background: "var(--oro-cusco)",
               padding: "14px 24px",
               display: "flex",
               alignItems: "center",
@@ -131,7 +131,7 @@ export default function VerificarTokenPage({
               height="22"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#14110C"
+              stroke="var(--azul-900)"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -144,7 +144,7 @@ export default function VerificarTokenPage({
                 fontWeight: 700,
                 fontSize: 14,
                 letterSpacing: "0.1em",
-                color: "#14110C",
+                color: "var(--azul-900)",
                 textTransform: "uppercase",
               }}
             >
@@ -153,8 +153,8 @@ export default function VerificarTokenPage({
             <span
               style={{
                 marginLeft: "auto",
-                background: vigente ? "#2D5016" : "#7B2E18",
-                color: "#fff",
+                background: vigente ? "var(--success)" : "var(--danger)",
+                color: "var(--piedra-0)",
                 fontSize: 12,
                 padding: "4px 14px",
                 borderRadius: 20,
@@ -308,7 +308,7 @@ export default function VerificarTokenPage({
                 registro de la obra desde cualquier dispositivo.
               </p>
               <code
-                style={{ fontSize: 11, color: "var(--oro-cusco)", marginTop: 6, display: "block" }}
+                style={{ fontSize: 11, color: "var(--accent-text)", marginTop: 6, display: "block" }}
               >
                 {verifyUrl}
               </code>

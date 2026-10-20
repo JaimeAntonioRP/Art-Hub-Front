@@ -32,7 +32,7 @@
     font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px;
     margin: 10px 0 8px; line-height: 1.15;
   }
-  .opt p { color: #9E957F; font-size: 13.5px; line-height: 1.55; margin: 0 0 22px; flex: 1; }
+  .opt p { color: var(--piedra-300); font-size: 13.5px; line-height: 1.55; margin: 0 0 22px; flex: 1; }
   .opt .btn { width: 100%; justify-content: space-between; }
 
   /* Chart card */
@@ -43,28 +43,28 @@
   }
   .chart-card .big {
     font-family: 'Cormorant Garamond', serif; font-weight: 500;
-    font-size: 64px; line-height: 1; color: var(--oro-cusco);
+    font-size: 64px; line-height: 1; color: var(--accent-text);
     letter-spacing: -0.02em;
   }
   .chart-card .big sup { font-size: 0.45em; vertical-align: 0.5em; }
-  .chart-card .big-label { color: #C9BFA9; margin-top: 8px; font-size: 13px; }
+  .chart-card .big-label { color: var(--piedra-300); margin-top: 8px; font-size: 13px; }
   .chart-card .tag {
     display: inline-flex; align-items: center; gap: 6px;
     margin-top: 14px; padding: 4px 10px; border-radius: 999px;
-    background: rgba(122,132,107,0.25); color: #B6C5A0;
+    background: rgba(79,122,94,0.25); color: var(--quenua-300);
     font-size: 12px;
   }
   .chart-card h3 { color: var(--cream-on-dark);
     font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 28px;
     text-align: center; margin: 0; }
-  .chart-card .sub { color: #9E957F; font-size: 13px; text-align: center; margin-top: 4px; }
+  .chart-card .sub { color: var(--piedra-300); font-size: 13px; text-align: center; margin-top: 4px; }
   .chart-card .legend { font-size: 13px; }
   .chart-card .legend h5 { color: var(--gold-on-dark); font-family:'Inter',sans-serif; font-weight:500; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; margin: 0 0 14px; }
   .chart-card .legend .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--rule-dark); }
   .chart-card .legend .row span { display: inline-flex; align-items: center; gap: 8px; }
   .chart-card .legend .row span::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
   .chart-card .legend .row b { color: var(--cream-on-dark); font-weight: 500; }
-  .chart-card .legend .source { color: rgba(237,227,204,0.4); font-size: 11px; margin-top: 14px; }
+  .chart-card .legend .source { color: var(--piedra-300); font-size: 11px; margin-top: 14px; }
 
   /* Testimonials */
   .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -73,7 +73,7 @@
     border: 1px solid var(--rule-dark); border-radius: 12px;
     padding: 28px;
   }
-  .testi p { color: #C9BFA9; font-style: italic; font-family: 'Cormorant Garamond', serif;
+  .testi p { color: var(--piedra-300); font-style: italic; font-family: 'Cormorant Garamond', serif;
     font-size: 19px; line-height: 1.45; margin: 0 0 22px; }
   .testi .who { display: flex; align-items: center; gap: 14px; }
   .testi .who .av { width: 48px; height: 48px; border-radius: 50%;
@@ -82,7 +82,7 @@
     font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 18px;
   }
   .testi .who b { display: block; color: var(--cream-on-dark); font-weight: 500; font-size: 14px; }
-  .testi .who span { color: #9E957F; font-size: 12.5px; }
+  .testi .who span { color: var(--piedra-300); font-size: 12.5px; }
 
   /* FAQ */
   .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; }
@@ -97,7 +97,7 @@
   }
   details.faq summary::-webkit-details-marker { display: none; }
   details.faq summary::after {
-    content: "+"; color: var(--oro-cusco); font-size: 22px; line-height: 1;
+    content: "+"; color: var(--accent-text); font-size: 22px; line-height: 1;
     font-family: 'Cormorant Garamond', serif; font-weight: 500;
     transition: transform .2s;
   }
@@ -118,6 +118,9 @@
     .chart-card  { padding: 20px; }
     .chart-card .big { font-size: 48px; }
   }
+
+  /* Secciones navy: tokens de texto legibles sobre oscuro */
+  .opt, .chart-card, .testi { --accent-text: var(--oro-300); --text-muted: var(--piedra-300); --ink-soft: var(--piedra-300); }
 </style>
 </head>
 <body data-page="inicio">
@@ -134,7 +137,7 @@
           Transformamos arte en<br />
           <em>activos financieros.</em>
         </h1>
-        <p class="lede" style="font-size:17px; color: var(--gold-on-dark); font-family:'Cormorant Garamond', serif; font-style: italic; max-width: none; margin-top: 16px;">
+        <p class="lede" style="font-size:17px; color: var(--accent-text); font-family:'Cormorant Garamond', serif; font-style: italic; max-width: none; margin-top: 16px;">
           IA + Blockchain + Realidad Aumentada
         </p>
         <p class="lede">
@@ -144,7 +147,7 @@
 
         <div style="display:flex; gap:12px; margin-top: 32px; flex-wrap: wrap;">
           <a class="btn btn-gold btn-lg btn-arrow" href="Arthub - Catalogo.html">Explorar catálogo de maestros</a>
-          <a class="btn btn-outline-light btn-lg" href="Arthub - Como Funciona.html">
+          <a class="btn btn-outline-dark btn-lg" href="Arthub - Como Funciona.html">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5 v14 l11 -7 z"/></svg>
             Ver cómo funciona
           </a>
@@ -296,12 +299,12 @@
         <svg viewBox="0 0 400 140" style="width:100%; margin-top: 18px;" aria-hidden="true">
           <defs>
             <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#C8A24A" stop-opacity="0.3"/>
-              <stop offset="1" stop-color="#C8A24A" stop-opacity="0"/>
+              <stop offset="0" stop-color="#CBA24A" stop-opacity="0.3"/>
+              <stop offset="1" stop-color="#CBA24A" stop-opacity="0"/>
             </linearGradient>
           </defs>
           <!-- gridlines -->
-          <g stroke="#EDE3CC1A" stroke-width="1">
+          <g stroke="rgba(239,230,213,0.1)" stroke-width="1">
             <line x1="0" y1="20" x2="400" y2="20"/>
             <line x1="0" y1="55" x2="400" y2="55"/>
             <line x1="0" y1="90" x2="400" y2="90"/>
@@ -309,23 +312,23 @@
           </g>
           <!-- line -->
           <path d="M0 115 L40 110 L75 100 L110 92 L145 88 L180 75 L215 78 L250 64 L285 50 L320 36 L360 28 L400 18"
-                fill="none" stroke="#C8A24A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                fill="none" stroke="#CBA24A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           <!-- area -->
           <path d="M0 115 L40 110 L75 100 L110 92 L145 88 L180 75 L215 78 L250 64 L285 50 L320 36 L360 28 L400 18 L400 140 L0 140 Z"
                 fill="url(#cg)"/>
           <!-- end dot -->
-          <circle cx="400" cy="18" r="4" fill="#C8A24A"/>
+          <circle cx="400" cy="18" r="4" fill="#CBA24A"/>
         </svg>
-        <div style="display:flex; justify-content:space-between; font-size:10.5px; color:#9E957F; margin-top: 6px; letter-spacing: 0.05em;">
+        <div style="display:flex; justify-content:space-between; font-size:10.5px; color:var(--piedra-300); margin-top: 6px; letter-spacing: 0.05em;">
           <span>2015</span><span>2017</span><span>2019</span><span>2021</span><span>2023</span><span>2025</span>
         </div>
       </div>
       <div class="legend">
         <h5>Comparativa (10 años)</h5>
-        <div class="row" style="color: var(--oro-cusco)"><span>Arte cusqueño</span><b>12.8 %</b></div>
-        <div class="row" style="color: #6FA8DC"><span>S&amp;P 500</span><b>10.2 %</b></div>
-        <div class="row" style="color: #E0BE6E"><span>Oro</span><b>7.6 %</b></div>
-        <div class="row" style="color: #B6C5A0"><span>Bonos US</span><b>2.1 %</b></div>
+        <div class="row" style="color: var(--accent-text)"><span>Arte cusqueño</span><b>12.8 %</b></div>
+        <div class="row" style="color: var(--azul-300)"><span>S&amp;P 500</span><b>10.2 %</b></div>
+        <div class="row" style="color: var(--oro-300)"><span>Oro</span><b>7.6 %</b></div>
+        <div class="row" style="color: var(--quenua-300)"><span>Bonos US</span><b>2.1 %</b></div>
         <div class="source">Fuente: Art Market Research, 2025.</div>
       </div>
     </div>
@@ -371,7 +374,7 @@
 </section>
 
 <!-- ── TESTIMONIOS ────────────────────────────────────────────────── -->
-<section class="section" style="background: var(--dark); color: var(--cream-on-dark);">
+<section class="section" data-surface="dark" style="background: var(--dark); color: var(--cream-on-dark);">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow" style="color: var(--gold-on-dark);">Voces</span>
@@ -437,7 +440,7 @@
       </div>
       <div class="actions">
         <a class="btn btn-gold btn-lg btn-arrow" href="#" style="justify-content: space-between;">Crear cuenta gratis</a>
-        <a class="btn btn-outline-light btn-lg" href="#" style="justify-content: space-between; border-color: rgba(237,227,204,0.35);">
+        <a class="btn btn-outline-light btn-lg" href="#" style="justify-content: space-between; border-color: rgba(239,230,213,0.35);">
           Hablar con un asesor
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.5 4 c-3 -1 -7 -1 -10 1 c-3 2 -5 6 -5 9 v6 h6 c3 0 7 -2 9 -5 c2 -3 2 -7 1 -10 z"/></svg>
         </a>

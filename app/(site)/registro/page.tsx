@@ -66,7 +66,7 @@ export default function RegistroPage() {
       footer={
         <>
           ¿Ya tienes cuenta?{" "}
-          <Link href="/login" style={{ color: "var(--oro-cusco)" }}>
+          <Link href="/login" style={{ color: "var(--accent-text)" }}>
             Iniciar sesión
           </Link>
         </>

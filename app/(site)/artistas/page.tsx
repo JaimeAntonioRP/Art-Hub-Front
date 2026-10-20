@@ -26,16 +26,16 @@ function ArtistCard({ artist }: { artist: Artist }) {
       style={{
         display: "flex",
         flexDirection: "column",
-        background: "var(--paper-card, #FFFFFF)",
-        border: "1px solid var(--rule, #E6D5BB)",
+        background: "var(--paper-card)",
+        border: "1px solid var(--rule)",
         borderRadius: 12,
         overflow: "hidden",
         textDecoration: "none",
         color: "inherit",
         transition: "box-shadow .25s, transform .25s",
         boxShadow: hovered
-          ? "0 14px 36px rgba(24,19,15,0.13)"
-          : "0 2px 8px rgba(24,19,15,0.05)",
+          ? "0 14px 36px rgba(13,27,42,0.13)"
+          : "0 2px 8px rgba(13,27,42,0.05)",
         transform: hovered ? "translateY(-4px)" : "none",
       }}
     >
@@ -45,7 +45,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
           position: "relative",
           aspectRatio: "3 / 4",
           overflow: "hidden",
-          background: "var(--arena, #EFE6D5)",
+          background: "var(--arena)",
         }}
       >
         <div
@@ -75,7 +75,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
               top: 12,
               left: 12,
               background: "rgba(203,162,74,0.92)",
-              color: "#14110C",
+              color: "var(--azul-900)",
               fontSize: 9,
               fontWeight: 700,
               letterSpacing: "0.15em",
@@ -98,7 +98,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
         >
           <div
             style={{
-              color: "rgba(237,227,204,0.75)",
+              color: "var(--piedra-300)",
               fontSize: 10,
               letterSpacing: "0.12em",
               textTransform: "uppercase",
@@ -114,7 +114,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
               margin: 0,
               fontSize: 20,
               lineHeight: 1.15,
-              color: "#EDE3CC",
+              color: "var(--piedra-100)",
             }}
           >
             {artist.name}
@@ -135,7 +135,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
         <div
           style={{
             fontSize: 12,
-            color: "var(--oro-cusco, #CBA24A)",
+            color: "var(--accent-text)",
             fontFamily: "'Inter', sans-serif",
             fontWeight: 500,
             letterSpacing: "0.05em",
@@ -148,7 +148,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
           style={{
             margin: 0,
             fontSize: 13.5,
-            color: "var(--ink-soft, #6B7A8A)",
+            color: "var(--ink-soft)",
             lineHeight: 1.55,
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
@@ -162,7 +162,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
           style={{
             marginTop: "auto",
             paddingTop: 12,
-            borderTop: "1px solid var(--rule, #E6D5BB)",
+            borderTop: "1px solid var(--rule)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -171,7 +171,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
           <span
             style={{
               fontSize: 12.5,
-              color: "var(--ink-soft, #6B7A8A)",
+              color: "var(--ink-soft)",
               fontFamily: "'Inter', sans-serif",
             }}
           >
@@ -182,8 +182,8 @@ function ArtistCard({ artist }: { artist: Artist }) {
               style={{
                 fontSize: 12,
                 fontFamily: "'Inter', sans-serif",
-                background: "var(--arena, #EFE6D5)",
-                color: "var(--ink, #0D1B2A)",
+                background: "var(--arena)",
+                color: "var(--ink)",
                 padding: "3px 10px",
                 borderRadius: 99,
                 fontWeight: 500,
@@ -206,19 +206,19 @@ function SkeletonCard() {
       style={{
         borderRadius: 12,
         overflow: "hidden",
-        border: "1px solid var(--rule, #E6D5BB)",
+        border: "1px solid var(--rule)",
         animation: "pulse 1.6s ease-in-out infinite",
-        background: "var(--paper-2, #F0E8D8)",
+        background: "var(--paper-2)",
       }}
     >
-      <div style={{ aspectRatio: "3/4", background: "var(--arena, #EFE6D5)" }} />
+      <div style={{ aspectRatio: "3/4", background: "var(--arena)" }} />
       <div style={{ padding: 18, display: "flex", flexDirection: "column", gap: 10 }}>
         <div
           style={{
             height: 10,
             width: "60%",
             borderRadius: 4,
-            background: "var(--piedra-andina, #E6D5BB)",
+            background: "var(--piedra-andina)",
           }}
         />
         <div
@@ -226,7 +226,7 @@ function SkeletonCard() {
             height: 10,
             width: "90%",
             borderRadius: 4,
-            background: "var(--piedra-andina, #E6D5BB)",
+            background: "var(--piedra-andina)",
           }}
         />
         <div
@@ -234,7 +234,7 @@ function SkeletonCard() {
             height: 10,
             width: "75%",
             borderRadius: 4,
-            background: "var(--piedra-andina, #E6D5BB)",
+            background: "var(--piedra-andina)",
           }}
         />
       </div>
@@ -309,7 +309,7 @@ export default function ArtistasPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
-              background: "#FFFFFF",
+              background: "var(--piedra-0)",
               border: "1px solid var(--piedra-andina)",
               borderRadius: 6,
               color: "var(--ink)",

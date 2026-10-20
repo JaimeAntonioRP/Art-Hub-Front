@@ -21,7 +21,9 @@ export default function LandingPage() {
           },
         };
       `}</Script>
-      <Landing />
+      <div className="landing-root">
+        <Landing />
+      </div>
     </>
   );
 }

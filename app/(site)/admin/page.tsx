@@ -196,7 +196,7 @@ export default function AdminPage() {
       <div className="wrap" style={{ display: "grid", gridTemplateColumns: "1fr 1.3fr", gap: 36 }}>
         <div
           style={{
-            background: "#fff",
+            background: "var(--piedra-0)",
             border: "1px solid var(--rule)",
             borderRadius: 12,
             padding: 28,
@@ -212,9 +212,9 @@ export default function AdminPage() {
           {message ? (
             <div
               style={{
-                background: "#EAF2E6",
-                border: "1px solid #7A846B55",
-                color: "#3D4A2E",
+                background: "var(--success-bg)",
+                border: "1px solid rgba(59,94,71,0.35)",
+                color: "var(--success)",
                 padding: "10px 12px",
                 borderRadius: 8,
                 fontSize: 13.5,
@@ -343,7 +343,7 @@ export default function AdminPage() {
                 <div
                   key={a.id}
                   style={{
-                    background: "#fff",
+                    background: "var(--piedra-0)",
                     border: "1px solid var(--rule)",
                     borderRadius: 10,
                     padding: 14,
@@ -384,7 +384,7 @@ export default function AdminPage() {
                       type="button"
                       onClick={() => handleDelete(a.id)}
                       className="btn btn-outline-dark"
-                      style={{ padding: "8px 12px", fontSize: 12, borderColor: "#C56A4A", color: "#C56A4A" }}
+                      style={{ padding: "8px 12px", fontSize: 12, borderColor: "var(--danger)", color: "var(--danger)" }}
                     >
                       Eliminar
                     </button>

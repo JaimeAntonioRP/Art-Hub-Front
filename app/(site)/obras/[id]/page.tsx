@@ -65,7 +65,7 @@ function MediaViewer({
           borderRadius: 12,
           border: "1px solid var(--rule)",
           overflow: "hidden",
-          background: "var(--arena, #EFE6D5)",
+          background: "var(--arena)",
         }}
       >
         {view === "image" ? (
@@ -95,16 +95,16 @@ function MediaViewer({
               gap: 6,
               textAlign: "center",
               padding: 24,
-              color: "var(--ink-soft, #6B7A8A)",
+              color: "var(--ink-soft)",
               fontFamily: "'Inter', sans-serif",
             }}
           >
-            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#CBA24A" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8, marginBottom: 4 }}>
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--oro-500)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8, marginBottom: 4 }}>
               <path d="M12 2 2 7l10 5 10-5-10-5Z" />
               <path d="m2 17 10 5 10-5" />
               <path d="m2 12 10 5 10-5" />
             </svg>
-            <strong style={{ fontSize: 14, color: "var(--ink, #0D1B2A)" }}>Modelo 3D no disponible aún</strong>
+            <strong style={{ fontSize: 14, color: "var(--ink)" }}>Modelo 3D no disponible aún</strong>
             <span style={{ fontSize: 12.5, maxWidth: 240 }}>
               El archivo del modelo todavía no fue cargado para esta obra.
             </span>
@@ -120,7 +120,7 @@ function MediaViewer({
             ar-modes="webxr scene-viewer quick-look"
             shadow-intensity="1"
             exposure="1"
-            style={{ width: "100%", height: "100%", background: "#15110c" }}
+            style={{ width: "100%", height: "100%", background: "var(--azul-900)" }}
           />
         ) : (
           <div
@@ -130,7 +130,7 @@ function MediaViewer({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "var(--ink-soft, #6B7A8A)",
+              color: "var(--ink-soft)",
               fontFamily: "'Inter', sans-serif",
               fontSize: 13,
             }}
@@ -150,11 +150,11 @@ function MediaViewer({
               position: "absolute",
               top: 12,
               left: 12,
-              background: "rgba(10,10,10,0.65)",
+              background: "rgba(13,27,42,0.65)",
               backdropFilter: "blur(6px)",
-              border: "1px solid rgba(237,227,204,0.2)",
+              border: "1px solid rgba(239,230,213,0.2)",
               borderRadius: 6,
-              color: "#EDE3CC",
+              color: "var(--piedra-100)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
@@ -169,8 +169,8 @@ function MediaViewer({
               (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(203,162,74,0.5)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "rgba(10,10,10,0.65)";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(237,227,204,0.2)";
+              (e.currentTarget as HTMLButtonElement).style.background = "rgba(13,27,42,0.65)";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(239,230,213,0.2)";
             }}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -188,10 +188,10 @@ function MediaViewer({
               position: "absolute",
               top: 12,
               right: 12,
-              background: "rgba(20,17,12,0.72)",
+              background: "rgba(13,27,42,0.72)",
               backdropFilter: "blur(6px)",
-              border: "1px solid rgba(237,227,204,0.25)",
-              color: "#EDE3CC",
+              border: "1px solid rgba(239,230,213,0.25)",
+              color: "var(--piedra-100)",
               fontSize: 9,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
@@ -274,9 +274,9 @@ function CertificateCard({
     <div
       style={{
         marginTop: 18,
-        border: "1px solid var(--oro-cusco, #CBA24A)",
+        border: "1px solid var(--oro-cusco)",
         borderRadius: 12,
-        background: "#fff",
+        background: "var(--piedra-0)",
         overflow: "hidden",
       }}
     >
@@ -295,7 +295,7 @@ function CertificateCard({
         {/* token + label */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco,#CBA24A)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               <path d="m9 12 2 2 4-4" />
             </svg>
@@ -433,14 +433,14 @@ export default function ObraDetallePage({
               style={{
                 fontSize: 32,
                 fontFamily: "'Cormorant Garamond', serif",
-                color: "var(--oro-cusco)",
+                color: "var(--accent-text)",
               }}
             >
               {formatArtworkPrice(artwork)}
             </div>
             <div className="kicker" style={{ marginTop: 12 }}>
               Estado:{" "}
-              <strong style={{ color: artwork.availability === "disponible" ? "var(--quenua)" : "var(--terracota)" }}>
+              <strong style={{ color: artwork.availability === "disponible" ? "var(--success)" : "var(--danger)" }}>
                 {AVAILABILITY_LABEL[artwork.availability]}
               </strong>
             </div>
@@ -459,9 +459,9 @@ export default function ObraDetallePage({
               style={{
                 marginTop: 18,
                 padding: "10px 14px",
-                background: "#FBECE6",
-                border: "1px solid #C56A4A55",
-                color: "#7B2E18",
+                background: "var(--danger-bg)",
+                border: "1px solid rgba(147,70,42,0.35)",
+                color: "var(--danger)",
                 borderRadius: 8,
                 fontSize: 13.5,
               }}

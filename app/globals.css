@@ -4,68 +4,111 @@
    ────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* ── Paleta de marca ──────────────────────────────────────────────── */
-  --oro-cusco:      #CBA24A;
-  --oro-soft:       #DBBE72;
-  --oro-pale:       #F0E4C0;
-  --azul-profundo:  #0D1B2A;
-  --azul-medio:     #1E3448;
-  --azul-soft:      #2E4A63;
-  --terracota:      #B8653B;
-  --terracota-soft: #D48A68;
-  --verde-quenua:   #4F7A5E;
-  --verde-soft:     #7AA88B;
+  /* ── Escalas de marca ─────────────────────────────────────────────────
+     Neutros con el mismo tono que el oro (lienzo crudo) y croma ≤ 0.125:
+     nada es neón; los estados se distinguen por tono y luminosidad. */
+  --oro-100: #F4EAD0;  --oro-300: #DDBE74;  --oro-500: #CBA24A;  --oro-700: #7A5C1B;  --oro-900: #5A4416;
+  --azul-300: #A9B8C6; --azul-500: #3F5A74; --azul-700: #22384D; --azul-800: #16283A; --azul-900: #0D1B2A;
+  --piedra-0: #FFFDF9; --piedra-50: #F7F2EB; --piedra-100: #EFE6D5; --piedra-200: #E2D3BA;
+  --piedra-300: #B4A88F; --piedra-400: #8C7C63; --piedra-600: #6A5F51;
+  --terracota-100: #F6E3D8; --terracota-300: #D9906C; --terracota-500: #B8653B; --terracota-700: #93462A; --terracota-900: #5F2C1A;
+  --quenua-100: #E2ECE3; --quenua-300: #8FB59B; --quenua-500: #4F7A5E; --quenua-700: #3B5E47; --quenua-900: #243A2C;
+  --ocre-100: #F5E6CB; --ocre-300: #E0A862; --ocre-500: #C27E2C; --ocre-700: #8C5414;
 
-  /* ── Superficies ─────────────────────────────────────────────────── */
-  --marfil:         #F7F2EB;          /* fondo principal                */
-  --arena:          #EFE6D5;          /* fondo secundario               */
-  --piedra-andina:  #E6D5BB;          /* terciario / bordes suaves      */
-  --gris-piedra:    #A3A29B;          /* texto muted                    */
-  --paper:          #F7F2EB;
-  --paper-2:        #EFE6D5;
-  --paper-card:     #FFFFFF;
+  /* ── Tokens semánticos (superficie clara) ───────────────────────────── */
+  --bg:            var(--piedra-50);
+  --surface:       var(--piedra-0);
+  --surface-2:     var(--piedra-100);
+  --text:          var(--azul-900);
+  --text-muted:    var(--piedra-600);   /* 5.6:1 sobre bg */
+  --text-subtle:   var(--piedra-400);   /* solo texto grande o decorativo */
+  --border:        var(--piedra-200);   /* separadores */
+  --border-strong: var(--piedra-400);   /* bordes de inputs (3:1) */
+  --accent:        var(--oro-500);      /* rellenos; texto encima: --on-accent */
+  --on-accent:     var(--azul-900);
+  --accent-text:   var(--oro-700);      /* oro como texto (5.6:1) */
+  --accent-subtle: var(--oro-100);
+  --success: var(--quenua-700);    --success-bg: var(--quenua-100);
+  --warning: var(--ocre-700);      --warning-bg: var(--ocre-100);
+  --danger:  var(--terracota-700); --danger-bg:  var(--terracota-100); --on-danger: #FFFFFF;
+  --info:    var(--azul-500);      --info-bg:    var(--piedra-100);
+  --focus:   var(--azul-500);
 
-  /* ── Tipografía ───────────────────────────────────────────────────── */
-  --ink:            #0D1B2A;          /* texto principal = azul profundo */
-  --ink-2:          #1E3448;
-  --ink-soft:       #6B7A8A;
-  --ink-muted:      #A3A29B;
+  /* ── Nombres existentes, apuntando a la paleta nueva ─────────────────── */
+  --oro-cusco:      var(--oro-500);
+  --oro-soft:       var(--oro-300);
+  --oro-pale:       var(--oro-100);
+  --azul-profundo:  var(--azul-900);
+  --azul-medio:     var(--azul-800);
+  --azul-soft:      var(--azul-700);
+  --terracota:      var(--terracota-500);
+  --terracota-soft: var(--terracota-300);
+  --verde-quenua:   var(--quenua-500);
+  --verde-soft:     var(--quenua-300);
+  --quenua:         var(--quenua-500);
 
-  /* ── Header / nav (fondo claro) ───────────────────────────────────── */
-  --header-bg:      #FFFFFF;
-  --header-border:  #E6D5BB;
-  --nav-color:      #0D1B2A;
-  --nav-hover:      #CBA24A;
-  --nav-active:     #CBA24A;
+  --marfil:         var(--piedra-50);
+  --arena:          var(--piedra-100);
+  --piedra-andina:  var(--piedra-200);
+  --piedra:         var(--piedra-200);
+  --piedra-2:       var(--oro-100);
+  --tierra:         var(--piedra-400);
+  --azul-altura:    var(--azul-700);
+  --paper:          var(--piedra-50);
+  --paper-2:        var(--piedra-100);
+  --paper-card:     var(--piedra-0);
 
-  /* ── Footer (azul profundo) ───────────────────────────────────────── */
-  --footer-bg:      #0D1B2A;
-  --footer-text:    #EFE6D5;
-  --footer-muted:   #7A92A8;
-  --footer-gold:    #CBA24A;
-  --footer-rule:    rgba(230,213,187,0.12);
+  --ink:            var(--azul-900);
+  --ink-2:          var(--azul-800);
+  --ink-soft:       var(--piedra-600);
+  --ink-muted:      var(--piedra-400);
+  --gris-piedra:    var(--piedra-400);
 
-  /* ── Bordes / separadores ─────────────────────────────────────────── */
-  --rule:           rgba(13,27,42,0.12);
-  --rule-strong:    rgba(13,27,42,0.22);
+  --header-bg:      var(--piedra-0);
+  --header-border:  var(--piedra-200);
+  --nav-color:      var(--azul-900);
+  --nav-hover:      var(--oro-700);
+  --nav-active:     var(--oro-700);
+
+  --dark:           var(--azul-900);
+  --dark-2:         var(--azul-800);
+  --dark-3:         var(--azul-700);
+  --cream-on-dark:  var(--piedra-100);
+  --gold-on-dark:   var(--oro-300);
+  --footer-bg:      var(--azul-900);
+  --footer-text:    var(--piedra-100);
+  --footer-muted:   var(--piedra-300);
+  --footer-gold:    var(--oro-300);
+  --footer-rule:    rgba(239,230,213,0.12);
+  --utility-bg:     var(--azul-900);
+  --utility-text:   var(--piedra-100);
+
+  --rule:           var(--piedra-200);
+  --rule-strong:    var(--piedra-400);
   --rule-dark:      rgba(239,230,213,0.14);
+}
 
-  /* ── Utilidad ─────────────────────────────────────────────────────── */
-  --utility-bg:     #0D1B2A;
-  --utility-text:   #EFE6D5;
-
-  /* ── Compatibilidad con código existente ──────────────────────────── */
-  --dark:           #0D1B2A;
-  --dark-2:         #1E3448;
-  --dark-3:         #2E4A63;
-  --cream-on-dark:  #EFE6D5;
-  --gold-on-dark:   #CBA24A;
-  --piedra:         #E6D5BB;
-  --piedra-2:       #F0E4C0;
-  --quenua:         #4F7A5E;
-  --tierra:         #A3A29B;
-  --azul-altura:    #2E4A63;
-  --terracota-old:  #B8653B;
+/* ── Superficie oscura (navy) ────────────────────────────────────────────
+   Las secciones navy redefinen los tokens semánticos: dentro de ellas
+   --accent-text, --text-muted, etc. ya traen el valor legible sobre navy. */
+.surface-dark, [data-surface="dark"],
+.site-footer, .utility, .cta-band, .card-dark {
+  --bg:            var(--azul-900);
+  --surface:       var(--azul-800);
+  --surface-2:     var(--azul-700);
+  --text:          var(--piedra-100);
+  --text-muted:    var(--piedra-300);   /* 7.4:1 */
+  --text-subtle:   var(--piedra-300);
+  --border:        rgba(239,230,213,0.14);
+  --border-strong: #7A8896;
+  --accent-text:   var(--oro-300);      /* 9.7:1 */
+  --success: var(--quenua-300);
+  --warning: var(--ocre-300);
+  --danger:  var(--terracota-300);
+  --info:    var(--azul-300);
+  --focus:   var(--oro-300);
+  --ink:      var(--piedra-100);
+  --ink-soft: var(--piedra-300);
 }
 
 /* ── Reset ────────────────────────────────────────────────────────────── */
@@ -95,14 +138,14 @@ h1, h2, h3, h4, h5 {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 500; letter-spacing: -0.02em; line-height: 0.98;
 }
-.h-display em, .gold-it { font-style: italic; color: var(--oro-cusco); font-weight: 500; }
+.h-display em, .gold-it { font-style: italic; color: var(--accent-text); font-weight: 500; }
 .serif { font-family: 'Cormorant Garamond', serif; }
 .sans  { font-family: 'Inter', sans-serif; }
 
 .eyebrow {
   font-family: 'Inter', sans-serif; font-weight: 500;
   text-transform: uppercase; letter-spacing: 0.22em;
-  font-size: 11px; color: var(--oro-cusco);
+  font-size: 11px; color: var(--accent-text);
 }
 .kicker {
   font-family: 'Inter', sans-serif; font-weight: 500;
@@ -130,7 +173,7 @@ h1, h2, h3, h4, h5 {
   height: 36px;
 }
 .utility a { color: inherit; opacity: 0.8; }
-.utility a:hover { opacity: 1; color: var(--oro-cusco); }
+.utility a:hover { opacity: 1; color: var(--accent-text); }
 
 /* ── Header / nav (CLARO) ─────────────────────────────────────────────── */
 .site-header {
@@ -155,7 +198,7 @@ h1, h2, h3, h4, h5 {
 .brand .wm .tag {
   margin-top: 6px; font-family: 'Inter', sans-serif; font-weight: 500;
   font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
-  color: var(--oro-cusco);
+  color: var(--accent-text);
 }
 
 .nav-links { display: flex; align-items: center; gap: 30px; }
@@ -176,7 +219,7 @@ h1, h2, h3, h4, h5 {
   display: inline-flex; align-items: center; gap: 6px;
   color: var(--ink-soft); font-size: 13px; padding: 8px 4px;
 }
-.lang:hover { color: var(--oro-cusco); }
+.lang:hover { color: var(--accent-text); }
 
 /* ── Botones ──────────────────────────────────────────────────────────── */
 .btn {
@@ -214,7 +257,7 @@ h1, h2, h3, h4, h5 {
 
 /* ghost */
 .btn-ghost { color: var(--ink-soft); background: transparent; border-color: transparent; }
-.btn-ghost:hover { color: var(--oro-cusco); }
+.btn-ghost:hover { color: var(--accent-text); }
 
 .btn-lg { padding: 13px 24px; font-size: 14.5px; }
 .btn-arrow::after { content: " →"; }
@@ -243,12 +286,12 @@ h1, h2, h3, h4, h5 {
   font-size: clamp(44px, 5.4vw, 76px); line-height: 1.0;
   letter-spacing: -0.02em;
 }
-.hero h1 em { font-style: italic; color: var(--oro-cusco); font-weight: 500; }
+.hero h1 em { font-style: italic; color: var(--accent-text); font-weight: 500; }
 .hero p.lede {
   margin-top: 20px; max-width: 52ch;
   font-size: 15.5px; line-height: 1.65; color: var(--ink-soft);
 }
-.hero .eyebrow { color: var(--oro-cusco); margin-bottom: 18px; display: inline-block; }
+.hero .eyebrow { color: var(--accent-text); margin-bottom: 18px; display: inline-block; }
 
 .hero .painting {
   position: relative; aspect-ratio: 5 / 4;
@@ -299,7 +342,7 @@ h1, h2, h3, h4, h5 {
   font-size: clamp(32px, 4vw, 52px); line-height: 1.05; font-weight: 500;
   letter-spacing: -0.018em;
 }
-.sec-head h2 em { font-style: italic; color: var(--oro-cusco); }
+.sec-head h2 em { font-style: italic; color: var(--accent-text); }
 .sec-head p { margin-top: 14px; color: var(--ink-soft); font-size: 16px; line-height: 1.55; }
 
 .sec-head-left { text-align: left; max-width: 760px; margin: 0 0 48px; }
@@ -308,7 +351,7 @@ h1, h2, h3, h4, h5 {
   font-size: clamp(32px, 4vw, 52px); line-height: 1.05; font-weight: 500;
   letter-spacing: -0.018em;
 }
-.sec-head-left h2 em { font-style: italic; color: var(--oro-cusco); }
+.sec-head-left h2 em { font-style: italic; color: var(--accent-text); }
 
 /* ── Banda de estadísticas ────────────────────────────────────────────── */
 .stats-band {
@@ -325,7 +368,7 @@ h1, h2, h3, h4, h5 {
   font-family: 'Cormorant Garamond', serif; font-weight: 500;
   font-size: 40px; letter-spacing: -0.02em; line-height: 1; color: var(--azul-profundo);
 }
-.stat .v sup { color: var(--oro-cusco); font-size: 0.55em; vertical-align: 0.45em; }
+.stat .v sup { color: var(--accent-text); font-size: 0.55em; vertical-align: 0.45em; }
 .stat .k { margin-top: 8px; font-size: 12.5px; color: var(--ink-soft); letter-spacing: 0.02em; }
 .stat .row { display: flex; align-items: center; gap: 14px; }
 
@@ -400,7 +443,7 @@ h1, h2, h3, h4, h5 {
   font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 500;
   letter-spacing: -0.02em; line-height: 1.05;
 }
-.cta-band h2 em { font-style: italic; color: var(--oro-cusco); }
+.cta-band h2 em { font-style: italic; color: var(--accent-text); }
 .cta-band p { color: var(--footer-muted); margin: 16px 0 0; font-size: 15.5px; line-height: 1.6; max-width: 56ch; }
 .cta-band .actions { display: flex; flex-direction: column; gap: 12px; }
 
@@ -427,11 +470,11 @@ h1, h2, h3, h4, h5 {
   font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
   letter-spacing: 0.02em;
 }
-.chip-gold     { background: rgba(203,162,74,0.18); color: #7A5E18; }
-.chip-terracota{ background: rgba(184,101,59,0.16); color: #7B3518; }
-.chip-quenua   { background: rgba(79,122,94,0.18);  color: #2D5438; }
+.chip-gold     { background: var(--oro-100);       color: var(--oro-700); }
+.chip-terracota{ background: var(--terracota-100); color: var(--terracota-700); }
+.chip-quenua   { background: var(--quenua-100);    color: var(--quenua-700); }
 .chip-azul     { background: rgba(13,27,42,0.12);   color: var(--azul-profundo); }
-.chip-tierra   { background: rgba(163,162,155,0.22);color: #5A5950; }
+.chip-tierra   { background: var(--piedra-100);    color: var(--piedra-600); }
 
 .status-dot { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
 .status-dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--verde-quenua); }
@@ -486,7 +529,7 @@ h1, h2, h3, h4, h5 {
   border-radius: 50%; border: 1px solid var(--rule); color: var(--ink-soft);
   background: transparent; transition: all .2s;
 }
-.icon-btn:hover { border-color: var(--oro-cusco); color: var(--oro-cusco); }
+.icon-btn:hover { border-color: var(--oro-cusco); color: var(--accent-text); }
 .icon-btn .ico { width: 15px; height: 15px; }
 
 /* ── Tabla ranking ────────────────────────────────────────────────────── */
@@ -497,7 +540,7 @@ h1, h2, h3, h4, h5 {
 }
 .tbl th, .tbl td { padding: 18px 16px; text-align: left; vertical-align: middle; font-size: 13.5px; }
 .tbl thead { background: var(--azul-profundo); color: var(--arena); }
-.tbl thead th { font-weight: 500; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--oro-cusco); }
+.tbl thead th { font-weight: 500; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--oro-300); }
 .tbl tbody tr { border-top: 1px solid var(--rule); transition: background .15s; }
 .tbl tbody tr:first-child { border-top: 0; }
 .tbl tbody tr:hover { background: var(--arena); }
@@ -507,7 +550,7 @@ h1, h2, h3, h4, h5 {
 .tbl .who .name { font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 6px; }
 .tbl .who .sub { color: var(--ink-soft); font-size: 12px; margin-top: 2px; }
 .tbl .score { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px; }
-.tbl .stars { color: var(--oro-cusco); letter-spacing: 0.05em; font-size: 12px; }
+.tbl .stars { color: var(--accent-text); letter-spacing: 0.05em; font-size: 12px; }
 
 /* ── Pasos (Cómo Funciona) ────────────────────────────────────────────── */
 .steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; position: relative; }
@@ -544,7 +587,7 @@ h1, h2, h3, h4, h5 {
   min-height: 70px;
 }
 .partners .pill .ico { width: 22px; height: 22px; color: var(--oro-cusco); flex-shrink: 0; }
-.partners .pill em { font-style: italic; color: var(--oro-cusco); }
+.partners .pill em { font-style: italic; color: var(--accent-text); }
 
 /* ── Hamburger (hidden on desktop) ────────────────────────────────────── */
 .hamburger {
@@ -582,7 +625,7 @@ h1, h2, h3, h4, h5 {
   right: 0;
   bottom: 0;
   z-index: 998;
-  background: var(--header-bg, #fff);
+  background: var(--header-bg);
   overflow-y: auto;
   padding: 0;
   flex-direction: column;
@@ -601,7 +644,7 @@ h1, h2, h3, h4, h5 {
   border-bottom: 1px solid var(--rule);
   position: sticky;
   top: 0;
-  background: var(--header-bg, #fff);
+  background: var(--header-bg);
   z-index: 1;
 }
 .mobile-nav .mnav-links {
@@ -628,9 +671,9 @@ h1, h2, h3, h4, h5 {
 }
 .mobile-nav .mnav-links a:hover,
 .mobile-nav .mnav-links button:hover {
-  background: var(--paper-2, #F0E8D8);
+  background: var(--paper-2);
 }
-.mobile-nav .mnav-links a.active { color: var(--oro-cusco); }
+.mobile-nav .mnav-links a.active { color: var(--accent-text); }
 .mobile-nav .mnav-footer {
   padding: 20px 24px;
   display: flex;

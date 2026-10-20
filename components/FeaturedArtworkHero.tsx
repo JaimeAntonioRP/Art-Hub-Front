@@ -58,16 +58,16 @@ function PaintingContent({ artwork }: { artwork: Artwork }) {
           camera-controls="" auto-rotate="" ar=""
           ar-modes="webxr scene-viewer quick-look"
           shadow-intensity="1" exposure="0.9"
-          style={{ position:"absolute", inset:0, width:"100%", height:"100%", background:"#15110c" }}
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", background:"var(--azul-900)" }}
         />
       ) : (
-        <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", background:"#15110c" }}>
-          <div style={{ width:30, height:30, borderRadius:"50%", border:"2px solid rgba(237,227,204,0.15)", borderTopColor:"#CBA24A", animation:"pc-spin 0.8s linear infinite" }} />
+        <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", background:"var(--azul-900)" }}>
+          <div style={{ width:30, height:30, borderRadius:"50%", border:"2px solid rgba(239,230,213,0.15)", borderTopColor:"var(--oro-500)", animation:"pc-spin 0.8s linear infinite" }} />
         </div>
       )}
 
       {/* gradient overlay bottom */}
-      <div style={{ position:"absolute", inset:"55% 0 0 0", background:"linear-gradient(to bottom,transparent,rgba(10,8,5,0.72))", pointerEvents:"none" }} />
+      <div style={{ position:"absolute", inset:"55% 0 0 0", background:"linear-gradient(to bottom,transparent,rgba(13,27,42,0.72))", pointerEvents:"none" }} />
 
       {/* title label — top left */}
       <span className="label" style={{ maxWidth:"calc(100% - 110px)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
@@ -82,10 +82,10 @@ function PaintingContent({ artwork }: { artwork: Artwork }) {
           style={{
             position:"absolute", top:12, right:12,
             display:"inline-flex", alignItems:"center", gap:5,
-            background: view==="3d" ? "rgba(203,162,74,0.25)" : "rgba(20,17,12,0.72)",
+            background: view==="3d" ? "rgba(203,162,74,0.25)" : "rgba(13,27,42,0.72)",
             backdropFilter:"blur(6px)",
-            border:`1px solid ${view==="3d" ? "rgba(203,162,74,0.6)" : "rgba(237,227,204,0.25)"}`,
-            borderRadius:4, color: view==="3d" ? "#CBA24A" : "#EDE3CC",
+            border:`1px solid ${view==="3d" ? "rgba(203,162,74,0.6)" : "rgba(239,230,213,0.25)"}`,
+            borderRadius:4, color: view==="3d" ? "var(--oro-500)" : "var(--piedra-100)",
             fontSize:10, letterSpacing:"0.18em", textTransform:"uppercase",
             padding:"6px 10px", cursor:"pointer", fontFamily:"'Inter',sans-serif",
           }}
@@ -116,7 +116,7 @@ function PaintingContent({ artwork }: { artwork: Artwork }) {
             display:"inline-flex", alignItems:"center", gap:5,
             background:"rgba(203,162,74,0.15)", backdropFilter:"blur(6px)",
             border:"1px solid rgba(203,162,74,0.45)", borderRadius:4,
-            color:"#CBA24A", fontSize:10, letterSpacing:"0.12em", textTransform:"uppercase",
+            color:"var(--oro-300)", fontSize:10, letterSpacing:"0.12em", textTransform:"uppercase",
             padding:"7px 11px", textDecoration:"none", fontFamily:"'Inter',sans-serif",
             whiteSpace:"nowrap", flexShrink:0,
           }}

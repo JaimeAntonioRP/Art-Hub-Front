@@ -24,8 +24,8 @@
     font-size: clamp(44px, 5.4vw, 72px); line-height: 1.0;
     letter-spacing: -0.02em;
   }
-  .tech-hero h1 em { color: var(--oro-cusco); font-style: italic; }
-  .tech-hero p { color: #C9BFA9; margin: 20px 0 0; font-size: 16px; line-height: 1.65; max-width: 56ch; }
+  .tech-hero h1 em { color: var(--accent-text); font-style: italic; }
+  .tech-hero p { color: var(--piedra-300); margin: 20px 0 0; font-size: 16px; line-height: 1.65; max-width: 56ch; }
 
   .stack-card {
     background: var(--dark-2); border: 1px solid var(--rule-dark); border-radius: 14px;
@@ -43,15 +43,15 @@
   }
   .stack-row:last-child { border-bottom: 0; }
   .stack-row .ico {
-    width: 36px; height: 36px; border-radius: 10px; background: rgba(200,162,74,0.12);
-    color: var(--oro-cusco);
+    width: 36px; height: 36px; border-radius: 10px; background: rgba(203,162,74,0.12);
+    color: var(--accent-text);
     display: inline-flex; align-items: center; justify-content: center;
   }
   .stack-row .ico svg { width: 18px; height: 18px; }
   .stack-row b { display: block; color: var(--cream-on-dark); font-family: 'Inter', sans-serif; font-weight: 500; font-size: 14px; }
-  .stack-row span { color: #9E957F; font-size: 12.5px; }
+  .stack-row span { color: var(--piedra-300); font-size: 12.5px; }
   .stack-row .tag {
-    background: rgba(200,162,74,0.12); color: var(--oro-cusco);
+    background: rgba(203,162,74,0.12); color: var(--accent-text);
     padding: 4px 10px; border-radius: 999px;
     font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.04em;
   }
@@ -70,7 +70,7 @@
     background: var(--dark); color: var(--cream-on-dark); border-color: var(--dark);
   }
   .pillar-tab.active h5 { color: var(--cream-on-dark); }
-  .pillar-tab.active p { color: #C9BFA9; }
+  .pillar-tab.active p { color: var(--piedra-300); }
   .pillar-tab .num {
     width: 32px; height: 32px; border-radius: 50%;
     background: var(--oro-cusco); color: var(--dark);
@@ -92,13 +92,13 @@
     border-bottom: 1px solid var(--rule);
   }
   .pillar-block.flipped .copy { order: 2; }
-  .pillar-block .copy .eyebrow { color: var(--oro-cusco); }
+  .pillar-block .copy .eyebrow { color: var(--accent-text); }
   .pillar-block .copy h3 {
     margin: 14px 0 16px;
     font-family: 'Cormorant Garamond', serif; font-weight: 500;
     font-size: clamp(32px, 3.6vw, 44px); line-height: 1.05; letter-spacing: -0.02em;
   }
-  .pillar-block .copy h3 em { font-style: italic; color: var(--oro-cusco); }
+  .pillar-block .copy h3 em { font-style: italic; color: var(--accent-text); }
   .pillar-block .copy p { color: var(--ink-soft); font-size: 15.5px; line-height: 1.6; }
   .pillar-block .copy ul {
     list-style: none; padding: 0; margin: 24px 0 0;
@@ -110,7 +110,7 @@
   }
   .pillar-block .copy ul li .dot {
     width: 22px; height: 22px; border-radius: 50%;
-    background: rgba(200,162,74,0.16); color: var(--oro-cusco);
+    background: rgba(203,162,74,0.16); color: var(--accent-text);
     display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .pillar-block .copy ul li .dot svg { width: 12px; height: 12px; }
@@ -128,7 +128,7 @@
   .demo .badge-top {
     position: absolute; top: 16px; left: 16px;
     display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(20,17,12,0.78); border: 1px solid rgba(224,190,110,0.45);
+    background: rgba(13,27,42,0.78); border: 1px solid rgba(221,190,116,0.45);
     padding: 6px 12px; border-radius: 999px;
     font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
     color: var(--gold-on-dark); letter-spacing: 0.04em;
@@ -139,21 +139,21 @@
   /* — IA demo (overlay analysis on painting) */
   .demo.ia {
     background:
-      radial-gradient(circle at 35% 30%, rgba(232,196,140,0.45), transparent 55%),
+      radial-gradient(circle at 35% 30%, rgba(221,190,116,0.45), transparent 55%),
       linear-gradient(165deg, #2c1a10, #5c3520 30%, #a07040 60%, #d8b078);
   }
   .demo.ia .grid-overlay {
     position: absolute; inset: 24px;
     background-image:
-      linear-gradient(rgba(237,227,204,0.18) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(237,227,204,0.18) 1px, transparent 1px);
+      linear-gradient(rgba(239,230,213,0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(239,230,213,0.18) 1px, transparent 1px);
     background-size: 36px 36px;
   }
   .demo.ia .focus {
     position: absolute; left: 28%; top: 32%;
     width: 120px; height: 90px;
     border: 2px solid var(--oro-cusco);
-    box-shadow: 0 0 0 9999px rgba(20,17,12,0.32);
+    box-shadow: 0 0 0 9999px rgba(13,27,42,0.32);
   }
   .demo.ia .focus::before, .demo.ia .focus::after {
     content: ""; position: absolute; background: var(--oro-cusco);
@@ -162,23 +162,23 @@
   .demo.ia .focus::after  { left: -8px; top: -1px; width: 14px; height: 2px; }
   .demo.ia .readout {
     position: absolute; right: 18px; bottom: 18px;
-    background: rgba(20,17,12,0.82); border: 1px solid rgba(224,190,110,0.35);
+    background: rgba(13,27,42,0.82); border: 1px solid rgba(221,190,116,0.35);
     border-radius: 10px; padding: 14px 16px; min-width: 220px;
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
     color: var(--cream-on-dark);
   }
   .demo.ia .readout .ln { display: flex; justify-content: space-between; gap: 16px; padding: 3px 0; }
   .demo.ia .readout .ln b { color: var(--gold-on-dark); font-weight: 500; }
-  .demo.ia .readout .ok { color: #9bd28a; }
+  .demo.ia .readout .ok { color: var(--quenua-300); }
   .demo.ia .readout .head {
     text-transform: uppercase; letter-spacing: 0.22em;
     color: var(--gold-on-dark); margin-bottom: 8px; font-size: 10px;
-    border-bottom: 1px solid rgba(224,190,110,0.2); padding-bottom: 6px;
+    border-bottom: 1px solid rgba(221,190,116,0.2); padding-bottom: 6px;
   }
 
   /* — Blockchain demo (block chain explorer) */
   .demo.bc {
-    background: linear-gradient(160deg, #14110C 0%, #1A2138 100%);
+    background: linear-gradient(160deg, var(--azul-900) 0%, var(--azul-800) 100%);
     padding: 22px;
   }
   .demo.bc .chain {
@@ -187,38 +187,38 @@
     align-items: stretch;
   }
   .demo.bc .blk {
-    background: rgba(237,227,204,0.04); border: 1px solid rgba(224,190,110,0.25);
+    background: rgba(239,230,213,0.04); border: 1px solid rgba(221,190,116,0.25);
     border-radius: 8px; padding: 12px 14px;
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
     color: var(--cream-on-dark); position: relative;
   }
   .demo.bc .blk.current {
-    border-color: var(--oro-cusco); background: rgba(200,162,74,0.10);
-    box-shadow: 0 0 0 1px rgba(200,162,74,0.2);
+    border-color: var(--oro-cusco); background: rgba(203,162,74,0.10);
+    box-shadow: 0 0 0 1px rgba(203,162,74,0.2);
   }
   .demo.bc .blk .label { color: var(--gold-on-dark); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; }
-  .demo.bc .blk .hash { color: var(--oro-cusco); margin-top: 6px; word-break: break-all; line-height: 1.3; }
-  .demo.bc .blk .meta { margin-top: 8px; color: rgba(237,227,204,0.65); font-size: 10px; line-height: 1.5; }
+  .demo.bc .blk .hash { color: var(--accent-text); margin-top: 6px; word-break: break-all; line-height: 1.3; }
+  .demo.bc .blk .meta { margin-top: 8px; color: var(--piedra-300); font-size: 10px; line-height: 1.5; }
   .demo.bc .blk:not(:last-child)::after {
     content: ""; position: absolute; right: -10px; top: 50%; width: 12px; height: 1px; background: var(--oro-cusco);
     transform: translateY(-50%);
   }
   .demo.bc .header-row {
     display: flex; justify-content: space-between; align-items: center;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(237,227,204,0.7);
-    border-bottom: 1px dashed rgba(237,227,204,0.15); padding-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--piedra-300);
+    border-bottom: 1px dashed rgba(239,230,213,0.15); padding-bottom: 8px;
     margin-top: 36px;
   }
-  .demo.bc .header-row span.live { color: #9bd28a; }
+  .demo.bc .header-row span.live { color: var(--quenua-300); }
   .demo.bc .header-row span.live::before { content: "●"; margin-right: 6px; }
   .demo.bc .stats-mini {
     margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
   }
   .demo.bc .stats-mini .s {
-    background: rgba(237,227,204,0.06); border: 1px solid rgba(237,227,204,0.1);
+    background: rgba(239,230,213,0.06); border: 1px solid rgba(239,230,213,0.1);
     border-radius: 6px; padding: 8px 10px;
   }
-  .demo.bc .stats-mini .s .k { font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(237,227,204,0.5); }
+  .demo.bc .stats-mini .s .k { font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--piedra-300); }
   .demo.bc .stats-mini .s .v { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 22px; color: var(--gold-on-dark); }
 
   /* — AR demo (room with painting projected) */
@@ -235,20 +235,20 @@
   }
   .demo.ar .room::before {
     content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 32%;
-    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.55));
+    background: linear-gradient(180deg, transparent, rgba(13,27,42,0.55));
   }
   .demo.ar .room::after {
     content: ""; position: absolute; left: 0; right: 0; bottom: 32%;
-    height: 1px; background: rgba(237,227,204,0.15);
+    height: 1px; background: rgba(239,230,213,0.15);
   }
   .demo.ar .picframe {
     position: absolute; left: 30%; top: 18%;
     width: 40%; aspect-ratio: 4/5;
     border: 6px solid #3A2A1D; outline: 1px solid #5C432F;
     background:
-      radial-gradient(circle at 35% 30%, rgba(232,196,140,0.5), transparent 55%),
+      radial-gradient(circle at 35% 30%, rgba(221,190,116,0.5), transparent 55%),
       linear-gradient(165deg, #2c1a10, #5c3520 30%, #a07040 60%, #d8b078);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+    box-shadow: 0 14px 30px rgba(13,27,42,0.45);
   }
   .demo.ar .picframe::before {
     content: ""; position: absolute; inset: -4px;
@@ -266,7 +266,7 @@
 
   .demo.ar .ar-readout {
     position: absolute; right: 18px; bottom: 18px;
-    background: rgba(20,17,12,0.85); border: 1px solid rgba(224,190,110,0.35);
+    background: rgba(13,27,42,0.85); border: 1px solid rgba(221,190,116,0.35);
     border-radius: 10px; padding: 10px 14px;
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
     color: var(--cream-on-dark);
@@ -275,7 +275,7 @@
 
   /* — Forensics (multi-band stripes) */
   .demo.fr {
-    background: #14110C; padding: 22px;
+    background: var(--azul-900); padding: 22px;
     display: flex; flex-direction: column; gap: 12px;
   }
   .demo.fr h6 {
@@ -284,13 +284,13 @@
   }
   .demo.fr .strip {
     height: 38px; border-radius: 6px; position: relative; overflow: hidden;
-    border: 1px solid rgba(237,227,204,0.12);
+    border: 1px solid rgba(239,230,213,0.12);
   }
   .demo.fr .strip .label {
     position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    color: rgba(237,227,204,0.85); letter-spacing: 0.16em;
-    background: rgba(20,17,12,0.65); padding: 3px 8px; border-radius: 4px;
+    color: var(--piedra-100); letter-spacing: 0.16em;
+    background: rgba(13,27,42,0.65); padding: 3px 8px; border-radius: 4px;
   }
   .demo.fr .strip .value {
     position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
@@ -329,19 +329,19 @@
 
   /* Code blocks */
   .codecard {
-    background: #0E0C09; border: 1px solid var(--rule-dark); border-radius: 12px;
+    background: var(--azul-900); border: 1px solid var(--rule-dark); border-radius: 12px;
     overflow: hidden;
   }
   .codecard .hd {
     display: flex; justify-content: space-between; align-items: center;
-    background: #16130E; padding: 12px 18px;
+    background: var(--azul-800); padding: 12px 18px;
     border-bottom: 1px solid var(--rule-dark);
     font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
     color: var(--gold-on-dark); letter-spacing: 0.06em;
   }
   .codecard .hd .lights span {
     display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-    background: #4a3e2a; margin-right: 6px;
+    background: var(--piedra-600); margin-right: 6px;
   }
   .codecard pre {
     margin: 0; padding: 22px 24px;
@@ -353,7 +353,7 @@
   .codecard pre .str  { color: #d4b58a; }
   .codecard pre .key  { color: #a8c8b0; }
   .codecard pre .num  { color: #c89058; }
-  .codecard pre .cmt  { color: #6b6258; font-style: italic; }
+  .codecard pre .cmt  { color: var(--piedra-300); font-style: italic; }
 
   /* ── Responsivo ── */
   @media (max-width: 980px) {
@@ -377,6 +377,9 @@
     .spec-table .row.head { display: none; }
     .stack-card { padding: 18px; }
   }
+
+  /* Secciones navy: tokens de texto legibles sobre oscuro */
+  .tech-hero, .stack-card, .pillar-tab.active, .demo, .codecard { --accent-text: var(--oro-300); --text-muted: var(--piedra-300); --ink-soft: var(--piedra-300); }
 </style>
 </head>
 <body data-page="tecnologia">
@@ -398,7 +401,7 @@
         </p>
         <div style="display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap;">
           <a class="btn btn-gold btn-lg btn-arrow" href="Arthub - Como Funciona.html">Ver proceso completo</a>
-          <a class="btn btn-outline-light btn-lg" href="#stack" style="border-color: rgba(237,227,204,0.35);">Explorar el stack</a>
+          <a class="btn btn-outline-light btn-lg" href="#stack" style="border-color: rgba(239,230,213,0.35);">Explorar el stack</a>
         </div>
       </div>
 
@@ -818,7 +821,7 @@
       </div>
       <div class="actions">
         <a class="btn btn-gold btn-lg btn-arrow" href="Arthub - Catalogo.html" style="justify-content: space-between;">Explorar obras certificadas</a>
-        <a class="btn btn-outline-light btn-lg" href="#" style="justify-content: space-between; border-color: rgba(237,227,204,0.35);">
+        <a class="btn btn-outline-light btn-lg" href="#" style="justify-content: space-between; border-color: rgba(239,230,213,0.35);">
           Agendar demo técnica
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2 V6"/><path d="M8 2 V6"/><path d="M3 10 H21"/></svg>
         </a>
