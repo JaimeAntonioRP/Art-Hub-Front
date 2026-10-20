@@ -1,19 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { useAuth } from "@/components/AuthProvider";
-import { PANEL_BASE } from "@/lib/api";
+import { usePathname } from "next/navigation";
+import { createContext, useContext, useEffect, useState } from "react";
 import { isInternal, type NavLink, type SiteData } from "@/lib/content";
 
-const ROLE_LABEL: Record<string, string> = {
-  admin: "Administrador",
-  artista: "Artista",
-  comprador: "Comprador",
-};
-
-/** Ajustes del sitio que llegan de la API (Ajustes del sitio en el panel). */
+/**
+ * Encabezado y pie del sitio público. Todo el contenido viene de los Ajustes del
+ * sitio del panel (GET /api/site). El sitio es para vender: sin cuenta de usuario
+ * en el encabezado; el acceso de los artistas está en el pie.
+ */
 const SiteContext = createContext<SiteData | null>(null);
 
 function useSite(): SiteData {
@@ -33,7 +29,7 @@ function MenuLink({ link, className, onClick }: { link: NavLink; className?: str
   );
 }
 
-function Brand({ logoSize = 48 }: { logoSize?: number }) {
+function Brand({ logoSize = 44 }: { logoSize?: number }) {
   const { brand } = useSite();
   const [imgError, setImgError] = useState(false);
   return (
@@ -41,7 +37,7 @@ function Brand({ logoSize = 48 }: { logoSize?: number }) {
       {!imgError ? (
         <img
           src={brand.logo_url || "/logifinal.png"}
-          alt={brand.name}
+          alt=""
           style={{ height: logoSize, width: "auto", maxWidth: logoSize * 2.6, objectFit: "contain" }}
           onError={() => setImgError(true)}
         />
@@ -56,7 +52,8 @@ function Brand({ logoSize = 48 }: { logoSize?: number }) {
   );
 }
 
-function Logo({ size = 48 }: { size?: number }) {
+/** Logo de respaldo si la imagen configurada no carga. */
+function Logo({ size = 44 }: { size?: number }) {
   return (
     <svg viewBox="0 0 64 64" width={size} height={size} aria-hidden="true">
       <g stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none">
@@ -77,270 +74,6 @@ function Logo({ size = 48 }: { size?: number }) {
   );
 }
 
-/* ── User dropdown menu ─────────────────────────────────────────────────── */
-function UserMenu() {
-  const { user, logout } = useAuth();
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  // close on outside click
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
-  const handleLogout = async () => {
-    setOpen(false);
-    await logout();
-    router.push("/");
-  };
-
-  if (!user) return null;
-
-  const initials = user.name
-    .split(" ")
-    .slice(0, 2)
-    .map((w: string) => w[0])
-    .join("")
-    .toUpperCase();
-
-  const firstName = user.name.split(" ")[0];
-  const isAdmin = user.role === "admin";
-
-  return (
-    <div ref={ref} style={{ position: "relative" }}>
-      {/* trigger button */}
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          background: open ? "var(--paper-2)" : "transparent",
-          border: "1px solid var(--rule)",
-          borderRadius: 40,
-          padding: "5px 12px 5px 6px",
-          cursor: "pointer",
-          transition: "background 0.15s, border-color 0.15s",
-          color: "var(--ink)",
-        }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "var(--paper-2)"; }}
-        onMouseLeave={(e) => { if (!open) (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
-      >
-        {/* avatar circle */}
-        <span
-          style={{
-            width: 28,
-            height: 28,
-            borderRadius: "50%",
-            background: isAdmin ? "var(--oro-cusco)" : "var(--quenua)",
-            color: "var(--piedra-0)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 11,
-            fontWeight: 700,
-            fontFamily: "'Geist','Inter',sans-serif",
-            flexShrink: 0,
-            letterSpacing: "0.03em",
-          }}
-        >
-          {initials}
-        </span>
-
-        <span style={{ fontSize: 13, fontWeight: 500, fontFamily: "'Geist','Inter',sans-serif" }}>
-          {firstName}
-        </span>
-
-        {isAdmin && (
-          <span
-            style={{
-              fontSize: 9,
-              fontWeight: 700,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "var(--accent-text)",
-              fontFamily: "'Geist','Inter',sans-serif",
-              background: "rgba(203,162,74,0.1)",
-              border: "1px solid rgba(203,162,74,0.3)",
-              borderRadius: 10,
-              padding: "2px 6px",
-            }}
-          >
-            Admin
-          </span>
-        )}
-
-        {/* chevron */}
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          style={{
-            transition: "transform 0.2s",
-            transform: open ? "rotate(180deg)" : "rotate(0deg)",
-            color: "var(--ink-soft)",
-          }}
-        >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </button>
-
-      {/* dropdown panel */}
-      {open && (
-        <div
-          style={{
-            position: "absolute",
-            top: "calc(100% + 8px)",
-            right: 0,
-            minWidth: 200,
-            background: "var(--paper-card)",
-            border: "1px solid var(--rule)",
-            borderRadius: 10,
-            boxShadow: "0 8px 32px rgba(13,27,42,0.12)",
-            overflow: "hidden",
-            zIndex: 999,
-            animation: "dropdown-in 0.15s ease",
-          }}
-        >
-          <style>{`@keyframes dropdown-in { from { opacity:0; transform:translateY(-6px) } to { opacity:1; transform:translateY(0) } }`}</style>
-
-          {/* user info header */}
-          <div
-            style={{
-              padding: "14px 16px 12px",
-              borderBottom: "1px solid var(--rule)",
-              background: "var(--paper-2)",
-            }}
-          >
-            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)", fontFamily: "'Geist','Inter',sans-serif" }}>
-              {user.name}
-            </div>
-            <div style={{ fontSize: 11, color: "var(--ink-soft)", marginTop: 2, fontFamily: "'Geist','Inter',sans-serif" }}>
-              {user.email ?? ROLE_LABEL[user.role]}
-            </div>
-          </div>
-
-          {/* menu items */}
-          <div style={{ padding: "6px 0" }}>
-            {isAdmin && (
-              <a
-                href={`${PANEL_BASE}/admin`}
-                onClick={() => setOpen(false)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  padding: "9px 16px",
-                  fontSize: 13,
-                  color: "var(--ink)",
-                  textDecoration: "none",
-                  fontFamily: "'Geist','Inter',sans-serif",
-                  transition: "background 0.1s",
-                }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                </svg>
-                Panel de administración
-              </a>
-            )}
-
-            {user.role === "artista" && user.artist_panel_url && (
-              <a
-                href={user.artist_panel_url}
-                onClick={() => setOpen(false)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  padding: "9px 16px",
-                  fontSize: 13,
-                  color: "var(--ink)",
-                  textDecoration: "none",
-                  fontFamily: "'Geist','Inter',sans-serif",
-                  transition: "background 0.1s",
-                }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>
-                </svg>
-                Mi panel de artista
-              </a>
-            )}
-
-            <Link
-              href="/obras"
-              onClick={() => setOpen(false)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "9px 16px",
-                fontSize: 13,
-                color: "var(--ink)",
-                textDecoration: "none",
-                fontFamily: "'Geist','Inter',sans-serif",
-                transition: "background 0.1s",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-soft)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
-              </svg>
-              Mis obras
-            </Link>
-
-            <div style={{ height: 1, background: "var(--rule)", margin: "6px 0" }} />
-
-            <button
-              type="button"
-              onClick={handleLogout}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                width: "100%",
-                padding: "9px 16px",
-                fontSize: 13,
-                color: "var(--danger)",
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                fontFamily: "'Geist','Inter',sans-serif",
-                textAlign: "left",
-                transition: "background 0.1s",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "var(--danger-bg)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-              </svg>
-              Cerrar sesión
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
 export function SiteHeader({ site }: { site: SiteData }) {
   return (
     <SiteContext.Provider value={site}>
@@ -350,270 +83,69 @@ export function SiteHeader({ site }: { site: SiteData }) {
 }
 
 function HeaderContent() {
-  const { utility, header_menu } = useSite();
+  const { header_menu, header_cta } = useSite();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
-  const router = useRouter();
 
-  // close menu on route change
+  // Cierra el menú al cambiar de página y bloquea el scroll mientras está abierto.
   useEffect(() => { setMenuOpen(false); }, [pathname]);
-
-  // lock body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const handleMobileLogout = async () => {
-    setMenuOpen(false);
-    await logout();
-    router.push("/");
-  };
+  const isActive = (url: string) => url !== "/" && (pathname === url || pathname.startsWith(`${url}/`));
 
   return (
     <>
-      {/* sticky wrapper — inline style so it can't be overridden by any CSS */}
-      <div style={{ position: "sticky", top: 0, zIndex: 200, willChange: "transform" }}>
-        <div className="utility">
+      {/* sticky con estilo en línea para que ninguna hoja lo pise */}
+      <div style={{ position: "sticky", top: 0, zIndex: 200 }}>
+        <header className="site-header">
           <div className="wrap row">
-            <div>{utility.text}</div>
-            {utility.link_label && utility.link_url ? (
-              <div style={{ display: "flex", gap: 24 }}>
-                <MenuLink link={{ label: utility.link_label, url: utility.link_url }} />
-              </div>
-            ) : null}
+            <Brand />
+            <nav className="nav-links" aria-label="Principal">
+              {header_menu.map((n) => (
+                <MenuLink key={n.label + n.url} link={n} className={isActive(n.url) ? "active" : ""} />
+              ))}
+            </nav>
+            <div className="nav-aside">
+              {header_cta ? (
+                <MenuLink link={header_cta} className="btn btn-gold header-cta" />
+              ) : null}
+              <button
+                className={`hamburger${menuOpen ? " open" : ""}`}
+                onClick={() => setMenuOpen((v) => !v)}
+                aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+                aria-expanded={menuOpen}
+                type="button"
+              >
+                <span /><span /><span />
+              </button>
+            </div>
           </div>
-        </div>
-
-        <header className="site-header" style={{ position: "relative", zIndex: "auto" }}>
-        <div className="wrap row">
-          <Brand logoSize={48} />
-          <nav className="nav-links">
-            {header_menu.map((n) => (
-              <MenuLink key={n.label + n.url} link={n} className={pathname === n.url ? "active" : ""} />
-            ))}
-          </nav>
-          <div className="nav-aside">
-            <a className="lang" href="#" title="Idioma">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12 H22" />
-                <path d="M12 2 a16 16 0 0 1 0 20 a16 16 0 0 1 0 -20" />
-              </svg>
-              ES <span style={{ opacity: 0.6 }}>▾</span>
-            </a>
-
-            <span className="nav-auth-desktop" style={{ display: "contents" }}>
-              <UserMenuOrButtons />
-            </span>
-
-            {/* hamburger — shown on mobile via CSS */}
-            <button
-              className={`hamburger${menuOpen ? " open" : ""}`}
-              onClick={() => setMenuOpen((v) => !v)}
-              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-              type="button"
-            >
-              <span /><span /><span />
-            </button>
-          </div>
-        </div>
         </header>
-      </div>{/* /sticky wrapper */}
+      </div>
 
-      {/* ── Mobile full-screen nav ── */}
       <div className={`mobile-nav${menuOpen ? " open" : ""}`} style={{ zIndex: 998 }}>
-        {/* sticky top bar with brand + close */}
         <div className="mnav-header">
           <Brand logoSize={36} />
-          <button
-            type="button"
-            onClick={() => setMenuOpen(false)}
-            style={{
-              background: "transparent",
-              border: "1px solid var(--rule)",
-              borderRadius: 8,
-              width: 36,
-              height: 36,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              color: "var(--ink)",
-            }}
-            aria-label="Cerrar menú"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+          <button type="button" className="mnav-close" onClick={() => setMenuOpen(false)} aria-label="Cerrar menú">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
         </div>
-
-        {/* nav links */}
-        <nav className="mnav-links">
+        <nav className="mnav-links" aria-label="Principal">
           {header_menu.map((n) => (
-            <MenuLink
-              key={n.label + n.url}
-              link={n}
-              className={pathname === n.url ? "active" : ""}
-              onClick={() => setMenuOpen(false)}
-            />
+            <MenuLink key={n.label + n.url} link={n} className={isActive(n.url) ? "active" : ""} onClick={() => setMenuOpen(false)} />
           ))}
         </nav>
-
-        {/* auth section */}
-        <div className="mnav-footer">
-          {user ? (
-            <>
-              <div style={{
-                padding: "12px 0",
-                fontSize: 13,
-                color: "var(--ink-soft)",
-                fontFamily: "'Inter',sans-serif",
-              }}>
-                {user.name} · {ROLE_LABEL[user.role]}
-              </div>
-              {user.role === "admin" && (
-                <a
-                  href={`${PANEL_BASE}/admin`}
-                  onClick={() => setMenuOpen(false)}
-                  style={{
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    padding: "11px 16px", borderRadius: 8,
-                    border: "1px solid var(--rule)",
-                    fontSize: 14, fontWeight: 500,
-                    color: "var(--ink)", textDecoration: "none",
-                    fontFamily: "'Inter',sans-serif",
-                  }}
-                >
-                  Panel de administración
-                </a>
-              )}
-              {user.role === "artista" && user.artist_panel_url && (
-                <a
-                  href={user.artist_panel_url}
-                  onClick={() => setMenuOpen(false)}
-                  style={{
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    padding: "11px 16px", borderRadius: 8,
-                    border: "1px solid var(--rule)",
-                    fontSize: 14, fontWeight: 500,
-                    color: "var(--ink)", textDecoration: "none",
-                    fontFamily: "'Inter',sans-serif",
-                  }}
-                >
-                  Mi panel de artista
-                </a>
-              )}
-              <button
-                type="button"
-                onClick={handleMobileLogout}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  padding: "11px 16px", borderRadius: 8,
-                  border: "none", background: "var(--danger-bg)",
-                  fontSize: 14, fontWeight: 500,
-                  color: "var(--danger)", cursor: "pointer",
-                  fontFamily: "'Inter',sans-serif",
-                  width: "100%",
-                }}
-              >
-                Cerrar sesión
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  padding: "11px 16px", borderRadius: 8,
-                  border: "1px solid var(--rule)",
-                  fontSize: 14, fontWeight: 500,
-                  color: "var(--ink)", textDecoration: "none",
-                  fontFamily: "'Inter',sans-serif",
-                }}
-              >
-                Iniciar sesión
-              </Link>
-              <Link
-                href="/registro"
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  padding: "11px 16px", borderRadius: 8,
-                  border: "1px solid var(--oro-cusco)",
-                  background: "var(--oro-cusco)",
-                  fontSize: 14, fontWeight: 600,
-                  color: "var(--azul-900)", textDecoration: "none",
-                  fontFamily: "'Inter',sans-serif",
-                }}
-              >
-                Crear cuenta
-              </Link>
-            </>
-          )}
-        </div>
+        {header_cta ? (
+          <div className="mnav-footer">
+            <MenuLink link={header_cta} className="btn btn-gold btn-lg mnav-cta" onClick={() => setMenuOpen(false)} />
+          </div>
+        ) : null}
       </div>
-    </>
-  );
-}
-
-function UserMenuOrButtons() {
-  const { user, loading } = useAuth();
-
-  if (loading) return null;
-
-  if (user) return <UserMenu />;
-
-  return (
-    <>
-      <Link
-        href="/login"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          padding: "7px 16px",
-          fontSize: 13,
-          fontWeight: 500,
-          fontFamily: "'Geist','Inter',sans-serif",
-          border: "1px solid var(--rule)",
-          borderRadius: 6,
-          color: "var(--ink)",
-          background: "transparent",
-          textDecoration: "none",
-          whiteSpace: "nowrap",
-          transition: "background 0.15s, border-color 0.15s",
-        }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2)"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
-      >
-        Iniciar sesión
-      </Link>
-      <Link
-        href="/registro"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          padding: "7px 16px",
-          fontSize: 13,
-          fontWeight: 600,
-          fontFamily: "'Geist','Inter',sans-serif",
-          border: "1px solid var(--oro-cusco)",
-          borderRadius: 6,
-          color: "var(--azul-900)",
-          background: "var(--oro-cusco)",
-          textDecoration: "none",
-          whiteSpace: "nowrap",
-          transition: "opacity 0.15s",
-        }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.88"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
-      >
-        Crear cuenta
-      </Link>
     </>
   );
 }
@@ -632,7 +164,7 @@ export function SiteFooter({ site }: { site: SiteData }) {
         <div className="wrap">
           <div className="grid">
             <div>
-              <Brand logoSize={44} />
+              <Brand logoSize={40} />
               {footer.about ? <p className="about">{footer.about}</p> : null}
             </div>
             {footer.columns.map((column) => (

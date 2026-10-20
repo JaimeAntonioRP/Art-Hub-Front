@@ -7,7 +7,8 @@ export type NavLink = { label: string; url: string };
 export type SiteData = {
   brand: { name: string; tagline: string | null; logo_url: string | null };
   meta_description: string | null;
-  utility: { text: string | null; link_label: string | null; link_url: string | null };
+  /** Botón destacado del encabezado (p. ej. «Ver colección»). */
+  header_cta: NavLink | null;
   header_menu: NavLink[];
   footer: { about: string | null; columns: { title: string; links: NavLink[] }[]; copyright: string | null };
   contact: { email: string | null; phone: string | null; address: string | null };
@@ -28,7 +29,7 @@ export type FeaturedArtwork = Pick<
 >;
 
 export type Block =
-  | { type: "hero"; data: Buttons & { eyebrow?: string; title: string; highlight?: string; text?: string; image_url?: string; show_featured_artwork?: boolean; artworks?: FeaturedArtwork[] } }
+  | { type: "hero"; data: Buttons & { variant?: "grande" | "dividida"; eyebrow?: string; title: string; highlight?: string; text?: string; image_url?: string; show_featured_artwork?: boolean; artworks?: FeaturedArtwork[] } }
   | { type: "text"; data: { eyebrow?: string; title?: string; body: string } }
   | { type: "features"; data: { eyebrow?: string; title?: string; intro?: string; items: { icon?: string; title: string; text?: string }[] } }
   | { type: "steps"; data: { eyebrow?: string; title?: string; intro?: string; items: { title: string; text?: string }[] } }
@@ -47,8 +48,8 @@ const REVALIDATE_SECONDS = 60;
 const FALLBACK_SITE: SiteData = {
   brand: { name: "ArtHub", tagline: "Arte · Tecnología · Confianza", logo_url: "/logifinal.png" },
   meta_description: null,
-  utility: { text: null, link_label: null, link_url: null },
-  header_menu: [{ label: "Catálogo", url: "/obras" }, { label: "Artistas", url: "/artistas" }],
+  header_cta: { label: "Ver colección", url: "/obras" },
+  header_menu: [{ label: "Colección", url: "/obras" }, { label: "Artistas", url: "/artistas" }],
   footer: { about: null, columns: [], copyright: null },
   contact: { email: null, phone: null, address: null },
   social_links: [],
