@@ -97,7 +97,7 @@ export default function AdminMarcaPage() {
       </div>
 
       <div className="wrap" style={{ maxWidth: 620 }}>
-        <div style={{ background: "#fff", border: "1px solid var(--rule)", borderRadius: 12, padding: 28 }}>
+        <div style={{ background: "var(--piedra-0)", border: "1px solid var(--rule)", borderRadius: 12, padding: 28 }}>
           <div className="eyebrow">Identidad del sitio</div>
           <h2 className="serif" style={{ fontSize: 26, margin: "6px 0 18px" }}>
             Logo y marca
@@ -107,9 +107,9 @@ export default function AdminMarcaPage() {
           {message ? (
             <div
               style={{
-                background: "#EAF2E6",
-                border: "1px solid #7A846B55",
-                color: "#3D4A2E",
+                background: "var(--success-bg)",
+                border: "1px solid rgba(59,94,71,0.35)",
+                color: "var(--success)",
                 padding: "10px 12px",
                 borderRadius: 8,
                 fontSize: 13.5,
@@ -155,8 +155,8 @@ export default function AdminMarcaPage() {
                   style={{
                     marginTop: 10,
                     padding: "10px 12px",
-                    background: "#F5F0E8",
-                    border: "1px solid #CBA24A55",
+                    background: "var(--piedra-50)",
+                    border: "1px solid rgba(203,162,74,0.33)",
                     borderRadius: 8,
                     fontSize: 12,
                     lineHeight: 1.7,
@@ -172,9 +172,9 @@ export default function AdminMarcaPage() {
                   <br /><br />
                   <strong>Opción 2 — URL externa:</strong><br />
                   Sube la imagen a{" "}
-                  <a href="https://imgur.com" target="_blank" rel="noreferrer" style={{ color: "var(--oro-cusco)" }}>imgur.com</a>
+                  <a href="https://imgur.com" target="_blank" rel="noreferrer" style={{ color: "var(--accent-text)" }}>imgur.com</a>
                   {" "}o{" "}
-                  <a href="https://cloudinary.com" target="_blank" rel="noreferrer" style={{ color: "var(--oro-cusco)" }}>Cloudinary</a>
+                  <a href="https://cloudinary.com" target="_blank" rel="noreferrer" style={{ color: "var(--accent-text)" }}>Cloudinary</a>
                   {" "}y pega la URL directa (<code>https://...</code>).
                 </div>
                 <p className="muted" style={{ fontSize: 12, marginTop: 6 }}>
@@ -191,7 +191,7 @@ export default function AdminMarcaPage() {
                   gap: 12,
                   padding: 16,
                   borderRadius: 10,
-                  background: "#fff",
+                  background: "var(--piedra-0)",
                   border: "1px solid var(--rule)",
                   marginBottom: 18,
                 }}
@@ -212,7 +212,7 @@ export default function AdminMarcaPage() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      color: "#14110C",
+                      color: "var(--azul-900)",
                       fontFamily: "serif",
                       fontWeight: 700,
                     }}

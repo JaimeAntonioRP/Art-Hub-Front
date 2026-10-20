@@ -1,23 +1,25 @@
-  :root {
-    --bg: #F6F3EC;
-    --bg-alt: #EFEAE0;
-    --ink: #161412;
-    --ink-soft: #5C544B;
-    --rule: #1614121A;
-    --accent: #8A6A3B;   /* bronze */
-    --accent-soft: #B79866;
+  /* Variables propias de la landing, limitadas a su contenedor para no
+     pisar los tokens globales (--bg, --ink, --accent). Usan la paleta común. */
+  .landing-root {
+    --bg: var(--piedra-50);
+    --bg-alt: var(--piedra-100);
+    --ink: var(--azul-900);
+    --ink-soft: var(--piedra-600);
+    --rule: var(--piedra-200);
+    --accent: var(--oro-700);
+    --accent-soft: var(--oro-500);
+    background: var(--bg); color: var(--ink);
+    font-family: 'Spectral', Georgia, serif; font-weight: 400;
   }
-  html.dark {
-    --bg: #0E0D0B;
-    --bg-alt: #16140F;
-    --ink: #F1EBDF;
-    --ink-soft: #A89F8E;
-    --rule: #F1EBDF1A;
-    --accent: #C9A86A;
-    --accent-soft: #E0C58A;
+  html.dark .landing-root {
+    --bg: var(--azul-900);
+    --bg-alt: var(--azul-800);
+    --ink: var(--piedra-100);
+    --ink-soft: var(--piedra-300);
+    --rule: rgba(239,230,213,0.12);
+    --accent: var(--oro-300);
+    --accent-soft: var(--oro-100);
   }
-  html, body { background: var(--bg); color: var(--ink); }
-  body { font-family: 'Spectral', Georgia, serif; font-weight: 400; }
   .font-display { font-family: 'Jost', system-ui, sans-serif; }
   .ink-soft { color: var(--ink-soft); }
   .bg-alt { background: var(--bg-alt); }
@@ -35,7 +37,7 @@
         transparent 9px),
       linear-gradient(180deg, var(--bg-alt), color-mix(in oklab, var(--bg-alt), var(--ink) 6%));
   }
-  html.dark .placeholder-canvas {
+  html.dark .landing-root .placeholder-canvas {
     background:
       repeating-linear-gradient(135deg,
         rgba(255,255,255,0.04) 0px,
@@ -73,7 +75,7 @@
     transition: background .25s ease, color .25s ease, border-color .25s ease;
   }
   .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
-  html.dark .btn-primary:hover { color: #0E0D0B; }
+  html.dark .landing-root .btn-primary:hover { color: var(--azul-900); }
 
   .btn-ghost {
     background: transparent; color: var(--ink);

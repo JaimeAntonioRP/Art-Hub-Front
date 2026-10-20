@@ -74,14 +74,14 @@ function VideoPlayer() {
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0,
         padding: "28px 16px 14px",
-        background: "linear-gradient(to top, rgba(10,8,5,0.85), transparent)",
+        background: "linear-gradient(to top, rgba(13,27,42,0.85), transparent)",
         display: "flex", flexDirection: "column", gap: 8,
         opacity: playing && !hovered ? 0 : 1,
         transition: "opacity 0.3s ease",
       }}>
         {/* progress bar */}
         <div
-          style={{ width: "100%", height: 3, background: "rgba(237,227,204,0.2)", borderRadius: 99, cursor: "pointer", overflow: "hidden" }}
+          style={{ width: "100%", height: 3, background: "rgba(239,230,213,0.2)", borderRadius: 99, cursor: "pointer", overflow: "hidden" }}
           onClick={(e) => {
             const v = videoRef.current;
             if (!v) return;
@@ -90,15 +90,15 @@ function VideoPlayer() {
             v.currentTime = pct * v.duration;
           }}
         >
-          <div style={{ height: "100%", width: `${progress * 100}%`, background: "#CBA24A", borderRadius: 99, transition: "width 0.1s linear" }} />
+          <div style={{ height: "100%", width: `${progress * 100}%`, background: "var(--oro-500)", borderRadius: 99, transition: "width 0.1s linear" }} />
         </div>
 
         {/* caption + time */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ color: "rgba(237,227,204,0.75)", fontSize: 12, fontFamily: "'Inter','Geist',sans-serif" }}>
+          <span style={{ color: "var(--piedra-300)", fontSize: 12, fontFamily: "'Inter','Geist',sans-serif" }}>
             Visión computacional — análisis de pincelada
           </span>
-          <span style={{ fontSize: 11, color: "rgba(237,227,204,0.5)", fontFamily: "'Geist','Inter',sans-serif", fontVariantNumeric: "tabular-nums" }}>
+          <span style={{ fontSize: 11, color: "var(--piedra-300)", fontFamily: "'Geist','Inter',sans-serif", fontVariantNumeric: "tabular-nums" }}>
             {fmt(videoRef.current?.currentTime ?? 0)} / {duration ? fmt(duration) : "--:--"}
           </span>
         </div>

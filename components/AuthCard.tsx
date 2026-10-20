@@ -26,7 +26,7 @@ export function AuthCard({
             border: "1px solid var(--rule)",
             borderRadius: 12,
             padding: "40px 36px",
-            boxShadow: "0 14px 40px rgba(24,19,15,0.06)",
+            boxShadow: "0 14px 40px rgba(13,27,42,0.06)",
           }}
         >
           <div className="eyebrow" style={{ marginBottom: 12 }}>
@@ -71,7 +71,7 @@ export const inputStyle: React.CSSProperties = {
   padding: "12px 14px",
   border: "1px solid var(--rule-strong)",
   borderRadius: 8,
-  background: "#fff",
+  background: "var(--piedra-0)",
   color: "var(--ink)",
   font: "inherit",
   outline: "none",
@@ -90,9 +90,9 @@ export const labelStyle: React.CSSProperties = {
 export const fieldStyle: React.CSSProperties = { marginBottom: 18 };
 
 export const errorBoxStyle: React.CSSProperties = {
-  background: "#FBECE6",
-  border: "1px solid #C56A4A55",
-  color: "#7B2E18",
+  background: "var(--danger-bg)",
+  border: "1px solid rgba(147,70,42,0.35)",
+  color: "var(--danger)",
   padding: "10px 12px",
   borderRadius: 8,
   fontSize: 13.5,

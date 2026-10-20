@@ -54,7 +54,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
         position: "fixed",
         inset: 0,
         zIndex: 9999,
-        background: "rgba(0,0,0,0.92)",
+        background: "rgba(13,27,42,0.92)",
         backdropFilter: "blur(6px)",
         display: "flex",
         alignItems: "center",
@@ -74,7 +74,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
           maxHeight: "calc(100vh - 40px)",
           borderRadius: 16,
           overflow: "hidden",
-          boxShadow: "0 40px 120px rgba(0,0,0,0.85), 0 0 0 1px rgba(203,162,74,0.18)",
+          boxShadow: "0 40px 120px rgba(13,27,42,0.85), 0 0 0 1px rgba(203,162,74,0.18)",
           animation: "lbx-slide-up 0.32s cubic-bezier(.22,1,.36,1)",
         }}
       >
@@ -83,7 +83,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
           style={{
             flex: "0 0 58%",
             position: "relative",
-            background: "#0a0a0a",
+            background: "var(--azul-900)",
             overflow: "hidden",
           }}
         >
@@ -108,7 +108,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
             style={{
               position: "absolute",
               inset: "60% 0 0 0",
-              background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.7))",
+              background: "linear-gradient(to bottom, transparent, rgba(13,27,42,0.7))",
               pointerEvents: "none",
             }}
           />
@@ -122,7 +122,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                 left: 16,
                 background: "rgba(203,162,74,0.15)",
                 border: "1px solid rgba(203,162,74,0.55)",
-                color: "#CBA24A",
+                color: "var(--oro-300)",
                 fontSize: 9,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
@@ -142,7 +142,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
               position: "absolute",
               bottom: 20,
               left: 20,
-              color: "rgba(255,255,255,0.6)",
+              color: "var(--piedra-300)",
               fontSize: 11,
               letterSpacing: "0.12em",
               textTransform: "uppercase",
@@ -172,9 +172,10 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
 
         {/* ── RIGHT: details panel ─────────────────────────────────────────── */}
         <div
+          data-surface="dark"
           style={{
             flex: 1,
-            background: "#111",
+            background: "var(--azul-900)",
             borderLeft: "1px solid rgba(203,162,74,0.15)",
             display: "flex",
             flexDirection: "column",
@@ -193,8 +194,8 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
               zIndex: 10,
               alignSelf: "flex-end",
               margin: "16px 16px 0 0",
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.1)",
+              background: "rgba(239,230,213,0.06)",
+              border: "1px solid rgba(239,230,213,0.1)",
               borderRadius: "50%",
               width: 36,
               height: 36,
@@ -202,11 +203,11 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "rgba(255,255,255,0.7)",
+              color: "var(--piedra-300)",
               transition: "background 0.15s",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.12)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.06)"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(239,230,213,0.12)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(239,230,213,0.06)"; }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -220,7 +221,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                 fontSize: 11,
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: "#CBA24A",
+                color: "var(--oro-300)",
                 fontFamily: "'Geist', 'Inter', sans-serif",
                 marginBottom: 10,
               }}
@@ -235,7 +236,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                 fontSize: 36,
                 fontWeight: 600,
                 lineHeight: 1.15,
-                color: "#F0EAD6",
+                color: "var(--piedra-100)",
                 margin: "0 0 20px",
               }}
             >
@@ -275,7 +276,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
             </div>
 
             {/* divider */}
-            <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "0 0 22px" }} />
+            <div style={{ height: 1, background: "rgba(239,230,213,0.06)", margin: "0 0 22px" }} />
 
             {/* description */}
             <p
@@ -283,7 +284,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                 fontFamily: "'Geist', 'Inter', sans-serif",
                 fontSize: 15,
                 lineHeight: 1.72,
-                color: "rgba(240,234,214,0.72)",
+                color: "var(--piedra-300)",
                 margin: "0 0 28px",
               }}
             >
@@ -294,7 +295,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
             <StyleBlock artwork={artwork} />
 
             {/* divider */}
-            <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "0 0 22px" }} />
+            <div style={{ height: 1, background: "rgba(239,230,213,0.06)", margin: "0 0 22px" }} />
 
             {/* price + status */}
             <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 12 }}>
@@ -304,7 +305,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                     fontSize: 10,
                     letterSpacing: "0.14em",
                     textTransform: "uppercase",
-                    color: "rgba(255,255,255,0.35)",
+                    color: "var(--piedra-300)",
                     fontFamily: "'Geist', 'Inter', sans-serif",
                     marginBottom: 4,
                   }}
@@ -316,7 +317,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                     fontFamily: "'Cormorant Garamond', 'Playfair Display', serif",
                     fontSize: 32,
                     fontWeight: 600,
-                    color: "#CBA24A",
+                    color: "var(--oro-300)",
                     lineHeight: 1,
                   }}
                 >
@@ -332,9 +333,9 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                   fontFamily: "'Geist', 'Inter', sans-serif",
                   padding: "5px 12px",
                   borderRadius: 20,
-                  border: `1px solid ${artwork.availability === "disponible" ? "rgba(78,222,163,0.4)" : "rgba(255,100,80,0.4)"}`,
-                  color: artwork.availability === "disponible" ? "#4EDEA3" : "#FF6450",
-                  background: artwork.availability === "disponible" ? "rgba(78,222,163,0.08)" : "rgba(255,100,80,0.08)",
+                  border: `1px solid ${artwork.availability === "disponible" ? "rgba(143,181,155,0.4)" : "rgba(217,144,108,0.4)"}`,
+                  color: artwork.availability === "disponible" ? "var(--quenua-300)" : "var(--terracota-300)",
+                  background: artwork.availability === "disponible" ? "rgba(143,181,155,0.08)" : "rgba(217,144,108,0.08)",
                 }}
               >
                 {AVAILABILITY_LABEL[artwork.availability]}
@@ -355,7 +356,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                   gap: 10,
                 }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CBA24A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--oro-500)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                   <path d="m9 12 2 2 4-4"/>
                 </svg>
@@ -363,7 +364,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                   <div style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(203,162,74,0.7)", fontFamily: "'Geist','Inter',sans-serif", marginBottom: 2 }}>
                     Token de autenticidad
                   </div>
-                  <code style={{ fontSize: 11, color: "rgba(240,234,214,0.6)", wordBreak: "break-all", fontFamily: "monospace" }}>
+                  <code style={{ fontSize: 11, color: "var(--piedra-300)", wordBreak: "break-all", fontFamily: "monospace" }}>
                     {artwork.certificate.verification_token}
                   </code>
                 </div>
@@ -395,9 +396,9 @@ function MetaChip({
         gap: 5,
         padding: "4px 10px",
         borderRadius: 20,
-        background: gold ? "rgba(203,162,74,0.1)" : "rgba(255,255,255,0.06)",
-        border: `1px solid ${gold ? "rgba(203,162,74,0.3)" : "rgba(255,255,255,0.1)"}`,
-        color: gold ? "#CBA24A" : "rgba(240,234,214,0.65)",
+        background: gold ? "rgba(203,162,74,0.1)" : "rgba(239,230,213,0.06)",
+        border: `1px solid ${gold ? "rgba(203,162,74,0.3)" : "rgba(239,230,213,0.1)"}`,
+        color: gold ? "var(--oro-500)" : "rgba(239,230,213,0.65)",
         fontSize: 11,
         fontFamily: "'Geist', 'Inter', sans-serif",
         letterSpacing: "0.03em",
@@ -437,7 +438,7 @@ function StyleBlock({ artwork }: { artwork: Artwork }) {
           fontSize: 10,
           letterSpacing: "0.14em",
           textTransform: "uppercase",
-          color: "rgba(255,255,255,0.3)",
+          color: "var(--piedra-300)",
           fontFamily: "'Geist', 'Inter', sans-serif",
           marginBottom: 12,
         }}
@@ -450,7 +451,7 @@ function StyleBlock({ artwork }: { artwork: Artwork }) {
             <span
               style={{
                 fontSize: 11,
-                color: "rgba(255,255,255,0.3)",
+                color: "var(--piedra-300)",
                 fontFamily: "'Geist', 'Inter', sans-serif",
                 width: 80,
                 flexShrink: 0,
@@ -461,7 +462,7 @@ function StyleBlock({ artwork }: { artwork: Artwork }) {
             <span
               style={{
                 fontSize: 13,
-                color: "rgba(240,234,214,0.75)",
+                color: "var(--piedra-300)",
                 fontFamily: "'Geist', 'Inter', sans-serif",
                 lineHeight: 1.4,
               }}
@@ -472,10 +473,10 @@ function StyleBlock({ artwork }: { artwork: Artwork }) {
         ))}
         {artwork.dimensions && (
           <div style={{ display: "flex", gap: 12, alignItems: "baseline" }}>
-            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", fontFamily: "'Geist','Inter',sans-serif", width: 80, flexShrink: 0 }}>
+            <span style={{ fontSize: 11, color: "var(--piedra-300)", fontFamily: "'Geist','Inter',sans-serif", width: 80, flexShrink: 0 }}>
               Dimensiones
             </span>
-            <span style={{ fontSize: 13, color: "rgba(240,234,214,0.75)", fontFamily: "'Geist','Inter',sans-serif" }}>
+            <span style={{ fontSize: 13, color: "var(--piedra-300)", fontFamily: "'Geist','Inter',sans-serif" }}>
               {artwork.dimensions}
             </span>
           </div>

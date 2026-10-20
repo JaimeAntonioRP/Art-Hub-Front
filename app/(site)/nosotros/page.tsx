@@ -24,7 +24,7 @@ const TEAM: Member[] = [
     photo: "/equipo/johana.png",
     bio: "Lidera la visión estratégica de Arthub, conectando el arte cusqueño con mercados globales de inversión. Impulsa el crecimiento sostenible y la identidad de la plataforma.",
     institutions: ["UNSAAC", "UAUTONOMA", "Univ. Norbert Wiener", "PEI Consultores"],
-    color: "#CBA24A",
+    color: "var(--oro-500)",
   },
   {
     name: "Augusto García Peñalva",
@@ -33,7 +33,7 @@ const TEAM: Member[] = [
     photo: "/equipo/augusto.png",
     bio: "Máxima autoridad en curaduría y autenticación artística. Con formación en la UNADQTC, garantiza el rigor académico y cultural de cada obra certificada en Arthub.",
     institutions: ["UNADQTC", "Ministerio de Cultura Perú", "UNESCO"],
-    color: "#4F7A5E",
+    color: "var(--quenua-700)",
   },
   {
     name: "Manuel Ryu García",
@@ -42,7 +42,7 @@ const TEAM: Member[] = [
     photo: "/equipo/manuel.png",
     bio: "Dirige la estrategia de marca y posicionamiento internacional. Trabaja con organismos como ZEGEL y el DIRCETUR Cusco para amplificar el alcance del arte peruano.",
     institutions: ["Universidad del Pacífico", "ZEGEL", "DIRCETUR Cusco", "AXON", "PROM PERU"],
-    color: "#B8653B",
+    color: "var(--terracota-700)",
   },
   {
     name: "Rodriguez Phillco Jaime Antonio",
@@ -51,7 +51,7 @@ const TEAM: Member[] = [
     photo: "/equipo/jaime.png",
     bio: "Arquitecto del ecosistema tecnológico de Arthub. Diseña la infraestructura blockchain, los algoritmos de autenticación biométrica y la plataforma de tokenización de activos artísticos.",
     institutions: ["UNSAAC", "GEREDU", "JISA ADVENTURE", "JUMPER STUDIO AI"],
-    color: "#0D1B2A",
+    color: "var(--azul-900)",
   },
   {
     name: "Atauchi Mamani Jose Emilio",
@@ -60,11 +60,16 @@ const TEAM: Member[] = [
     photo: "/equipo/emilio.png",
     bio: "Co-responsable de la arquitectura técnica. Especialista en sistemas distribuidos e integración con redes de energía y datos. Experiencia en infraestructura crítica con Electro Sur Este.",
     institutions: ["UNSAAC", "Electro Sur Este"],
-    color: "#0D1B2A",
+    color: "var(--azul-900)",
   },
 ];
 
 /* ── MemberCard ──────────────────────────────────────────────────────────── */
+
+/** El oro de marca no alcanza contraste como texto sobre claro: usa su tono oscuro. */
+function textColor(color: string): string {
+  return color === "var(--oro-500)" ? "var(--accent-text)" : color;
+}
 
 function MemberCard({ member, featured }: { member: Member; featured?: boolean }) {
   const [hovered, setHovered] = useState(false);
@@ -75,8 +80,8 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
       onMouseLeave={() => setHovered(false)}
       style={{
         width: "100%",
-        background: "#FFFFFF",
-        border: `1px solid ${hovered ? member.color : "var(--rule, #E6D5BB)"}`,
+        background: "var(--piedra-0)",
+        border: `1px solid ${hovered ? member.color : "var(--rule)"}`,
         borderRadius: 16,
         overflow: "hidden",
         display: "flex",
@@ -86,7 +91,7 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
         boxSizing: "border-box" as const,
         transition: "box-shadow .3s, border-color .3s, transform .3s",
         boxShadow: hovered
-          ? `0 16px 40px rgba(13,27,42,0.13), 0 0 0 1px ${member.color}33`
+          ? `0 16px 40px rgba(13,27,42,0.13), 0 0 0 1px color-mix(in srgb, ${member.color} 20%, transparent)`
           : "0 2px 10px rgba(13,27,42,0.06)",
         transform: hovered ? "translateY(-5px)" : "none",
         padding: featured ? "36px 28px 28px" : "28px 22px 22px",
@@ -96,7 +101,7 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
       <div
         style={{
           background: member.color,
-          color: member.color === "#0D1B2A" ? "#EDE3CC" : "#14110C",
+          color: member.color === "var(--oro-500)" ? "var(--azul-900)" : "var(--piedra-0)",
           fontFamily: "'Inter', sans-serif",
           fontWeight: 800,
           fontSize: featured ? 13 : 12,
@@ -117,9 +122,9 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
           height: featured ? 140 : 110,
           borderRadius: "50%",
           overflow: "hidden",
-          border: `3px solid ${member.color}44`,
+          border: `3px solid color-mix(in srgb, ${member.color} 27%, transparent)`,
           marginBottom: 16,
-          background: "var(--arena, #EFE6D5)",
+          background: "var(--arena)",
           flexShrink: 0,
         }}
       >
@@ -137,8 +142,8 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
             el.style.display = "none";
             const parent = el.parentElement;
             if (parent) {
-              parent.style.background = `${member.color}22`;
-              parent.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:${featured ? 36 : 28}px;font-family:serif;color:${member.color};font-weight:700">${member.name.charAt(0)}</div>`;
+              parent.style.background = `color-mix(in srgb, ${member.color} 13%, transparent)`;
+              parent.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:${featured ? 36 : 28}px;font-family:serif;color:${textColor(member.color)};font-weight:700">${member.name.charAt(0)}</div>`;
             }
           }}
         />
@@ -151,7 +156,7 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
           fontSize: featured ? 20 : 17,
           lineHeight: 1.2,
           margin: "0 0 4px",
-          color: "var(--ink, #0D1B2A)",
+          color: "var(--ink)",
           textAlign: "center",
         }}
       >
@@ -163,7 +168,7 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
         style={{
           fontFamily: "'Inter', sans-serif",
           fontSize: 11.5,
-          color: member.color,
+          color: textColor(member.color),
           fontWeight: 600,
           letterSpacing: "0.06em",
           textTransform: "uppercase",
@@ -179,7 +184,7 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
         style={{
           fontFamily: "'Inter', sans-serif",
           fontSize: 13,
-          color: "var(--ink-soft, #6B7A8A)",
+          color: "var(--ink-soft)",
           lineHeight: 1.6,
           textAlign: "center",
           margin: "0 0 16px",
@@ -198,7 +203,7 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
             justifyContent: "center",
             marginTop: "auto",
             paddingTop: 14,
-            borderTop: "1px solid var(--rule, #E6D5BB)",
+            borderTop: "1px solid var(--rule)",
             width: "100%",
           }}
         >
@@ -208,9 +213,9 @@ function MemberCard({ member, featured }: { member: Member; featured?: boolean }
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 10.5,
-                color: "var(--ink-soft, #6B7A8A)",
-                background: "var(--arena, #EFE6D5)",
-                border: "1px solid var(--rule, #E6D5BB)",
+                color: "var(--ink-soft)",
+                background: "var(--arena)",
+                border: "1px solid var(--rule)",
                 padding: "3px 10px",
                 borderRadius: 99,
               }}
@@ -323,8 +328,9 @@ export default function NosotrosPage() {
 
       {/* ── MISIÓN STRIP ──────────────────────────────────────────────── */}
       <section
+        data-surface="dark"
         style={{
-          background: "var(--azul-profundo, #0D1B2A)",
+          background: "var(--azul-profundo)",
           padding: "64px 0",
         }}
       >
@@ -362,13 +368,13 @@ export default function NosotrosPage() {
               <div style={{ fontSize: 36, marginBottom: 12 }}>{icon}</div>
               <h3
                 className="serif"
-                style={{ color: "var(--oro-cusco, #CBA24A)", fontSize: 20, margin: "0 0 10px" }}
+                style={{ color: "var(--oro-300)", fontSize: 20, margin: "0 0 10px" }}
               >
                 {title}
               </h3>
               <p
                 style={{
-                  color: "rgba(237,227,204,0.7)",
+                  color: "var(--piedra-300)",
                   fontSize: 14,
                   lineHeight: 1.65,
                   margin: 0,

@@ -238,7 +238,7 @@ export default function AdminArtistasPage() {
         {/* formulario */}
         <div
           style={{
-            background: "#fff",
+            background: "var(--piedra-0)",
             border: "1px solid var(--rule)",
             borderRadius: 12,
             padding: 28,
@@ -254,9 +254,9 @@ export default function AdminArtistasPage() {
           {message ? (
             <div
               style={{
-                background: "#EAF2E6",
-                border: "1px solid #7A846B55",
-                color: "#3D4A2E",
+                background: "var(--success-bg)",
+                border: "1px solid rgba(59,94,71,0.35)",
+                color: "var(--success)",
                 padding: "10px 12px",
                 borderRadius: 8,
                 fontSize: 13.5,
@@ -341,11 +341,11 @@ export default function AdminArtistasPage() {
               )}
 
               {/* instrucciones */}
-              <div style={{ marginTop: 8, padding: "9px 12px", background: "#F5F0E8", border: "1px solid #CBA24A55", borderRadius: 8, fontSize: 12, lineHeight: 1.7, color: "var(--ink)" }}>
+              <div style={{ marginTop: 8, padding: "9px 12px", background: "var(--piedra-50)", border: "1px solid rgba(203,162,74,0.33)", borderRadius: 8, fontSize: 12, lineHeight: 1.7, color: "var(--ink)" }}>
                 <strong>¿Cómo agregar la foto?</strong><br />
                 <strong>Opción 1 (permanente):</strong> guarda la imagen como <code>public/artistas/nombre.jpg</code> en el proyecto, haz commit+push y escribe <code>/artistas/nombre.jpg</code> aquí.<br />
                 <strong>Opción 2:</strong> sube la foto a{" "}
-                <a href="https://imgur.com" target="_blank" rel="noreferrer" style={{ color: "var(--oro-cusco)" }}>imgur.com</a> y pega la URL directa.
+                <a href="https://imgur.com" target="_blank" rel="noreferrer" style={{ color: "var(--accent-text)" }}>imgur.com</a> y pega la URL directa.
               </div>
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18, fontSize: 14, cursor: "pointer" }}>
@@ -393,7 +393,7 @@ export default function AdminArtistasPage() {
                 <div
                   key={a.id}
                   style={{
-                    background: "#fff",
+                    background: "var(--piedra-0)",
                     border: "1px solid var(--rule)",
                     borderRadius: 10,
                     padding: 14,
@@ -415,7 +415,7 @@ export default function AdminArtistasPage() {
                   <div>
                     <div style={{ fontWeight: 500 }}>
                       {a.name}
-                      {a.featured ? <span style={{ color: "var(--oro-cusco)", marginLeft: 6 }}>★</span> : null}
+                      {a.featured ? <span style={{ color: "var(--accent-text)", marginLeft: 6 }}>★</span> : null}
                     </div>
                     <div className="kicker">{a.specialty}</div>
                     <div style={{ fontSize: 12, color: "var(--ink-soft)" }}>
@@ -438,7 +438,7 @@ export default function AdminArtistasPage() {
                       type="button"
                       onClick={() => handleDelete(a.id)}
                       className="btn btn-outline-dark"
-                      style={{ padding: "8px 12px", fontSize: 12, borderColor: "#C56A4A", color: "#C56A4A" }}
+                      style={{ padding: "8px 12px", fontSize: 12, borderColor: "var(--danger)", color: "var(--danger)" }}
                     >
                       Eliminar
                     </button>

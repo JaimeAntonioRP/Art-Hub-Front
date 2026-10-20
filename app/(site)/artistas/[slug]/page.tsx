@@ -27,16 +27,16 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
       style={{
         display: "flex",
         flexDirection: "column",
-        background: "var(--paper-card, #FFFFFF)",
-        border: "1px solid var(--rule, #E6D5BB)",
+        background: "var(--paper-card)",
+        border: "1px solid var(--rule)",
         borderRadius: 10,
         overflow: "hidden",
         textDecoration: "none",
         color: "inherit",
         transition: "box-shadow .25s, transform .25s",
         boxShadow: hovered
-          ? "0 12px 32px rgba(24,19,15,0.12)"
-          : "0 2px 8px rgba(24,19,15,0.04)",
+          ? "0 12px 32px rgba(13,27,42,0.12)"
+          : "0 2px 8px rgba(13,27,42,0.04)",
         transform: hovered ? "translateY(-3px)" : "none",
       }}
     >
@@ -45,7 +45,7 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
           position: "relative",
           aspectRatio: "4 / 3",
           overflow: "hidden",
-          background: "var(--arena, #EFE6D5)",
+          background: "var(--arena)",
         }}
       >
         <div
@@ -65,10 +65,10 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
               position: "absolute",
               top: 10,
               right: 10,
-              background: "rgba(20,17,12,0.7)",
+              background: "rgba(13,27,42,0.7)",
               backdropFilter: "blur(6px)",
-              border: "1px solid rgba(237,227,204,0.25)",
-              color: "#EDE3CC",
+              border: "1px solid rgba(239,230,213,0.25)",
+              color: "var(--piedra-100)",
               fontSize: 9,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
@@ -92,8 +92,8 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
           >
             <span
               style={{
-                background: "rgba(184,101,59,0.9)",
-                color: "#fff",
+                background: "rgba(147,70,42,0.92)",
+                color: "var(--piedra-0)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.14em",
@@ -122,7 +122,7 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontSize: 18,
-            color: "var(--oro-cusco, #CBA24A)",
+            color: "var(--accent-text)",
             marginTop: 6,
           }}
         >
@@ -178,7 +178,7 @@ export default function ArtistDetailPage() {
               style={{
                 aspectRatio: "3/4",
                 borderRadius: 12,
-                background: "var(--arena, #EFE6D5)",
+                background: "var(--arena)",
               }}
             />
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -189,7 +189,7 @@ export default function ArtistDetailPage() {
                     height: i === 0 ? 32 : 14,
                     width: `${w}%`,
                     borderRadius: 4,
-                    background: "var(--piedra-andina, #E6D5BB)",
+                    background: "var(--piedra-andina)",
                   }}
                 />
               ))}
@@ -209,8 +209,8 @@ export default function ArtistDetailPage() {
       {/* ── HERO / PROFILE ─────────────────────────────────────────────── */}
       <div
         style={{
-          background: "var(--arena, #EFE6D5)",
-          borderBottom: "1px solid var(--rule, #E6D5BB)",
+          background: "var(--arena)",
+          borderBottom: "1px solid var(--rule)",
         }}
       >
         <div
@@ -230,7 +230,7 @@ export default function ArtistDetailPage() {
               borderRadius: 12,
               overflow: "hidden",
               aspectRatio: "3/4",
-              background: "var(--piedra-andina, #E6D5BB)",
+              background: "var(--piedra-andina)",
               boxShadow: "0 8px 28px rgba(13,27,42,0.14)",
               flexShrink: 0,
             }}
@@ -252,7 +252,7 @@ export default function ArtistDetailPage() {
               href="/artistas"
               style={{
                 fontSize: 12,
-                color: "var(--ink-soft, #6B7A8A)",
+                color: "var(--ink-soft)",
                 textDecoration: "none",
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
@@ -270,8 +270,8 @@ export default function ArtistDetailPage() {
               <div
                 style={{
                   display: "inline-block",
-                  background: "rgba(203,162,74,0.18)",
-                  color: "#7A5E10",
+                  background: "var(--accent-subtle)",
+                  color: "var(--accent-text)",
                   border: "1px solid rgba(203,162,74,0.4)",
                   fontSize: 10,
                   fontWeight: 700,
@@ -292,7 +292,7 @@ export default function ArtistDetailPage() {
                 fontSize: "clamp(28px, 4vw, 48px)",
                 lineHeight: 1.1,
                 margin: "0 0 8px",
-                color: "var(--ink, #0D1B2A)",
+                color: "var(--ink)",
               }}
             >
               {artist.name}
@@ -303,7 +303,7 @@ export default function ArtistDetailPage() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 14,
-                  color: "var(--ink-soft, #6B7A8A)",
+                  color: "var(--ink-soft)",
                   margin: "0 0 16px",
                 }}
               >
@@ -324,8 +324,8 @@ export default function ArtistDetailPage() {
                 <div
                   key={label}
                   style={{
-                    background: "var(--marfil, #F7F2EB)",
-                    border: "1px solid var(--rule, #E6D5BB)",
+                    background: "var(--marfil)",
+                    border: "1px solid var(--rule)",
                     borderRadius: 8,
                     padding: "8px 14px",
                   }}
@@ -333,7 +333,7 @@ export default function ArtistDetailPage() {
                   <div
                     style={{
                       fontSize: 10,
-                      color: "var(--ink-soft, #6B7A8A)",
+                      color: "var(--ink-soft)",
                       letterSpacing: "0.1em",
                       textTransform: "uppercase",
                       fontFamily: "'Inter', sans-serif",
@@ -345,7 +345,7 @@ export default function ArtistDetailPage() {
                   <div
                     style={{
                       fontSize: 13.5,
-                      color: "var(--ink, #0D1B2A)",
+                      color: "var(--ink)",
                       fontFamily: "'Inter', sans-serif",
                       fontWeight: 500,
                     }}
@@ -361,7 +361,7 @@ export default function ArtistDetailPage() {
               style={{
                 fontSize: 15,
                 lineHeight: 1.7,
-                color: "var(--ink, #0D1B2A)",
+                color: "var(--ink)",
                 maxWidth: 640,
                 margin: 0,
               }}
@@ -381,7 +381,7 @@ export default function ArtistDetailPage() {
               fontSize: 26,
               fontWeight: 400,
               marginBottom: 32,
-              color: "var(--ink, #0D1B2A)",
+              color: "var(--ink)",
             }}
           >
             Obras de <em>{artist.name}</em>

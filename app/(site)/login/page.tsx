@@ -48,7 +48,7 @@ function LoginForm() {
       footer={
         <>
           ¿Aún no tienes cuenta?{" "}
-          <Link href="/registro" style={{ color: "var(--oro-cusco)" }}>
+          <Link href="/registro" style={{ color: "var(--accent-text)" }}>
             Crear cuenta
           </Link>
         </>

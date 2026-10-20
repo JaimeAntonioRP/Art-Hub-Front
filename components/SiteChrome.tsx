@@ -145,15 +145,15 @@ function UserMenu() {
           display: "flex",
           alignItems: "center",
           gap: 8,
-          background: open ? "var(--paper-2, #F0E8D8)" : "transparent",
-          border: "1px solid var(--rule, #D9CFBE)",
+          background: open ? "var(--paper-2)" : "transparent",
+          border: "1px solid var(--rule)",
           borderRadius: 40,
           padding: "5px 12px 5px 6px",
           cursor: "pointer",
           transition: "background 0.15s, border-color 0.15s",
-          color: "var(--ink, #0D1B2A)",
+          color: "var(--ink)",
         }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "var(--paper-2, #F0E8D8)"; }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "var(--paper-2)"; }}
         onMouseLeave={(e) => { if (!open) (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
       >
         {/* avatar circle */}
@@ -162,8 +162,8 @@ function UserMenu() {
             width: 28,
             height: 28,
             borderRadius: "50%",
-            background: isAdmin ? "var(--oro-cusco, #CBA24A)" : "var(--quenua, #5E8C5A)",
-            color: "#fff",
+            background: isAdmin ? "var(--oro-cusco)" : "var(--quenua)",
+            color: "var(--piedra-0)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -188,7 +188,7 @@ function UserMenu() {
               fontWeight: 700,
               letterSpacing: "0.1em",
               textTransform: "uppercase",
-              color: "var(--oro-cusco, #CBA24A)",
+              color: "var(--accent-text)",
               fontFamily: "'Geist','Inter',sans-serif",
               background: "rgba(203,162,74,0.1)",
               border: "1px solid rgba(203,162,74,0.3)",
@@ -227,10 +227,10 @@ function UserMenu() {
             top: "calc(100% + 8px)",
             right: 0,
             minWidth: 200,
-            background: "var(--paper-card, #FDFAF5)",
-            border: "1px solid var(--rule, #D9CFBE)",
+            background: "var(--paper-card)",
+            border: "1px solid var(--rule)",
             borderRadius: 10,
-            boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+            boxShadow: "0 8px 32px rgba(13,27,42,0.12)",
             overflow: "hidden",
             zIndex: 999,
             animation: "dropdown-in 0.15s ease",
@@ -243,7 +243,7 @@ function UserMenu() {
             style={{
               padding: "14px 16px 12px",
               borderBottom: "1px solid var(--rule)",
-              background: "var(--paper-2, #F5EDD8)",
+              background: "var(--paper-2)",
             }}
           >
             <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)", fontFamily: "'Geist','Inter',sans-serif" }}>
@@ -274,7 +274,7 @@ function UserMenu() {
                 onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco,#CBA24A)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
                 </svg>
                 Panel de administración
@@ -316,7 +316,7 @@ function UserMenu() {
                 width: "100%",
                 padding: "9px 16px",
                 fontSize: 13,
-                color: "#C0392B",
+                color: "var(--danger)",
                 background: "transparent",
                 border: "none",
                 cursor: "pointer",
@@ -324,7 +324,7 @@ function UserMenu() {
                 textAlign: "left",
                 transition: "background 0.1s",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#FEF0EE"; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "var(--danger-bg)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -491,9 +491,9 @@ export function SiteHeader() {
                 style={{
                   display: "flex", alignItems: "center", justifyContent: "center",
                   padding: "11px 16px", borderRadius: 8,
-                  border: "none", background: "#FEF0EE",
+                  border: "none", background: "var(--danger-bg)",
                   fontSize: 14, fontWeight: 500,
-                  color: "#C0392B", cursor: "pointer",
+                  color: "var(--danger)", cursor: "pointer",
                   fontFamily: "'Inter',sans-serif",
                   width: "100%",
                 }}
@@ -526,7 +526,7 @@ export function SiteHeader() {
                   border: "1px solid var(--oro-cusco)",
                   background: "var(--oro-cusco)",
                   fontSize: 14, fontWeight: 600,
-                  color: "#0D1B2A", textDecoration: "none",
+                  color: "var(--azul-900)", textDecoration: "none",
                   fontFamily: "'Inter',sans-serif",
                 }}
               >
@@ -558,15 +558,15 @@ function UserMenuOrButtons() {
           fontSize: 13,
           fontWeight: 500,
           fontFamily: "'Geist','Inter',sans-serif",
-          border: "1px solid var(--rule, #D9CFBE)",
+          border: "1px solid var(--rule)",
           borderRadius: 6,
-          color: "var(--ink, #0D1B2A)",
+          color: "var(--ink)",
           background: "transparent",
           textDecoration: "none",
           whiteSpace: "nowrap",
           transition: "background 0.15s, border-color 0.15s",
         }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2,#F0E8D8)"; }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2)"; }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
       >
         Iniciar sesión
@@ -580,10 +580,10 @@ function UserMenuOrButtons() {
           fontSize: 13,
           fontWeight: 600,
           fontFamily: "'Geist','Inter',sans-serif",
-          border: "1px solid var(--oro-cusco, #CBA24A)",
+          border: "1px solid var(--oro-cusco)",
           borderRadius: 6,
-          color: "#0D1B2A",
-          background: "var(--oro-cusco, #CBA24A)",
+          color: "var(--azul-900)",
+          background: "var(--oro-cusco)",
           textDecoration: "none",
           whiteSpace: "nowrap",
           transition: "opacity 0.15s",

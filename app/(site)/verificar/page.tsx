@@ -31,23 +31,23 @@ export default function VerificarPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <div style={{
-        background: "var(--dark, #0D1B2A)",
+      <div data-surface="dark" style={{
+        background: "var(--dark)",
         borderBottom: "1px solid rgba(239,230,213,0.1)",
         padding: "56px 0 44px",
         textAlign: "center",
       }}>
         <div className="wrap">
-          <span className="eyebrow" style={{ color: "var(--oro-cusco)" }}>Registro ArtHub</span>
+          <span className="eyebrow" style={{ color: "var(--oro-300)" }}>Registro ArtHub</span>
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif", fontWeight: 500,
             fontSize: "clamp(36px, 5.5vw, 64px)", lineHeight: 1.05,
-            color: "var(--cream-on-dark, #EFE6D5)", margin: "12px 0 14px",
+            color: "var(--cream-on-dark)", margin: "12px 0 14px",
             letterSpacing: "-0.02em",
           }}>
-            Verificar una <em style={{ color: "var(--oro-cusco)", fontStyle: "italic" }}>obra</em>
+            Verificar una <em style={{ color: "var(--oro-300)", fontStyle: "italic" }}>obra</em>
           </h1>
-          <p style={{ color: "#C9BFA9", fontSize: 16, maxWidth: "54ch", margin: "0 auto", lineHeight: 1.6 }}>
+          <p style={{ color: "var(--piedra-300)", fontSize: 16, maxWidth: "54ch", margin: "0 auto", lineHeight: 1.6 }}>
             Comprueba si una obra está registrada en ArtHub y consulta su información pública.
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function VerificarPage() {
       <section style={{ background: "var(--paper-2)", padding: "48px 0 80px" }}>
         <div className="wrap verify-grid">
           {/* formulario */}
-          <div style={{ background: "#fff", border: "1px solid var(--rule)", borderRadius: 12, padding: "28px 28px", height: "fit-content" }}>
+          <div style={{ background: "var(--piedra-0)", border: "1px solid var(--rule)", borderRadius: 12, padding: "28px 28px", height: "fit-content" }}>
             <div className="eyebrow">Código de verificación</div>
             <h2 className="serif" style={{ fontSize: 26, margin: "6px 0 8px" }}>Buscar registro</h2>
             <p className="muted" style={{ marginTop: 0, fontSize: 14, marginBottom: 24 }}>
@@ -95,7 +95,7 @@ export default function VerificarPage() {
               {STEPS.map(({ n, t, d, ico }) => (
                 <div key={n} style={{
                   display: "flex", gap: 16, alignItems: "flex-start",
-                  padding: "16px 18px", background: "#fff",
+                  padding: "16px 18px", background: "var(--piedra-0)",
                   border: "1px solid var(--rule)", borderRadius: 10,
                 }}>
                   <div style={{
@@ -103,7 +103,7 @@ export default function VerificarPage() {
                     background: "rgba(203,162,74,0.12)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco,#CBA24A)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <path d={ico}/>
                     </svg>
                   </div>

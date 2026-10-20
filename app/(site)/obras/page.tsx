@@ -50,7 +50,7 @@ function ArtworkCard({ a }: { a: Artwork }) {
             position: "absolute", top: 10, right: 10,
             background: "rgba(13,27,42,0.78)", backdropFilter: "blur(6px)",
             border: "1px solid rgba(203,162,74,0.5)",
-            color: "#CBA24A", fontSize: 9, fontWeight: 700,
+            color: "var(--oro-300)", fontSize: 9, fontWeight: 700,
             letterSpacing: "0.18em", textTransform: "uppercase",
             padding: "4px 8px", borderRadius: 4,
             fontFamily: "'Inter',sans-serif",
@@ -70,7 +70,7 @@ function ArtworkCard({ a }: { a: Artwork }) {
             fontSize: 10, fontWeight: 500, letterSpacing: "0.04em",
             color: "var(--ink)", fontFamily: "'Inter',sans-serif",
           }}>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco,#CBA24A)" strokeWidth="2.4" strokeLinecap="round">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="2.4" strokeLinecap="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               <path d="m9 12 2 2 4-4"/>
             </svg>
@@ -86,7 +86,7 @@ function ArtworkCard({ a }: { a: Artwork }) {
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
             <span style={{
-              background: "rgba(13,27,42,0.82)", color: "#EFE6D5",
+              background: "rgba(13,27,42,0.82)", color: "var(--piedra-100)",
               padding: "6px 14px", borderRadius: 6,
               fontSize: 11, fontWeight: 600, letterSpacing: "0.14em",
               textTransform: "uppercase", fontFamily: "'Inter',sans-serif",
@@ -107,13 +107,13 @@ function ArtworkCard({ a }: { a: Artwork }) {
         )}
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12 }}>
-          <strong style={{ color: "var(--oro-cusco)", fontSize: 17, fontFamily: "'Cormorant Garamond',serif", fontWeight: 500 }}>
+          <strong style={{ color: "var(--accent-text)", fontSize: 17, fontFamily: "'Cormorant Garamond',serif", fontWeight: 500 }}>
             {formatArtworkPrice(a)}
           </strong>
           <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
             {has3D && (
               <span title="Vista 3D y AR disponible">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco,#CBA24A)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2 2 7l10 5 10-5-10-5Z"/>
                   <path d="m2 17 10 5 10-5"/>
                   <path d="m2 12 10 5 10-5"/>
@@ -342,11 +342,11 @@ export default function CatalogoPage() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 24 }}>
               {[...Array(6)].map((_, i) => (
                 <div key={i} style={{ borderRadius: 12, overflow: "hidden", background: "var(--paper-card)", border: "1px solid var(--rule)" }}>
-                  <div style={{ aspectRatio: "4/3", background: "var(--piedra-andina,#E6D5BB)", animation: "pulse 1.4s ease-in-out infinite" }} />
+                  <div style={{ aspectRatio: "4/3", background: "var(--piedra-andina)", animation: "pulse 1.4s ease-in-out infinite" }} />
                   <div style={{ padding: 18 }}>
-                    <div style={{ height: 10, borderRadius: 4, background: "var(--piedra-andina,#E6D5BB)", width: "40%", marginBottom: 10 }} />
-                    <div style={{ height: 18, borderRadius: 4, background: "var(--piedra-andina,#E6D5BB)", width: "70%", marginBottom: 8 }} />
-                    <div style={{ height: 10, borderRadius: 4, background: "var(--piedra-andina,#E6D5BB)", width: "55%" }} />
+                    <div style={{ height: 10, borderRadius: 4, background: "var(--piedra-andina)", width: "40%", marginBottom: 10 }} />
+                    <div style={{ height: 18, borderRadius: 4, background: "var(--piedra-andina)", width: "70%", marginBottom: 8 }} />
+                    <div style={{ height: 10, borderRadius: 4, background: "var(--piedra-andina)", width: "55%" }} />
                   </div>
                 </div>
               ))}
