@@ -52,7 +52,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: `url(${artist.profile_image_url})`,
+            backgroundImage: `url(${artist.photo_url ?? ""})`,
             backgroundSize: "cover",
             backgroundPosition: "center top",
             transition: "transform .5s",

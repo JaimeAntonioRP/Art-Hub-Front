@@ -236,7 +236,7 @@ export default function ArtistDetailPage() {
             }}
           >
             <img
-              src={artist.profile_image_url}
+              src={artist.photo_url ?? "/placeholder-obra.svg"}
               alt={artist.name}
               style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
               onError={(e) => {

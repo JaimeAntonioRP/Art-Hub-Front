@@ -140,7 +140,7 @@ export default function AdminArtistasPage() {
       death_year: a.death_year ? String(a.death_year) : "",
       specialty: a.specialty,
       bio: a.bio,
-      profile_image_url: a.profile_image_url,
+      profile_image_url: a.profile_image_url ?? "",
       featured: a.featured,
     });
     setMessage(null);
@@ -404,7 +404,7 @@ export default function AdminArtistasPage() {
                   }}
                 >
                   <img
-                    src={a.profile_image_url}
+                    src={a.photo_url ?? "/placeholder-obra.svg"}
                     alt={a.name}
                     style={{ width: 64, height: 64, borderRadius: 8, objectFit: "cover", objectPosition: "center top", border: "1px solid var(--rule)" }}
                     onError={(e) => {

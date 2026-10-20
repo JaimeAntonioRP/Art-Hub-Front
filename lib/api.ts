@@ -98,8 +98,23 @@ export type Certificate = {
   created_at?: string;
 };
 
+export type Role = "admin" | "artista" | "comprador";
+
+export type ArtistStatus = "pendiente" | "observado" | "aprobado" | "rechazado" | "inactivo";
+
+export type AuthUser = {
+  id: number;
+  name: string;
+  email: string;
+  role: Role;
+  is_active: boolean;
+  /** Solo para artistas: estado del perfil y enlace a su panel. */
+  artist_status?: ArtistStatus | null;
+  artist_panel_url?: string;
+};
+
 export type AuthResponse = {
-  user: { id: number; name: string; email: string; role: "admin" | "artista" | "comprador" };
+  user: AuthUser;
   token: string;
 };
 
@@ -112,7 +127,9 @@ export type Artist = {
   death_year: number | null;
   specialty: string;
   bio: string;
-  profile_image_url: string;
+  profile_image_url: string | null;
+  /** URL lista para usar: rutas antiguas del sitio o archivos subidos desde el panel. */
+  photo_url: string | null;
   featured: boolean;
   total_obras?: number;
 };
@@ -176,7 +193,29 @@ export const api = {
     email: string;
     password: string;
     password_confirmation: string;
+    role?: "comprador" | "artista";
   }) => request<AuthResponse>("/register", { method: "POST", body: payload }),
+
+  forgotPassword: (email: string) =>
+    request<{ message: string }>("/forgot-password", { method: "POST", body: { email } }),
+
+  resetPassword: (payload: {
+    token: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+  }) => request<{ message: string }>("/reset-password", { method: "POST", body: payload }),
+
+  updateMe: (
+    token: string,
+    payload: Partial<{
+      name: string;
+      email: string;
+      current_password: string;
+      password: string;
+      password_confirmation: string;
+    }>,
+  ) => request<AuthUser>("/me", { method: "PUT", token, body: payload }),
 
   login: (payload: { email: string; password: string }) =>
     request<AuthResponse>("/login", { method: "POST", body: payload }),

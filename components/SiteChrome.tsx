@@ -281,6 +281,31 @@ function UserMenu() {
               </Link>
             )}
 
+            {user.role === "artista" && user.artist_panel_url && (
+              <a
+                href={user.artist_panel_url}
+                onClick={() => setOpen(false)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  padding: "9px 16px",
+                  fontSize: 13,
+                  color: "var(--ink)",
+                  textDecoration: "none",
+                  fontFamily: "'Geist','Inter',sans-serif",
+                  transition: "background 0.1s",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--paper-2)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--oro-cusco)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>
+                </svg>
+                Mi panel de artista
+              </a>
+            )}
+
             <Link
               href="/obras"
               onClick={() => setOpen(false)}
@@ -484,6 +509,22 @@ export function SiteHeader() {
                 >
                   Panel de administración
                 </Link>
+              )}
+              {user.role === "artista" && user.artist_panel_url && (
+                <a
+                  href={user.artist_panel_url}
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    padding: "11px 16px", borderRadius: 8,
+                    border: "1px solid var(--rule)",
+                    fontSize: 14, fontWeight: 500,
+                    color: "var(--ink)", textDecoration: "none",
+                    fontFamily: "'Inter',sans-serif",
+                  }}
+                >
+                  Mi panel de artista
+                </a>
               )}
               <button
                 type="button"
