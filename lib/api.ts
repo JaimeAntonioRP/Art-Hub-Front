@@ -39,34 +39,67 @@ async function request<T>(path: string, options: FetchOptions = {}): Promise<T> 
   return (await res.json()) as T;
 }
 
+export type ArtworkStatus =
+  | "borrador"
+  | "en_revision"
+  | "observado"
+  | "rechazado"
+  | "aprobado"
+  | "publicado"
+  | "despublicado";
+
+export type Availability = "disponible" | "reservada" | "vendida" | "no_venta";
+
+export const AVAILABILITY_LABEL: Record<Availability, string> = {
+  disponible: "Disponible",
+  reservada: "Reservada",
+  vendida: "Vendida",
+  no_venta: "No a la venta",
+};
+
+export type ArtworkImage = {
+  id: number;
+  kind: "principal" | "adicional" | "posterior" | "detalle" | "firma";
+  url: string;
+  position: number;
+  is_primary: boolean;
+};
+
 export type Artwork = {
   id: number;
+  code: string;
+  artist_id: number;
   title: string;
   artist_name: string;
-  price: string;
-  description: string;
+  price: string | null;
+  currency: "PEN" | "USD";
+  show_price: boolean;
+  description: string | null;
   technique?: string | null;
+  support?: string | null;
   year?: number | null;
   dimensions?: string | null;
-  image_url: string;
+  height_cm?: string | null;
+  width_cm?: string | null;
+  depth_cm?: string | null;
+  image_url: string | null;
+  images?: ArtworkImage[];
   model_3d_url: string | null;
-  status: "available" | "sold";
+  status: ArtworkStatus;
+  availability: Availability;
   certificate?: Certificate | null;
 };
 
 export type Certificate = {
   id: number;
   artwork_id: number;
-  biometric_hash: string;
-  match_percentage: string;
-  blockchain_tx_id: string | null;
-  contract_address: string | null;
   verification_token: string | null;
+  status: "vigente" | "anulado" | "reemplazado";
   created_at?: string;
 };
 
 export type AuthResponse = {
-  user: { id: number; name: string; email: string; role: string; wallet_address: string | null };
+  user: { id: number; name: string; email: string; role: "admin" | "artista" | "comprador" };
   token: string;
 };
 
@@ -143,7 +176,6 @@ export const api = {
     email: string;
     password: string;
     password_confirmation: string;
-    wallet_address?: string;
   }) => request<AuthResponse>("/register", { method: "POST", body: payload }),
 
   login: (payload: { email: string; password: string }) =>
@@ -186,24 +218,6 @@ export const api = {
       body: form,
     });
   },
-
-  verify: (token: string, artworkId: number, image: File) => {
-    const form = new FormData();
-    form.append("artwork_id", String(artworkId));
-    form.append("image", image);
-    return request<{
-      certificate: Certificate;
-      verification_result: { match_percentage: number; biometric_hash: string; engine?: string };
-      is_authentic: boolean;
-      fallback: boolean;
-    }>("/verify", { method: "POST", token, body: form });
-  },
-
-  purchase: (token: string, artworkId: number) =>
-    request<{ message: string; artwork: Artwork; blockchain_tx_id: string }>(
-      "/purchase",
-      { method: "POST", token, body: { artwork_id: artworkId } },
-    ),
 };
 
 export { API_BASE };

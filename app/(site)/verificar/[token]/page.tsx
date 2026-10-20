@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
-import { api, type Certificate, type Artwork } from "@/lib/api";
+import { api, AVAILABILITY_LABEL, type Certificate, type Artwork } from "@/lib/api";
 
 const PLACEHOLDER = "/placeholder-obra.svg";
 
@@ -37,8 +37,7 @@ export default function VerificarTokenPage({
       .finally(() => setLoading(false));
   }, [token]);
 
-  const matchPct = cert ? Number(cert.match_percentage) : 0;
-  const authentic = matchPct >= 85;
+  const vigente = cert?.status === "vigente";
 
   const [origin, setOrigin] = useState("");
   useEffect(() => { setOrigin(window.location.origin); }, []);
@@ -85,7 +84,7 @@ export default function VerificarTokenPage({
             El token de verificación no corresponde a ningún certificado
             registrado en nuestra plataforma.
           </p>
-          <Link href="/catalogo" className="btn btn-gold">
+          <Link href="/obras" className="btn btn-gold">
             Ver catálogo
           </Link>
         </div>
@@ -98,13 +97,13 @@ export default function VerificarTokenPage({
       <div className="wrap" style={{ maxWidth: 780 }}>
         {/* encabezado */}
         <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div className="eyebrow">Verificación de autenticidad</div>
+          <div className="eyebrow">Verificación ArtHub</div>
           <h1 className="serif" style={{ fontSize: 38, margin: "8px 0 6px" }}>
-            Certificado Digital
+            Registro de la obra
           </h1>
           <p className="muted" style={{ maxWidth: 480, margin: "0 auto" }}>
-            Este certificado es emitido por Arthub tras un análisis biométrico
-            por IA y queda vinculado de forma permanente a la obra.
+            Este registro confirma que la obra existe en ArtHub y muestra su
+            información pública.
           </p>
         </div>
 
@@ -149,12 +148,12 @@ export default function VerificarTokenPage({
                 textTransform: "uppercase",
               }}
             >
-              Arthub · Certificado de Autenticidad
+              ArtHub · Registro de obra
             </span>
             <span
               style={{
                 marginLeft: "auto",
-                background: authentic ? "#2D5016" : "#7B2E18",
+                background: vigente ? "#2D5016" : "#7B2E18",
                 color: "#fff",
                 fontSize: 12,
                 padding: "4px 14px",
@@ -163,7 +162,7 @@ export default function VerificarTokenPage({
                 letterSpacing: "0.05em",
               }}
             >
-              {authentic ? "AUTÉNTICO" : "EN REVISIÓN"}
+              {vigente ? "VIGENTE" : "ANULADO"}
             </span>
           </div>
 
@@ -179,7 +178,7 @@ export default function VerificarTokenPage({
             {/* columna izquierda — obra */}
             <div>
               <img
-                src={artwork.image_url}
+                src={artwork.image_url ?? PLACEHOLDER}
                 alt={artwork.title}
                 style={{
                   width: "100%",
@@ -215,67 +214,33 @@ export default function VerificarTokenPage({
 
             {/* columna derecha — datos del certificado */}
             <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              {/* score */}
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "20px 0",
-                  border: "1px solid var(--rule)",
-                  borderRadius: 12,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 52,
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontWeight: 700,
-                    color: "var(--oro-cusco, #CBA24A)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {matchPct.toFixed(1)}
-                  <span style={{ fontSize: 22 }}>%</span>
-                </div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: "var(--ink-soft)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    marginTop: 6,
-                  }}
-                >
-                  Coincidencia biométrica IA
-                </div>
-              </div>
-
-              {/* hash */}
-              <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    color: "var(--ink-soft)",
-                    marginBottom: 4,
-                  }}
-                >
-                  Hash biométrico SHA-256
-                </div>
-                <code
-                  style={{
-                    fontSize: 11,
-                    wordBreak: "break-all",
-                    background: "var(--paper-2)",
-                    padding: "8px 10px",
-                    borderRadius: 8,
-                    display: "block",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {cert.biometric_hash}
-                </code>
-              </div>
+              {/* ficha registrada */}
+              <dl style={{ margin: 0, display: "grid", gap: 12 }}>
+                {[
+                  ["Código ArtHub", artwork.code],
+                  ["Técnica", artwork.technique],
+                  ["Año", artwork.year],
+                  ["Dimensiones", artwork.dimensions],
+                  ["Disponibilidad", AVAILABILITY_LABEL[artwork.availability]],
+                ]
+                  .filter(([, value]) => value)
+                  .map(([label, value]) => (
+                    <div key={String(label)}>
+                      <dt
+                        style={{
+                          fontSize: 11,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                          color: "var(--ink-soft)",
+                          marginBottom: 2,
+                        }}
+                      >
+                        {label}
+                      </dt>
+                      <dd style={{ margin: 0, fontSize: 14 }}>{value}</dd>
+                    </div>
+                  ))}
+              </dl>
 
               {/* token */}
               <div>
@@ -304,37 +269,8 @@ export default function VerificarTokenPage({
                 </code>
               </div>
 
-              {/* tx blockchain */}
-              {cert.blockchain_tx_id ? (
-                <div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "var(--ink-soft)",
-                      marginBottom: 4,
-                    }}
-                  >
-                    TX Blockchain
-                  </div>
-                  <code
-                    style={{
-                      fontSize: 11,
-                      wordBreak: "break-all",
-                      background: "var(--paper-2)",
-                      padding: "8px 10px",
-                      borderRadius: 8,
-                      display: "block",
-                    }}
-                  >
-                    {cert.blockchain_tx_id}
-                  </code>
-                </div>
-              ) : null}
-
               <div style={{ fontSize: 12, color: "var(--ink-soft)" }}>
-                Emitido el {formatDate(cert.created_at)}
+                Registrado el {formatDate(cert.created_at)}
               </div>
             </div>
           </div>
@@ -368,8 +304,8 @@ export default function VerificarTokenPage({
                 Verificación QR
               </div>
               <p className="muted" style={{ fontSize: 12, margin: 0, maxWidth: 380 }}>
-                Escanea el código QR o comparte este enlace para verificar la
-                autenticidad de la obra en cualquier dispositivo.
+                Escanea el código QR o comparte este enlace para consultar el
+                registro de la obra desde cualquier dispositivo.
               </p>
               <code
                 style={{ fontSize: 11, color: "var(--oro-cusco)", marginTop: 6, display: "block" }}
@@ -381,7 +317,7 @@ export default function VerificarTokenPage({
         </div>
 
         <div style={{ textAlign: "center", marginTop: 28 }}>
-          <Link href="/catalogo" className="btn btn-outline-dark">
+          <Link href="/obras" className="btn btn-outline-dark">
             ← Volver al catálogo
           </Link>
         </div>

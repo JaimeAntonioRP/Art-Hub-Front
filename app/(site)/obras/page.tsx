@@ -2,16 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { api, type Artwork } from "@/lib/api";
-
-function formatPrice(value: string | number): string {
-  const num = typeof value === "string" ? Number(value) : value;
-  return new Intl.NumberFormat("es-PE", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(num);
-}
+import { api, AVAILABILITY_LABEL, type Artwork } from "@/lib/api";
+import { formatArtworkPrice } from "@/lib/format";
 
 /* ── Artwork card ─────────────────────────────────────────────────────── */
 function ArtworkCard({ a }: { a: Artwork }) {
@@ -43,7 +35,7 @@ function ArtworkCard({ a }: { a: Artwork }) {
       {/* imagen */}
       <div style={{ position: "relative", aspectRatio: "4 / 3", flexShrink: 0 }}>
         <img
-          src={a.image_url}
+          src={a.image_url ?? "/placeholder-obra.svg"}
           alt={a.title}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           onError={(e) => {
@@ -87,7 +79,7 @@ function ArtworkCard({ a }: { a: Artwork }) {
         )}
 
         {/* sold overlay */}
-        {a.status === "sold" && (
+        {a.availability !== "disponible" && (
           <div style={{
             position: "absolute", inset: 0,
             background: "rgba(13,27,42,0.45)",
@@ -98,7 +90,7 @@ function ArtworkCard({ a }: { a: Artwork }) {
               padding: "6px 14px", borderRadius: 6,
               fontSize: 11, fontWeight: 600, letterSpacing: "0.14em",
               textTransform: "uppercase", fontFamily: "'Inter',sans-serif",
-            }}>Vendida</span>
+            }}>{AVAILABILITY_LABEL[a.availability]}</span>
           </div>
         )}
       </div>
@@ -116,7 +108,7 @@ function ArtworkCard({ a }: { a: Artwork }) {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12 }}>
           <strong style={{ color: "var(--oro-cusco)", fontSize: 17, fontFamily: "'Cormorant Garamond',serif", fontWeight: 500 }}>
-            {formatPrice(a.price)}
+            {formatArtworkPrice(a)}
           </strong>
           <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
             {has3D && (
@@ -178,9 +170,9 @@ export default function CatalogoPage() {
     if (artist !== "all") list = list.filter((a) => a.artist_name === artist);
     if (only3D) list = list.filter((a) => Boolean(a.model_3d_url));
     if (onlyCert) list = list.filter((a) => Boolean(a.certificate));
-    if (onlyAvail) list = list.filter((a) => a.status === "available");
-    if (priceMin) list = list.filter((a) => Number(a.price) >= Number(priceMin));
-    if (priceMax) list = list.filter((a) => Number(a.price) <= Number(priceMax));
+    if (onlyAvail) list = list.filter((a) => a.availability === "disponible");
+    if (priceMin) list = list.filter((a) => a.price !== null && Number(a.price) >= Number(priceMin));
+    if (priceMax) list = list.filter((a) => a.price !== null && Number(a.price) <= Number(priceMax));
 
     if (sort === "price_asc") list.sort((a, b) => Number(a.price) - Number(b.price));
     else if (sort === "price_desc") list.sort((a, b) => Number(b.price) - Number(a.price));
@@ -212,8 +204,8 @@ export default function CatalogoPage() {
             Catálogo de <em>Obras Maestras</em>
           </h1>
           <p style={{ color: "var(--ink-soft)", fontSize: 15.5, maxWidth: "62ch", margin: 0, lineHeight: 1.6 }}>
-            Cada obra ha sido autenticada biométricamente y certificada en blockchain.
-            Adquiere arte cusqueño con respaldo tecnológico y trazabilidad completa.
+            Obras de artistas cusqueños revisadas por ArtHub, con su ficha técnica e
+            información del artista. Solicita información sobre cualquier pieza.
           </p>
         </div>
       </div>

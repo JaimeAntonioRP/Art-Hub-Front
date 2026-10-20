@@ -44,7 +44,7 @@ function LoginForm() {
   return (
     <AuthCard
       title="Iniciar sesión"
-      subtitle="Accede a tu cuenta de inversionista o administrador."
+      subtitle="Accede a tu cuenta de ArtHub."
       footer={
         <>
           ¿Aún no tienes cuenta?{" "}

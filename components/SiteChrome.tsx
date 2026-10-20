@@ -6,13 +6,18 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { api, type SiteSettings } from "@/lib/api";
 
+const ROLE_LABEL: Record<string, string> = {
+  admin: "Administrador",
+  artista: "Artista",
+  comprador: "Comprador",
+};
+
 const NAV = [
   { label: "Catálogo", href: "/obras" },
   { label: "Verificar", href: "/verificar" },
   { label: "Cómo funciona", href: "/como-funciona" },
   { label: "Tecnología", href: "/tecnologia" },
   { label: "Artistas", href: "/artistas" },
-  { label: "Inversionistas", href: "/inversionistas" },
   { label: "Nosotros", href: "/nosotros" },
 ];
 
@@ -245,7 +250,7 @@ function UserMenu() {
               {user.name}
             </div>
             <div style={{ fontSize: 11, color: "var(--ink-soft)", marginTop: 2, fontFamily: "'Geist','Inter',sans-serif" }}>
-              {user.email ?? (isAdmin ? "Administrador" : "Inversionista")}
+              {user.email ?? ROLE_LABEL[user.role]}
             </div>
           </div>
 
@@ -363,8 +368,7 @@ export function SiteHeader() {
           <div className="wrap row">
             <div>Cusco · Lima · Miami · Zürich</div>
             <div style={{ display: "flex", gap: 24 }}>
-              <span>Próxima cohorte · 14 Jun 2026</span>
-              <Link href="/ventanas">↩ Volver al índice</Link>
+              <Link href="/verificar">Verificar una obra</Link>
             </div>
           </div>
         </div>
@@ -463,7 +467,7 @@ export function SiteHeader() {
                 color: "var(--ink-soft)",
                 fontFamily: "'Inter',sans-serif",
               }}>
-                {user.name} · {user.role === "admin" ? "Administrador" : "Inversionista"}
+                {user.name} · {ROLE_LABEL[user.role]}
               </div>
               {user.role === "admin" && (
                 <Link
@@ -612,7 +616,6 @@ export function SiteFooter() {
               <li><Link href="/como-funciona">Cómo funciona</Link></li>
               <li><Link href="/tecnologia">Tecnología</Link></li>
               <li><Link href="/artistas">Artistas</Link></li>
-              <li><Link href="/inversionistas">Inversionistas</Link></li>
               <li><Link href="/nosotros">Nosotros</Link></li>
             </ul>
           </div>
@@ -621,8 +624,7 @@ export function SiteFooter() {
             <ul>
               <li><a href="#">Preguntas frecuentes</a></li>
               <li><a href="#">Atención al cliente</a></li>
-              <li><a href="#">Verificar obra</a></li>
-              <li><a href="#">Métodos de pago</a></li>
+              <li><Link href="/verificar">Verificar obra</Link></li>
             </ul>
           </div>
           <div>
@@ -631,7 +633,6 @@ export function SiteFooter() {
               <li><a href="#">Términos y condiciones</a></li>
               <li><a href="#">Política de privacidad</a></li>
               <li><a href="#">Política de cookies</a></li>
-              <li><a href="#">Cumplimiento KYC / AML</a></li>
             </ul>
           </div>
           <div>
@@ -640,7 +641,6 @@ export function SiteFooter() {
               <li><a href="mailto:info@arthub.pe">info@arthub.pe</a></li>
               <li>+51 84 000 000</li>
               <li>Cusco, Perú</li>
-              <li><a href="#">Mesa privada (Zürich)</a></li>
             </ul>
           </div>
         </div>
