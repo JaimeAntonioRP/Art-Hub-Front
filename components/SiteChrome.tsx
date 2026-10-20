@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
-import { api, type SiteSettings } from "@/lib/api";
+import { PANEL_BASE } from "@/lib/api";
+import { isInternal, type NavLink, type SiteData } from "@/lib/content";
 
 const ROLE_LABEL: Record<string, string> = {
   admin: "Administrador",
@@ -12,59 +13,35 @@ const ROLE_LABEL: Record<string, string> = {
   comprador: "Comprador",
 };
 
-const NAV = [
-  { label: "Catálogo", href: "/obras" },
-  { label: "Verificar", href: "/verificar" },
-  { label: "Cómo funciona", href: "/como-funciona" },
-  { label: "Tecnología", href: "/tecnologia" },
-  { label: "Artistas", href: "/artistas" },
-  { label: "Nosotros", href: "/nosotros" },
-];
+/** Ajustes del sitio que llegan de la API (Ajustes del sitio en el panel). */
+const SiteContext = createContext<SiteData | null>(null);
 
-/* caché a nivel de módulo para no re-pedir settings en cada render */
-let settingsCache: SiteSettings | null = null;
-let settingsPromise: Promise<SiteSettings> | null = null;
-
-/** Llama a esto después de guardar settings en admin para forzar re-fetch */
-export function clearSettingsCache() {
-  settingsCache = null;
-  settingsPromise = null;
-  if (typeof window !== "undefined") {
-    window.dispatchEvent(new Event("arthub:settings-updated"));
-  }
+function useSite(): SiteData {
+  const site = useContext(SiteContext);
+  if (!site) throw new Error("SiteHeader/SiteFooter necesitan la prop site");
+  return site;
 }
 
-function useSiteSettings(): SiteSettings {
-  const [settings, setSettings] = useState<SiteSettings>(settingsCache ?? {});
-
-  const fetchFresh = () => {
-    settingsPromise = api.getSettings().catch(() => ({}));
-    settingsPromise.then((s) => {
-      settingsCache = s;
-      setSettings(s);
-    });
-  };
-
-  useEffect(() => {
-    if (!settingsCache) fetchFresh();
-    const handler = () => fetchFresh();
-    window.addEventListener("arthub:settings-updated", handler);
-    return () => window.removeEventListener("arthub:settings-updated", handler);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return settings;
+/** Enlace del menú: <Link> para rutas del sitio, <a> para externos, mailto o tel. */
+function MenuLink({ link, className, onClick }: { link: NavLink; className?: string; onClick?: () => void }) {
+  return isInternal(link.url) ? (
+    <Link href={link.url} className={className} onClick={onClick}>{link.label}</Link>
+  ) : (
+    <a href={link.url} className={className} onClick={onClick} target={link.url.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+      {link.label}
+    </a>
+  );
 }
 
 function Brand({ logoSize = 48 }: { logoSize?: number }) {
-  const { brand_name, brand_tagline, logo_url } = useSiteSettings();
+  const { brand } = useSite();
   const [imgError, setImgError] = useState(false);
   return (
-    <Link className="brand" href="/" aria-label={brand_name || "Arthub"}>
+    <Link className="brand" href="/" aria-label={brand.name}>
       {!imgError ? (
         <img
-          src={logo_url || "/logifinal.png"}
-          alt={brand_name || "Arthub"}
+          src={brand.logo_url || "/logifinal.png"}
+          alt={brand.name}
           style={{ height: logoSize, width: "auto", maxWidth: logoSize * 2.6, objectFit: "contain" }}
           onError={() => setImgError(true)}
         />
@@ -72,8 +49,8 @@ function Brand({ logoSize = 48 }: { logoSize?: number }) {
         <Logo size={logoSize} />
       )}
       <span className="wm">
-        <span className="name">{brand_name || "ARTHUB"}</span>
-        <span className="tag">{brand_tagline || "Arte · Tecnología · Confianza"}</span>
+        <span className="name">{brand.name}</span>
+        {brand.tagline ? <span className="tag">{brand.tagline}</span> : null}
       </span>
     </Link>
   );
@@ -257,8 +234,8 @@ function UserMenu() {
           {/* menu items */}
           <div style={{ padding: "6px 0" }}>
             {isAdmin && (
-              <Link
-                href="/admin"
+              <a
+                href={`${PANEL_BASE}/admin`}
                 onClick={() => setOpen(false)}
                 style={{
                   display: "flex",
@@ -278,7 +255,7 @@ function UserMenu() {
                   <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
                 </svg>
                 Panel de administración
-              </Link>
+              </a>
             )}
 
             {user.role === "artista" && user.artist_panel_url && (
@@ -364,7 +341,16 @@ function UserMenu() {
   );
 }
 
-export function SiteHeader() {
+export function SiteHeader({ site }: { site: SiteData }) {
+  return (
+    <SiteContext.Provider value={site}>
+      <HeaderContent />
+    </SiteContext.Provider>
+  );
+}
+
+function HeaderContent() {
+  const { utility, header_menu } = useSite();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, logout } = useAuth();
@@ -391,10 +377,12 @@ export function SiteHeader() {
       <div style={{ position: "sticky", top: 0, zIndex: 200, willChange: "transform" }}>
         <div className="utility">
           <div className="wrap row">
-            <div>Cusco · Lima · Miami · Zürich</div>
-            <div style={{ display: "flex", gap: 24 }}>
-              <Link href="/verificar">Verificar una obra</Link>
-            </div>
+            <div>{utility.text}</div>
+            {utility.link_label && utility.link_url ? (
+              <div style={{ display: "flex", gap: 24 }}>
+                <MenuLink link={{ label: utility.link_label, url: utility.link_url }} />
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -402,14 +390,8 @@ export function SiteHeader() {
         <div className="wrap row">
           <Brand logoSize={48} />
           <nav className="nav-links">
-            {NAV.map((n) => (
-              <Link
-                key={n.label}
-                href={n.href}
-                className={pathname === n.href ? "active" : ""}
-              >
-                {n.label}
-              </Link>
+            {header_menu.map((n) => (
+              <MenuLink key={n.label + n.url} link={n} className={pathname === n.url ? "active" : ""} />
             ))}
           </nav>
           <div className="nav-aside">
@@ -470,15 +452,13 @@ export function SiteHeader() {
 
         {/* nav links */}
         <nav className="mnav-links">
-          {NAV.map((n) => (
-            <Link
-              key={n.label}
-              href={n.href}
-              className={pathname === n.href ? "active" : ""}
+          {header_menu.map((n) => (
+            <MenuLink
+              key={n.label + n.url}
+              link={n}
+              className={pathname === n.url ? "active" : ""}
               onClick={() => setMenuOpen(false)}
-            >
-              {n.label}
-            </Link>
+            />
           ))}
         </nav>
 
@@ -495,8 +475,8 @@ export function SiteHeader() {
                 {user.name} · {ROLE_LABEL[user.role]}
               </div>
               {user.role === "admin" && (
-                <Link
-                  href="/admin"
+                <a
+                  href={`${PANEL_BASE}/admin`}
                   onClick={() => setMenuOpen(false)}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center",
@@ -508,7 +488,7 @@ export function SiteHeader() {
                   }}
                 >
                   Panel de administración
-                </Link>
+                </a>
               )}
               {user.role === "artista" && user.artist_panel_url && (
                 <a
@@ -638,63 +618,81 @@ function UserMenuOrButtons() {
   );
 }
 
-export function SiteFooter() {
+export function SiteFooter({ site }: { site: SiteData }) {
+  const { footer, contact, social_links } = site;
+  const contactItems = [
+    contact.email ? <a href={`mailto:${contact.email}`}>{contact.email}</a> : null,
+    contact.phone,
+    contact.address,
+  ].filter(Boolean);
+
   return (
-    <footer className="site-footer">
-      <div className="wrap">
-        <div className="grid">
-          <div>
-            <Brand logoSize={44} />
-            <p className="about">
-              Plataforma global que certifica, protege y conecta el arte
-              cusqueño con el mundo a través de tecnología.
-            </p>
+    <SiteContext.Provider value={site}>
+      <footer className="site-footer">
+        <div className="wrap">
+          <div className="grid">
+            <div>
+              <Brand logoSize={44} />
+              {footer.about ? <p className="about">{footer.about}</p> : null}
+            </div>
+            {footer.columns.map((column) => (
+              <div key={column.title}>
+                <h5>{column.title}</h5>
+                <ul>
+                  {column.links.map((link) => (
+                    <li key={link.label + link.url}><MenuLink link={link} /></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            {contactItems.length ? (
+              <div>
+                <h5>Contacto</h5>
+                <ul>
+                  {contactItems.map((item, i) => <li key={i}>{item}</li>)}
+                </ul>
+              </div>
+            ) : null}
           </div>
-          <div>
-            <h5>Navegación</h5>
-            <ul>
-              <li><Link href="/catalogo">Catálogo</Link></li>
-              <li><Link href="/como-funciona">Cómo funciona</Link></li>
-              <li><Link href="/tecnologia">Tecnología</Link></li>
-              <li><Link href="/artistas">Artistas</Link></li>
-              <li><Link href="/nosotros">Nosotros</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Ayuda</h5>
-            <ul>
-              <li><a href="#">Preguntas frecuentes</a></li>
-              <li><a href="#">Atención al cliente</a></li>
-              <li><Link href="/verificar">Verificar obra</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Legal</h5>
-            <ul>
-              <li><a href="#">Términos y condiciones</a></li>
-              <li><a href="#">Política de privacidad</a></li>
-              <li><a href="#">Política de cookies</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Contacto</h5>
-            <ul>
-              <li><a href="mailto:info@arthub.pe">info@arthub.pe</a></li>
-              <li>+51 84 000 000</li>
-              <li>Cusco, Perú</li>
-            </ul>
+          <div className="legal">
+            <span>{footer.copyright}</span>
+            {social_links.length ? (
+              <div className="socials">
+                {social_links.map((s) => (
+                  <a key={s.network + s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={SOCIAL_LABEL[s.network] ?? s.network}>
+                    <SocialIcon network={s.network} />
+                  </a>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
-        <div className="legal">
-          <span>© 2026 Arthub S.A.C. · Todos los derechos reservados.</span>
-          <div className="socials">
-            <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg></a>
-            <a href="#" aria-label="LinkedIn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M8 10 v8" /><path d="M8 7 v.01" /><path d="M12 18 v-5 a3 3 0 0 1 6 0 v5" /><path d="M12 10 v8" /></svg></a>
-            <a href="#" aria-label="YouTube"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="2" y="6" width="20" height="12" rx="3" /><path d="M10 9 L15 12 L10 15 Z" fill="currentColor" /></svg></a>
-            <a href="#" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg></a>
-          </div>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </SiteContext.Provider>
   );
+}
+
+const SOCIAL_LABEL: Record<string, string> = {
+  instagram: "Instagram", facebook: "Facebook", tiktok: "TikTok", youtube: "YouTube",
+  linkedin: "LinkedIn", x: "X", whatsapp: "WhatsApp",
+};
+
+function SocialIcon({ network }: { network: string }) {
+  const common = { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.6, "aria-hidden": true };
+  switch (network) {
+    case "instagram":
+      return <svg {...common}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>;
+    case "linkedin":
+      return <svg {...common}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M8 10 v8" /><path d="M8 7 v.01" /><path d="M12 18 v-5 a3 3 0 0 1 6 0 v5" /><path d="M12 10 v8" /></svg>;
+    case "youtube":
+      return <svg {...common}><rect x="2" y="6" width="20" height="12" rx="3" /><path d="M10 9 L15 12 L10 15 Z" fill="currentColor" /></svg>;
+    case "facebook":
+      return <svg {...common}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>;
+    case "tiktok":
+      return <svg {...common}><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5" /><path d="M14 3c.5 2.5 2.5 4.5 5 5" /></svg>;
+    case "whatsapp":
+      return <svg {...common}><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z" /><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1a3.5 3.5 0 0 1-2-2l1-1-1-2z" /></svg>;
+    default:
+      return <svg {...common}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></svg>;
+  }
 }

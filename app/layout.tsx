@@ -3,9 +3,8 @@ import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 
 export const metadata: Metadata = {
-  title: "Arthub — Arte cusqueño, validado y certificado",
-  description:
-    "Arthub convierte obras maestras del Cusco en activos financieros culturales, validados tecnológicamente, trazables y listos para el mercado global.",
+  title: "ArtHub",
+  description: "Catálogo de arte cusqueño: obras documentadas, artistas revisados y verificación pública.",
 };
 
 export default function RootLayout({

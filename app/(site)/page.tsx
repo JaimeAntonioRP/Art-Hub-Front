@@ -1,19 +1,8 @@
-"use client";
+import { CmsPage, cmsMetadata } from "@/components/blocks/CmsPage";
 
-import dynamic from "next/dynamic";
-import { inicioHtml } from "@/lib/pages";
-
-// Portal-based: mounts inside .hero .painting without splitting the HTML
-const FeaturedArtworkHero = dynamic(
-  () => import("@/components/FeaturedArtworkHero"),
-  { ssr: false }
-);
+/** Contenido editable en el panel: Sitio web → Páginas → «inicio». */
+export const generateMetadata = () => cmsMetadata("inicio");
 
 export default function InicioPage() {
-  return (
-    <>
-      <div dangerouslySetInnerHTML={{ __html: inicioHtml }} />
-      <FeaturedArtworkHero />
-    </>
-  );
+  return <CmsPage slug="inicio" />;
 }
