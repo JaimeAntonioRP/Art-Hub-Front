@@ -1,18 +1,8 @@
-"use client";
+import { CmsPage, cmsMetadata } from "@/components/blocks/CmsPage";
 
-import dynamic from "next/dynamic";
-import { comoFuncionaHtml } from "@/lib/pages";
-
-const ComoFuncionaVideo = dynamic(
-  () => import("@/components/ComoFuncionaVideo"),
-  { ssr: false }
-);
+/** Contenido editable en el panel: Sitio web → Páginas → «como-funciona». */
+export const generateMetadata = () => cmsMetadata("como-funciona");
 
 export default function ComoFuncionaPage() {
-  return (
-    <>
-      <div dangerouslySetInnerHTML={{ __html: comoFuncionaHtml }} />
-      <ComoFuncionaVideo />
-    </>
-  );
+  return <CmsPage slug="como-funciona" />;
 }

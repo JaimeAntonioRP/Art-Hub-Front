@@ -1,18 +1,8 @@
-"use client";
+import { CmsPage, cmsMetadata } from "@/components/blocks/CmsPage";
 
-import dynamic from "next/dynamic";
-import { tecnologiaHtml } from "@/lib/pages";
-
-const TecnologiaVideo = dynamic(
-  () => import("@/components/TecnologiaVideo"),
-  { ssr: false }
-);
+/** Contenido editable en el panel: Sitio web → Páginas → «tecnologia». */
+export const generateMetadata = () => cmsMetadata("tecnologia");
 
 export default function TecnologiaPage() {
-  return (
-    <>
-      <div dangerouslySetInnerHTML={{ __html: tecnologiaHtml }} />
-      <TecnologiaVideo />
-    </>
-  );
+  return <CmsPage slug="tecnologia" />;
 }

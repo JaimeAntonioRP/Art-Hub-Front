@@ -134,58 +134,13 @@ export type Artist = {
   total_obras?: number;
 };
 
-export type SiteSettings = {
-  brand_name?: string | null;
-  brand_tagline?: string | null;
-  logo_url?: string | null;
-};
-
-export type ArtistPayload = {
-  name: string;
-  slug: string;
-  origin: string;
-  birth_year?: number | null;
-  death_year?: number | null;
-  specialty: string;
-  bio: string;
-  profile_image_url: string;
-  featured?: boolean;
-};
-
 export const api = {
   listArtists: () => request<Artist[]>("/artists"),
   getArtist: (slug: string) =>
     request<{ artist: Artist; artworks: Artwork[] }>(`/artists/${slug}`),
 
-  createArtist: (token: string, payload: ArtistPayload) =>
-    request<Artist>("/artists", { method: "POST", token, body: payload }),
-  updateArtist: (token: string, id: number, payload: Partial<ArtistPayload>) =>
-    request<Artist>(`/artists/${id}`, { method: "PUT", token, body: payload }),
-  deleteArtist: (token: string, id: number) =>
-    request<{ message: string }>(`/artists/${id}`, { method: "DELETE", token }),
-
-  getSettings: () => request<SiteSettings>("/settings"),
-  updateSettings: (token: string, payload: SiteSettings) =>
-    request<SiteSettings>("/settings", { method: "PUT", token, body: payload }),
-
   listArtworks: () => request<Artwork[]>("/artworks"),
   getArtwork: (id: number) => request<Artwork>(`/artworks/${id}`),
-  adminListArtworks: (token: string) =>
-    request<Artwork[]>("/admin/artworks", { token }),
-  updateArtwork: (
-    token: string,
-    id: number,
-    payload: {
-      title: string;
-      artist_name: string;
-      price: number;
-      description: string;
-      image_url: string;
-      model_3d_url?: string;
-    },
-  ) => request<Artwork>(`/artworks/${id}`, { method: "PUT", token, body: payload }),
-  deleteArtwork: (token: string, id: number) =>
-    request<{ message: string }>(`/artworks/${id}`, { method: "DELETE", token }),
   me: (token: string) => request<AuthResponse["user"]>("/me", { token }),
 
   register: (payload: {
@@ -223,40 +178,11 @@ export const api = {
   logout: (token: string) =>
     request<{ message: string }>("/logout", { method: "POST", token }),
 
-  createArtwork: (
-    token: string,
-    payload: {
-      title: string;
-      artist_name: string;
-      price: number;
-      description: string;
-      image_url: string;
-      model_3d_url?: string;
-    },
-  ) => request<Artwork>("/artworks", { method: "POST", token, body: payload }),
-
   getCertificateByToken: (token: string) =>
     request<{ certificate: Certificate; artwork: Artwork }>(`/certificates/${token}`),
-
-  uploadImage: (token: string, file: File) => {
-    const form = new FormData();
-    form.append("image", file);
-    return request<{ path: string; url: string }>("/uploads/image", {
-      method: "POST",
-      token,
-      body: form,
-    });
-  },
-
-  uploadModel: (token: string, file: File) => {
-    const form = new FormData();
-    form.append("model", file);
-    return request<{ path: string; url: string }>("/uploads/model", {
-      method: "POST",
-      token,
-      body: form,
-    });
-  },
 };
 
-export { API_BASE };
+/** Raíz del backend, donde viven los paneles de Filament (/admin y /artista). */
+const PANEL_BASE = API_BASE.replace(/\/api\/?$/, "");
+
+export { API_BASE, PANEL_BASE };
