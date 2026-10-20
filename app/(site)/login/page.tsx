@@ -15,7 +15,7 @@ import {
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const redirect = params.get("redirect") ?? "/catalogo";
+  const redirect = params.get("redirect") ?? "/obras";
   const { login } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -85,6 +85,11 @@ function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             style={inputStyle}
           />
+          <div style={{ marginTop: 8, textAlign: "right", fontSize: 13 }}>
+            <Link href="/recuperar" style={{ color: "var(--accent-text)" }}>
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
         </div>
 
         <button

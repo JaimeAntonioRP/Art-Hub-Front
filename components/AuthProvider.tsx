@@ -15,7 +15,8 @@ type AuthState = {
     email: string;
     password: string;
     password_confirmation: string;
-  }) => Promise<void>;
+    role?: "comprador" | "artista";
+  }) => Promise<User>;
   logout: () => Promise<void>;
 };
 
@@ -67,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async (payload: Parameters<AuthState["register"]>[0]) => {
       const data = await api.register(payload);
       persist(data);
+      return data.user;
     },
     [persist],
   );
