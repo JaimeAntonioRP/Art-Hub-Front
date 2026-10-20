@@ -80,8 +80,6 @@
   --footer-muted:   var(--piedra-300);
   --footer-gold:    var(--oro-300);
   --footer-rule:    rgba(239,230,213,0.12);
-  --utility-bg:     var(--azul-900);
-  --utility-text:   var(--piedra-100);
 
   --rule:           var(--piedra-200);
   --rule-strong:    var(--piedra-400);
@@ -92,7 +90,7 @@
    Las secciones navy redefinen los tokens semánticos: dentro de ellas
    --accent-text, --text-muted, etc. ya traen el valor legible sobre navy. */
 .surface-dark, [data-surface="dark"],
-.site-footer, .utility, .cta-band, .card-dark {
+.site-footer, .cta-band, .card-dark {
   --bg:            var(--azul-900);
   --surface:       var(--azul-800);
   --surface-2:     var(--azul-700);
@@ -162,30 +160,16 @@ h1, h2, h3, h4, h5 {
 .hairline { height: 1px; background: var(--rule); }
 
 /* ── Franja utilitaria ────────────────────────────────────────────────── */
-.utility {
-  background: var(--utility-bg);
-  color: var(--utility-text);
-  font-family: 'Inter', sans-serif; font-size: 11.5px;
-  letter-spacing: 0.06em;
-}
-.utility .row {
-  display: flex; align-items: center; justify-content: space-between;
-  height: 36px;
-}
-.utility a { color: inherit; opacity: 0.8; }
-.utility a:hover { opacity: 1; color: var(--accent-text); }
-
-/* ── Header / nav (CLARO) ─────────────────────────────────────────────── */
 .site-header {
   background: var(--header-bg);
   color: var(--nav-color);
   border-bottom: 1px solid var(--header-border);
-  box-shadow: 0 1px 12px rgba(13,27,42,0.06);
 }
 .site-header .row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 14px 0;
 }
+.header-cta { padding: 9px 18px; font-size: 13px; }
 .brand {
   display: flex; align-items: center; gap: 14px; color: var(--ink);
 }
@@ -215,11 +199,6 @@ h1, h2, h3, h4, h5 {
 }
 
 .nav-aside { display: flex; align-items: center; gap: 10px; }
-.lang {
-  display: inline-flex; align-items: center; gap: 6px;
-  color: var(--ink-soft); font-size: 13px; padding: 8px 4px;
-}
-.lang:hover { color: var(--accent-text); }
 
 /* ── Botones ──────────────────────────────────────────────────────────── */
 .btn {
@@ -674,6 +653,12 @@ h1, h2, h3, h4, h5 {
   background: var(--paper-2);
 }
 .mobile-nav .mnav-links a.active { color: var(--accent-text); }
+.mobile-nav .mnav-close {
+  background: transparent; border: 1px solid var(--rule); border-radius: 8px;
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--ink);
+}
+.mobile-nav .mnav-cta { justify-content: center; }
 .mobile-nav .mnav-footer {
   padding: 20px 24px;
   display: flex;
@@ -702,7 +687,6 @@ h1, h2, h3, h4, h5 {
   .nav-links { display: none; }
   .hamburger { display: flex; }
   /* hide desktop auth buttons — they live in the mobile drawer */
-  .nav-auth-desktop { display: none !important; }
   /* hide brand tagline on small screens */
   .brand .wm .tag { display: none; }
 }
@@ -714,12 +698,9 @@ h1, h2, h3, h4, h5 {
   .section { padding: 52px 0; }
   .section-tight { padding: 36px 0; }
 
-  /* utility bar hidden on mobile */
-  .utility { display: none; }
-
-  /* header */
-  .site-header .row { padding: 13px 0; }
-  .lang { display: none; }
+  /* header: el botón destacado pasa al menú desplegable */
+  .site-header .row { padding: 12px 0; }
+  .header-cta { display: none; }
   .brand .wm .name { font-size: 18px; letter-spacing: 0.12em; }
 
   /* hero */

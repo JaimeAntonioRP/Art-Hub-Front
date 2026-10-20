@@ -34,6 +34,8 @@ function Hero({ data }: { data: DataOf<"hero"> }) {
   const artwork = data.show_featured_artwork ? data.artworks?.[0] : undefined;
   const image = artwork?.image_url ?? data.image_url;
 
+  if (data.variant === "grande") return <HeroFull data={data} image={image} artwork={artwork} />;
+
   return (
     <section className="hero">
       <div className="wrap hero-grid">
@@ -66,6 +68,33 @@ function Hero({ data }: { data: DataOf<"hero"> }) {
   );
 }
 
+/** Portada a pantalla completa: la imagen manda y el texto va encima, sobre un degradado. */
+function HeroFull({ data, image, artwork }: { data: DataOf<"hero">; image?: string; artwork?: FeaturedArtwork }) {
+  return (
+    <section className="hero-full" data-surface="dark">
+      {image ? <img className="hero-full-img" src={image} alt="" fetchPriority="high" /> : null}
+      <div className="hero-full-shade" aria-hidden="true" />
+      <div className="wrap hero-full-content">
+        {data.eyebrow ? <span className="eyebrow">{data.eyebrow}</span> : null}
+        <h1>
+          {data.title}
+          {data.highlight ? <> <em>{data.highlight}</em></> : null}
+        </h1>
+        {data.text ? <p>{data.text}</p> : null}
+        <div className="blk-actions">
+          <ButtonLink label={data.primary_label} url={data.primary_url} variant="gold" />
+          <ButtonLink label={data.secondary_label} url={data.secondary_url} variant="outline-light" />
+        </div>
+      </div>
+      {artwork ? (
+        <Link href={`/obras/${artwork.id}`} className="hero-full-caption">
+          <b>{artwork.title}</b> · {artwork.artist_name}
+        </Link>
+      ) : null}
+    </section>
+  );
+}
+
 function TextBlock({ data }: { data: DataOf<"text"> }) {
   return (
     <section className="section-tight">
@@ -84,7 +113,7 @@ function Features({ data }: { data: DataOf<"features"> }) {
         <SectionHead eyebrow={data.eyebrow} title={data.title} intro={data.intro} />
         <div className="blk-cards">
           {data.items.map((item, i) => (
-            <div key={i} className="feat-card">
+            <div key={i} className="blk-card">
               <BlockIcon name={item.icon} />
               <h4>{item.title}</h4>
               {item.text ? <p>{item.text}</p> : null}
@@ -137,15 +166,16 @@ function FeaturedArtworks({ data }: { data: DataOf<"featured_artworks"> }) {
   return (
     <section className="section">
       <div className="wrap">
-        <SectionHead eyebrow={data.eyebrow} title={data.title} />
+        <div className="blk-row-head">
+          <div>
+            {data.eyebrow ? <div className="eyebrow">{data.eyebrow}</div> : null}
+            {data.title ? <h2>{data.title}</h2> : null}
+          </div>
+          {data.button_label ? <Link href="/obras" className="blk-more">{data.button_label} →</Link> : null}
+        </div>
         <div className="blk-works">
           {data.artworks.map((a) => <ArtworkCard key={a.id} artwork={a} />)}
         </div>
-        {data.button_label ? (
-          <div className="blk-center">
-            <ButtonLink label={data.button_label} url="/obras" variant="outline-dark" />
-          </div>
-        ) : null}
       </div>
     </section>
   );
@@ -160,12 +190,10 @@ function ArtworkCard({ artwork }: { artwork: FeaturedArtwork }) {
           <span className="blk-work-badge">{AVAILABILITY_LABEL[artwork.availability]}</span>
         ) : null}
       </div>
-      <div className="blk-work-body">
-        <span className="kicker">{artwork.artist_name}</span>
-        <h3 className="serif">{artwork.title}</h3>
-        <span className="muted blk-work-meta">{[artwork.technique, artwork.year, artwork.dimensions].filter(Boolean).join(" · ")}</span>
-        <strong className="blk-work-price">{formatArtworkPrice(artwork)}</strong>
-      </div>
+      <span className="blk-work-artist">{artwork.artist_name}</span>
+      <h3 className="serif">{artwork.title}</h3>
+      <span className="blk-work-meta">{[artwork.technique, artwork.dimensions].filter(Boolean).join(" · ")}</span>
+      <strong className="blk-work-price">{formatArtworkPrice(artwork)}</strong>
     </Link>
   );
 }
