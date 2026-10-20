@@ -1,21 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { Artwork } from "@/lib/api";
+import { AVAILABILITY_LABEL, type Artwork } from "@/lib/api";
+import { formatArtworkPrice } from "@/lib/format";
 
 interface Props {
   artwork: Artwork;
   open: boolean;
   onClose: () => void;
-}
-
-function formatPrice(value: string | number): string {
-  const num = typeof value === "string" ? Number(value) : value;
-  return new Intl.NumberFormat("es-PE", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(num);
 }
 
 const PLACEHOLDER = "/placeholder-obra.svg";
@@ -96,7 +88,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
           }}
         >
           <img
-            src={artwork.image_url}
+            src={artwork.image_url ?? PLACEHOLDER}
             alt={artwork.title}
             style={{
               width: "100%",
@@ -328,7 +320,7 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                     lineHeight: 1,
                   }}
                 >
-                  {formatPrice(artwork.price)}
+                  {formatArtworkPrice(artwork)}
                 </div>
               </div>
 
@@ -340,12 +332,12 @@ export default function ArtworkLightbox({ artwork, open, onClose }: Props) {
                   fontFamily: "'Geist', 'Inter', sans-serif",
                   padding: "5px 12px",
                   borderRadius: 20,
-                  border: `1px solid ${artwork.status === "available" ? "rgba(78,222,163,0.4)" : "rgba(255,100,80,0.4)"}`,
-                  color: artwork.status === "available" ? "#4EDEA3" : "#FF6450",
-                  background: artwork.status === "available" ? "rgba(78,222,163,0.08)" : "rgba(255,100,80,0.08)",
+                  border: `1px solid ${artwork.availability === "disponible" ? "rgba(78,222,163,0.4)" : "rgba(255,100,80,0.4)"}`,
+                  color: artwork.availability === "disponible" ? "#4EDEA3" : "#FF6450",
+                  background: artwork.availability === "disponible" ? "rgba(78,222,163,0.08)" : "rgba(255,100,80,0.08)",
                 }}
               >
-                {artwork.status === "available" ? "Disponible" : "Vendida"}
+                {AVAILABILITY_LABEL[artwork.availability]}
               </span>
             </div>
 

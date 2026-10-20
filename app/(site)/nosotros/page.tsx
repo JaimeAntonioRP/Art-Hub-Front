@@ -261,8 +261,8 @@ export default function NosotrosPage() {
             }}
           >
             Un equipo multidisciplinario unido por la misión de democratizar el acceso
-            al arte cusqueño y proteger el patrimonio cultural del Perú mediante
-            tecnología blockchain y certificación biométrica.
+            al arte cusqueño y proteger el patrimonio cultural del Perú con un
+            registro documentado de cada obra y de su artista.
           </p>
         </div>
 
@@ -340,12 +340,12 @@ export default function NosotrosPage() {
             {
               icon: "🎨",
               title: "Arte Auténtico",
-              desc: "Certificamos cada obra con biometría y la anclamos en blockchain para garantía permanente de autenticidad.",
+              desc: "Cada obra pasa por una revisión y queda registrada con su ficha técnica, imágenes y documentación.",
             },
             {
               icon: "🌎",
               title: "Alcance Global",
-              desc: "Conectamos a coleccionistas e inversores de todo el mundo con los maestros del arte cusqueño.",
+              desc: "Conectamos a coleccionistas de todo el mundo con los maestros del arte cusqueño.",
             },
             {
               icon: "🔒",

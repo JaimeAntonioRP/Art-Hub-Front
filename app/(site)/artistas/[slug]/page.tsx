@@ -3,17 +3,10 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { api, type Artist, type Artwork } from "@/lib/api";
+import { api, AVAILABILITY_LABEL, type Artist, type Artwork } from "@/lib/api";
+import { formatArtworkPrice } from "@/lib/format";
 
 /* ── helpers ─────────────────────────────────────────────────────────────── */
-
-function usd(value: string | number) {
-  return new Intl.NumberFormat("es-PE", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(Number(value));
-}
 
 function lifespan(artist: Artist): string {
   if (!artist.birth_year) return "";
@@ -86,7 +79,7 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
             3D / AR
           </span>
         )}
-        {artwork.status === "sold" && (
+        {artwork.availability !== "disponible" && (
           <div
             style={{
               position: "absolute",
@@ -109,7 +102,7 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
                 borderRadius: 4,
               }}
             >
-              Vendida
+              {AVAILABILITY_LABEL[artwork.availability]}
             </span>
           </div>
         )}
@@ -133,7 +126,7 @@ function ArtworkCard({ artwork }: { artwork: Artwork }) {
             marginTop: 6,
           }}
         >
-          {usd(artwork.price)}
+          {formatArtworkPrice(artwork)}
         </strong>
       </div>
     </Link>

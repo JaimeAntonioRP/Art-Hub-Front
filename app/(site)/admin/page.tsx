@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
-import { api, type Artwork, type Certificate } from "@/lib/api";
+import { api, AVAILABILITY_LABEL, type Artwork, type Certificate } from "@/lib/api";
+import { formatArtworkPrice } from "@/lib/format";
 import {
   errorBoxStyle,
   fieldStyle,
@@ -102,9 +103,9 @@ export default function AdminPage() {
     setForm({
       title: a.title,
       artist_name: a.artist_name,
-      price: String(a.price),
-      description: a.description,
-      image_url: a.image_url,
+      price: a.price ?? "",
+      description: a.description ?? "",
+      image_url: a.image_url ?? "",
       model_3d_url: a.model_3d_url ?? "",
     });
     setMessage(null);
@@ -364,8 +365,7 @@ export default function AdminPage() {
                     <div className="kicker">{a.artist_name}</div>
                     <div style={{ fontWeight: 500 }}>{a.title}</div>
                     <div style={{ fontSize: 12, color: "var(--ink-soft)" }}>
-                      ${Number(a.price).toLocaleString("en-US")} · {a.status}
-                      {a.certificate ? ` · match ${a.certificate.match_percentage}%` : ""}
+                      {a.code} · {formatArtworkPrice(a)} · {a.status} · {AVAILABILITY_LABEL[a.availability]}
                     </div>
                   </div>
                   <div style={{ display: "flex", gap: 6 }}>

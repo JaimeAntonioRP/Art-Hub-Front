@@ -3,23 +3,14 @@
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
-import { api, type Artwork, type Certificate } from "@/lib/api";
+import { api, AVAILABILITY_LABEL, type Artwork, type Certificate } from "@/lib/api";
+import { formatArtworkPrice } from "@/lib/format";
 import ArtworkLightbox from "@/components/ArtworkLightbox";
-import PurchaseModal from "@/components/PurchaseModal";
 
 /* <model-viewer> es un web component; lo tipamos como componente React */
 const ModelViewer = "model-viewer" as unknown as React.FC<
   React.HTMLAttributes<HTMLElement> & Record<string, unknown>
 >;
-
-function formatPrice(value: string | number): string {
-  const num = typeof value === "string" ? Number(value) : value;
-  return new Intl.NumberFormat("es-PE", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(num);
-}
 
 /* ── visor de imagen + 3D ─────────────────────────────────────────────────── */
 
@@ -79,7 +70,7 @@ function MediaViewer({
       >
         {view === "image" ? (
           <img
-            src={artwork.image_url}
+            src={artwork.image_url ?? PLACEHOLDER}
             alt={artwork.title}
             style={{
               width: "100%",
@@ -293,7 +284,7 @@ function CertificateCard({
       <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px" }}>
         {/* miniatura de la obra */}
         <img
-          src={artwork.image_url}
+          src={artwork.image_url ?? PLACEHOLDER}
           alt={artwork.title}
           width={52}
           height={52}
@@ -374,7 +365,6 @@ export default function ObraDetallePage({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [purchaseOpen, setPurchaseOpen] = useState(false);
 
   const load = () => {
     setLoading(true);
@@ -386,10 +376,6 @@ export default function ObraDetallePage({
   };
 
   useEffect(load, [artworkId]);
-
-  const handlePurchase = () => {
-    setPurchaseOpen(true);
-  };
 
   if (loading) {
     return (
@@ -426,14 +412,6 @@ export default function ObraDetallePage({
           />
         )}
 
-        {purchaseOpen && (
-          <PurchaseModal
-            open={purchaseOpen}
-            artwork={artwork}
-            onClose={() => setPurchaseOpen(false)}
-          />
-        )}
-
         <div>
           <div className="kicker">{artwork.artist_name}</div>
           <h1 className="h-display" style={{ fontSize: 44, margin: "8px 0 12px" }}>
@@ -450,7 +428,7 @@ export default function ObraDetallePage({
               borderRadius: 12,
             }}
           >
-            <div className="eyebrow">Precio</div>
+            <div className="eyebrow">Precio · {artwork.code}</div>
             <div
               style={{
                 fontSize: 32,
@@ -458,12 +436,12 @@ export default function ObraDetallePage({
                 color: "var(--oro-cusco)",
               }}
             >
-              {formatPrice(artwork.price)}
+              {formatArtworkPrice(artwork)}
             </div>
             <div className="kicker" style={{ marginTop: 12 }}>
               Estado:{" "}
-              <strong style={{ color: artwork.status === "available" ? "var(--quenua)" : "var(--terracota)" }}>
-                {artwork.status === "available" ? "Disponible" : "Vendida"}
+              <strong style={{ color: artwork.availability === "disponible" ? "var(--quenua)" : "var(--terracota)" }}>
+                {AVAILABILITY_LABEL[artwork.availability]}
               </strong>
             </div>
           </div>
@@ -493,25 +471,18 @@ export default function ObraDetallePage({
           ) : null}
 
           <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
-            <button
-              type="button"
-              onClick={handlePurchase}
-              disabled={artwork.status !== "available"}
+            {/* Provisional: el formulario de solicitudes comerciales (§14) llega en la semana 4. */}
+            <a
+              href={`mailto:info@arthub.pe?subject=${encodeURIComponent(`Solicitud de información · ${artwork.code} · ${artwork.title}`)}`}
               className="btn btn-gold btn-lg"
-              style={{ opacity: artwork.status !== "available" ? 0.55 : 1, display: "flex", alignItems: "center", gap: 8 }}
+              style={{ display: "flex", alignItems: "center", gap: 8 }}
             >
-              {artwork.status !== "available" ? (
-                "No disponible"
-              ) : (
-                <>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                  </svg>
-                  Simular compra
-                </>
-              )}
-            </button>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m22 7-10 6L2 7"/>
+              </svg>
+              Solicitar información
+            </a>
             <Link href="/obras" className="btn btn-outline-dark btn-lg">
               ← Catalogo
             </Link>

@@ -15,7 +15,6 @@ type AuthState = {
     email: string;
     password: string;
     password_confirmation: string;
-    wallet_address?: string;
   }) => Promise<void>;
   logout: () => Promise<void>;
 };

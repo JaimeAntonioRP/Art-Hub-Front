@@ -4,16 +4,11 @@ import Link from "next/link";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 import { api, type Artwork } from "@/lib/api";
+import { formatArtworkPrice } from "@/lib/format";
 
 const ModelViewer = "model-viewer" as unknown as React.FC<
   React.HTMLAttributes<HTMLElement> & Record<string, unknown>
 >;
-
-function fmt(v: string | number) {
-  return new Intl.NumberFormat("es-PE", {
-    style: "currency", currency: "USD", maximumFractionDigits: 0,
-  }).format(typeof v === "string" ? Number(v) : v);
-}
 
 /* ── content rendered inside .hero .painting via portal ── */
 function PaintingContent({ artwork }: { artwork: Artwork }) {
@@ -43,7 +38,7 @@ function PaintingContent({ artwork }: { artwork: Artwork }) {
       {/* image or 3D */}
       {view === "image" ? (
         <img
-          src={artwork.image_url}
+          src={artwork.image_url ?? "/placeholder-obra.svg"}
           alt={artwork.title}
           onLoad={() => setImgLoaded(true)}
           onError={() => setImgLoaded(true)}
@@ -111,7 +106,7 @@ function PaintingContent({ artwork }: { artwork: Artwork }) {
           </svg>
           <span className="t">
             {artwork.artist_name}
-            <b>{fmt(artwork.price)}{artwork.technique ? ` · ${artwork.technique.split("·")[0].trim()}` : ""}</b>
+            <b>{formatArtworkPrice(artwork)}{artwork.technique ? ` · ${artwork.technique.split("·")[0].trim()}` : ""}</b>
           </span>
         </span>
 

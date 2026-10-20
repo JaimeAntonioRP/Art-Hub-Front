@@ -18,7 +18,6 @@ export default function RegistroPage() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [walletAddress, setWalletAddress] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -44,9 +43,8 @@ export default function RegistroPage() {
         email,
         password,
         password_confirmation: passwordConfirmation,
-        wallet_address: walletAddress || undefined,
       });
-      router.push("/catalogo");
+      router.push("/obras");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Error desconocido.";
       if (message.includes("422")) {
@@ -64,7 +62,7 @@ export default function RegistroPage() {
   return (
     <AuthCard
       title="Crear cuenta"
-      subtitle="Únete a la red global de inversionistas en arte cusqueño."
+      subtitle="Crea tu cuenta para consultar y solicitar información de obras de arte cusqueño."
       footer={
         <>
           ¿Ya tienes cuenta?{" "}
@@ -103,20 +101,6 @@ export default function RegistroPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-
-        <div style={fieldStyle}>
-          <label htmlFor="wallet" style={labelStyle}>
-            Wallet (opcional)
-          </label>
-          <input
-            id="wallet"
-            type="text"
-            placeholder="0x..."
-            value={walletAddress}
-            onChange={(e) => setWalletAddress(e.target.value)}
             style={inputStyle}
           />
         </div>
