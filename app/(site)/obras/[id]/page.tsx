@@ -66,7 +66,7 @@ export default async function ArtworkPage({ params }: { params: Params }) {
                 </a>
                 {artwork.certificate?.verification_token && artwork.certificate.status === "vigente" ? (
                   <Link href={`/verificar/${artwork.certificate.verification_token}`} className="btn btn-outline-dark btn-lg">
-                    Verificar autenticidad
+                    Ver el certificado
                   </Link>
                 ) : null}
               </div>

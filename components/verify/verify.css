@@ -1,0 +1,101 @@
+/* Portal de verificación (§20, §22). Mismo lenguaje que el catálogo: líneas finas, sin cajas pesadas. */
+
+.vf-head { padding: 72px 0 40px; }
+.vf-head .eyebrow { margin-bottom: 14px; }
+.vf-head h1 { font-size: clamp(38px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; color: var(--text); text-wrap: balance; }
+.vf-head p { margin: 18px 0 0; max-width: 60ch; font-size: 16px; line-height: 1.6; color: var(--text-muted); }
+
+.vf-body { padding: 0 0 96px; }
+.vf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.vf-grid-tight { margin-top: 56px; }
+.vf-panel { border-top: 1px solid var(--rule); padding-top: 28px; min-width: 0; }
+.vf-panel h2 { font-size: 28px; color: var(--text); }
+.vf-panel h3 { font-size: 20px; margin: 28px 0 10px; color: var(--text); }
+.vf-panel > p { margin: 8px 0 20px; color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+.vf-search { display: flex; gap: 10px; }
+.vf-search input {
+  flex: 1; min-width: 0; font: inherit; font-size: 16px; color: var(--text); background: var(--surface);
+  border: 1px solid var(--border-strong); border-radius: 6px; padding: 0 14px; height: 46px;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; letter-spacing: 0.02em;
+}
+.vf-search input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.vf-search .btn { height: 46px; }
+.vf-hint { margin: 10px 0 0; font-size: 13px; color: var(--text-muted); }
+
+/* Comprobación de PDF */
+.pdf-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; cursor: pointer;
+  border: 1.5px dashed var(--border-strong); border-radius: 10px; padding: 28px 20px; background: var(--surface);
+  transition: border-color .2s, background .2s;
+}
+.pdf-drop:hover, .pdf-drop[data-dragging] { border-color: var(--text); background: var(--piedra-50); }
+.pdf-drop:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pdf-drop svg { width: 30px; height: 30px; fill: none; stroke: var(--accent-text); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.pdf-drop strong { font-size: 15px; font-weight: 600; color: var(--text); word-break: break-word; }
+.pdf-drop span { font-size: 13px; color: var(--text-muted); }
+
+.pdf-result { margin-top: 16px; padding: 16px 18px; border-radius: 8px; border-left: 4px solid; }
+.pdf-result strong { display: block; font-size: 16px; margin-bottom: 4px; }
+.pdf-result p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text); }
+.pdf-result em { font-style: normal; font-weight: 600; color: var(--danger); }
+.pdf-result a { display: inline-block; margin-top: 8px; font-size: 14px; font-weight: 500; color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.pdf-result code { display: block; margin-top: 10px; font-size: 11.5px; word-break: break-all; color: var(--text-muted); }
+.pdf-result.is-match { background: var(--success-bg); border-color: var(--success); }
+.pdf-result.is-match strong { color: var(--success); }
+.pdf-result.is-nomatch { background: var(--danger-bg); border-color: var(--danger); }
+.pdf-result.is-nomatch strong { color: var(--danger); }
+.pdf-result.is-error { background: var(--surface-2); border-color: var(--border-strong); }
+
+/* Estado del certificado */
+.vf-status { padding: 56px 0 44px; border-bottom: 1px solid var(--rule); }
+.vf-status.is-vigente { background: var(--success-bg); }
+.vf-status.is-anulado { background: var(--danger-bg); }
+.vf-status.is-reemplazado { background: var(--warning-bg); }
+.vf-status-row { display: flex; gap: 22px; align-items: flex-start; }
+.vf-status-icon { width: 54px; height: 54px; flex-shrink: 0; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.is-vigente .vf-status-icon, .is-vigente .vf-status-label { color: var(--success); stroke: var(--success); }
+.is-anulado .vf-status-icon, .is-anulado .vf-status-label { color: var(--danger); stroke: var(--danger); }
+.is-reemplazado .vf-status-icon, .is-reemplazado .vf-status-label { color: var(--warning); stroke: var(--warning); }
+.vf-status-label { margin: 0 0 6px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.vf-status h1 {
+  font-family: 'Inter', sans-serif; font-weight: 600; font-variant-numeric: tabular-nums lining-nums;
+  font-size: clamp(22px, 3.2vw, 34px); line-height: 1.15; letter-spacing: 0; color: var(--text); word-break: break-word;
+}
+.vf-status p { margin: 10px 0 0; font-size: 16px; color: var(--text); max-width: 60ch; }
+.vf-status .vf-reason { display: inline-block; margin-top: 10px; font-size: 14.5px; font-weight: 500; color: var(--text); }
+.vf-status a.vf-reason { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Obra certificada */
+.vf-cert { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 56px; padding-top: 56px; align-items: start; }
+.vf-artwork { background: var(--surface-2); }
+.vf-artwork img { width: 100%; max-height: 70vh; object-fit: contain; }
+@media (max-width: 860px) { .vf-artwork img { max-height: 52vh; } }
+.vf-title { margin-top: 12px; font-size: clamp(32px, 3.6vw, 46px); line-height: 1.05; color: var(--text); }
+.vf-artist { margin: 8px 0 0; font-size: 16px; color: var(--text-muted); }
+.vf-details { margin: 28px 0 0; border-top: 1px solid var(--rule); }
+.vf-details > div { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--rule); }
+.vf-details dt { font-size: 13px; color: var(--text-muted); }
+.vf-details dd { margin: 0; font-size: 14.5px; color: var(--text); }
+.vf-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+.vf-hash { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.vf-hash span { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.vf-hash code, .vf-docs code { font-size: 12.5px; word-break: break-all; color: var(--text); }
+.vf-docs { list-style: none; margin: 0; padding: 0; }
+.vf-docs li { display: flex; flex-direction: column; gap: 4px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 14px; color: var(--text); }
+.vf-docs small { color: var(--text-muted); }
+
+@media (max-width: 860px) {
+  .vf-grid, .vf-cert { grid-template-columns: 1fr; gap: 40px; }
+  .vf-cert { padding-top: 40px; }
+}
+@media (max-width: 600px) {
+  .vf-head { padding: 48px 0 28px; }
+  .vf-status { padding: 40px 0 32px; }
+  .vf-status-row { gap: 14px; }
+  .vf-status-icon { width: 40px; height: 40px; }
+  .vf-search { flex-direction: column; }
+  .vf-details > div { grid-template-columns: 112px 1fr; }
+  .vf-body { padding-bottom: 72px; }
+}
