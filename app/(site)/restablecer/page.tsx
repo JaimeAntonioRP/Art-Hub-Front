@@ -69,9 +69,9 @@ function ResetForm() {
   if (done) {
     return (
       <AuthCard title="Contraseña actualizada" subtitle="Ya puedes iniciar sesión con tu contraseña nueva.">
-        <Link href="/login" className="btn btn-gold btn-lg" style={{ width: "100%", justifyContent: "center" }}>
+        <a href="/login" className="btn btn-gold btn-lg" style={{ width: "100%", justifyContent: "center" }}>
           Iniciar sesión
-        </Link>
+        </a>
       </AuthCard>
     );
   }

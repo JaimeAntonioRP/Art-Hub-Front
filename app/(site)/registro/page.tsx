@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
@@ -82,12 +81,12 @@ export default function RegistroPage() {
         subtitle="El siguiente paso es completar tu perfil. El equipo de ArtHub lo revisará antes de publicarlo."
       >
         <ol style={{ margin: "0 0 24px", paddingLeft: 20, color: "var(--ink-soft)", lineHeight: 1.7, fontSize: 14.5 }}>
-          <li>Entra a tu panel de artista con tu correo y contraseña.</li>
+          <li>Ingresa con tu correo y contraseña: te llevamos directo a tu panel de artista.</li>
           <li>Completa tu biografía, técnicas, trayectoria y fotografía.</li>
           <li>Te avisaremos por correo cuando tu perfil sea aprobado.</li>
         </ol>
         <a href={artistPanelUrl} className="btn btn-gold btn-lg" style={{ width: "100%", justifyContent: "center" }}>
-          Ir a mi panel de artista
+          Ingresar a mi panel
         </a>
       </AuthCard>
     );
@@ -100,9 +99,9 @@ export default function RegistroPage() {
       footer={
         <>
           ¿Ya tienes cuenta?{" "}
-          <Link href="/login" style={{ color: "var(--accent-text)" }}>
+          <a href="/login" style={{ color: "var(--accent-text)" }}>
             Iniciar sesión
-          </Link>
+          </a>
         </>
       }
     >
