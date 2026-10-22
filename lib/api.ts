@@ -153,12 +153,36 @@ export type ArtworkDetail = ArtworkCard & {
 
 export type CommercialRequestType = "informacion" | "intencion_compra";
 
+export type CertificateStatus = "vigente" | "anulado" | "reemplazado";
+
 export type Certificate = {
-  id: number;
-  artwork_id: number;
   verification_token: string | null;
-  status: "vigente" | "anulado" | "reemplazado";
-  created_at?: string;
+  status: CertificateStatus;
+};
+
+/** Certificado tal como lo muestra el portal público de verificación (§20). */
+export type PublicCertificate = {
+  number: string;
+  status: CertificateStatus;
+  issued_at: string | null;
+  revoked_at: string | null;
+  revoke_reason: string | null;
+  /** Número del certificado que lo reemplazó. */
+  replaced_by: string | null;
+  data: {
+    obra: {
+      codigo: string; titulo: string; artista: string | null; anio: number | null;
+      tecnica: string | null; soporte: string | null;
+      alto_cm: string | null; ancho_cm: string | null; profundidad_cm: string | null;
+    };
+    imagen_principal_sha256: string | null;
+    documentos: { titulo: string; categoria: string; version: number; sha256: string }[];
+  } | null;
+  data_sha256: string | null;
+  pdf_sha256: string | null;
+  /** Solo al consultar por el token del QR. */
+  pdf_url: string | null;
+  artwork: { id: number | null; code: string; title: string; artist_name: string | null; image_url: string | null } | null;
 };
 
 export type Role = "admin" | "artista" | "comprador";
@@ -239,8 +263,6 @@ export const api = {
   logout: (token: string) =>
     request<{ message: string }>("/logout", { method: "POST", token }),
 
-  getCertificateByToken: (token: string) =>
-    request<{ certificate: Certificate; artwork: Artwork }>(`/certificates/${token}`),
 };
 
 /** Raíz del backend, donde viven los paneles de Filament (/admin y /artista). */
