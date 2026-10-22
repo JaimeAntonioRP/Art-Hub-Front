@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
       { source: "/ventanas", destination: "/obras", permanent: false },
       // La administración se hace en el panel del backend.
       { source: "/admin/:path*", destination: `${backendUrl}/admin`, permanent: false },
+      // Login único para todos los roles: vive en el backend, junto a los paneles.
+      { source: "/login", destination: `${backendUrl}/ingresar`, permanent: false },
     ];
   },
 };

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { api } from "@/lib/api";
 import {
@@ -43,9 +42,9 @@ export default function RecuperarPage() {
       title="Recuperar contraseña"
       subtitle="Te enviaremos un enlace para crear una contraseña nueva."
       footer={
-        <Link href="/login" style={{ color: "var(--accent-text)" }}>
+        <a href="/login" style={{ color: "var(--accent-text)" }}>
           Volver a iniciar sesión
-        </Link>
+        </a>
       }
     >
       {sent ? (
