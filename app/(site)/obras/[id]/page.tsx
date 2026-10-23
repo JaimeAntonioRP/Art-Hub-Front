@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArtworkCard } from "@/components/ArtworkCard";
 import { ArtworkGallery } from "@/components/catalog/ArtworkGallery";
 import { RequestForm } from "@/components/catalog/RequestForm";
+import { WallView } from "@/components/catalog/WallView";
 import { Paragraphs } from "@/components/blocks/shared";
 import { AVAILABILITY_LABEL, type ArtworkDetail } from "@/lib/api";
 import { getArtwork } from "@/lib/catalog";
@@ -28,8 +29,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 /** Ficha pública de una obra (§13) con su solicitud comercial (§14). */
-export default async function ArtworkPage({ params }: { params: Params }) {
+export default async function ArtworkPage({ params, searchParams }: { params: Params; searchParams: Promise<{ ar?: string }> }) {
   const artwork = await getArtwork(Number((await params).id));
+  const openWallView = (await searchParams).ar === "1"; // llega desde el QR de «Ver en mi pared»
   if (!artwork) notFound();
 
   const canBuy = artwork.availability === "disponible" || artwork.availability === "reservada";
@@ -68,6 +70,10 @@ export default async function ArtworkPage({ params }: { params: Params }) {
                   <Link href={`/verificar/${artwork.certificate.verification_token}`} className="btn btn-outline-dark btn-lg">
                     Ver el certificado
                   </Link>
+                ) : null}
+                {artwork.ar_model_url ? (
+                  <WallView modelUrl={artwork.ar_model_url} qrUrl={artwork.ar_qr_url} title={artwork.title}
+                    poster={artwork.image_url} size={artwork.dimensions ?? null} autoOpen={openWallView} />
                 ) : null}
               </div>
               <p className="art-trust">Expediente revisado por ArtHub · Sin pagos en línea: un asesor te acompaña en la compra.</p>
