@@ -149,6 +149,10 @@ export type ArtworkDetail = ArtworkCard & {
   } | null;
   certificate: Pick<Certificate, "verification_token" | "status"> | null;
   related: ArtworkCard[];
+  /** Modelo a escala para «Ver en mi pared» (§27); null si faltan la foto o las medidas. */
+  ar_model_url: string | null;
+  /** QR que abre la ficha en el celular. */
+  ar_qr_url: string | null;
 };
 
 export type CommercialRequestType = "informacion" | "intencion_compra";

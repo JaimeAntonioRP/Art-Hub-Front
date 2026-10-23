@@ -2,14 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ArtworkDetail } from "@/lib/api";
+import { loadModelViewer, ModelViewer } from "./modelViewer";
 
-/* <model-viewer> es un web component; lo tipamos como componente React */
-const ModelViewer = "model-viewer" as unknown as React.FC<
-  React.HTMLAttributes<HTMLElement> & Record<string, unknown>
->;
-
-/** Versión fija del visor 3D: nunca «la última» de un CDN. */
-const MODEL_VIEWER_SRC = "https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js";
 
 const KIND_LABEL: Record<string, string> = {
   principal: "Vista principal",
@@ -109,20 +103,7 @@ function Model3D({ src, title, poster }: { src: string; title: string; poster?: 
   const [modelOk, setModelOk] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const ID = "model-viewer-script";
-    const existing = document.getElementById(ID) as HTMLScriptElement | null;
-    if (existing) {
-      if (customElements.get("model-viewer")) setReady(true);
-      else existing.addEventListener("load", () => setReady(true), { once: true });
-      return;
-    }
-    const s = document.createElement("script");
-    s.id = ID;
-    s.type = "module";
-    s.src = MODEL_VIEWER_SRC;
-    s.onload = () => setReady(true);
-    s.onerror = () => setModelOk(false);
-    document.head.appendChild(s);
+    loadModelViewer().then(() => setReady(true), () => setModelOk(false));
   }, []);
 
   useEffect(() => {
