@@ -10,7 +10,9 @@ export function ArtworkCard({ artwork }: { artwork: FeaturedArtwork }) {
     <Link href={`/obras/${artwork.id}`} className="blk-work">
       <div className="blk-work-img">
         {artwork.image_url ? <img src={artwork.image_url} alt={artwork.title} loading="lazy" /> : null}
-        {artwork.availability !== "disponible" ? (
+        {artwork.is_sample ? (
+          <span className="blk-work-badge is-sample">Obra de muestra</span>
+        ) : artwork.availability !== "disponible" ? (
           <span className="blk-work-badge">{AVAILABILITY_LABEL[artwork.availability]}</span>
         ) : null}
       </div>

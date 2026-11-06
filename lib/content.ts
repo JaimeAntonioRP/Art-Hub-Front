@@ -26,7 +26,7 @@ export type FeaturedArtwork = Pick<
   Artwork,
   "id" | "code" | "title" | "artist_name" | "image_url" | "technique" | "year" | "dimensions"
   | "price" | "currency" | "show_price" | "availability" | "model_3d_url"
->;
+> & { is_sample?: boolean; year_circa?: boolean };
 
 export type Block =
   | { type: "hero"; data: Buttons & { variant?: "grande" | "dividida"; eyebrow?: string; title: string; highlight?: string; text?: string; image_url?: string; show_featured_artwork?: boolean; artworks?: FeaturedArtwork[] } }

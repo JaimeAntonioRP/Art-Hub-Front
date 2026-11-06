@@ -8,7 +8,7 @@ import { WallView } from "@/components/catalog/WallView";
 import { Paragraphs } from "@/components/blocks/shared";
 import { AVAILABILITY_LABEL, type ArtworkDetail } from "@/lib/api";
 import { getArtwork } from "@/lib/catalog";
-import { formatArtworkPrice } from "@/lib/format";
+import { formatArtworkPrice, formatArtworkYear } from "@/lib/format";
 import "@/components/catalog/catalog.css";
 import "@/components/catalog/artwork.css";
 
@@ -34,7 +34,8 @@ export default async function ArtworkPage({ params, searchParams }: { params: Pa
   const openWallView = (await searchParams).ar === "1"; // llega desde el QR de «Ver en mi pared»
   if (!artwork) notFound();
 
-  const canBuy = artwork.availability === "disponible" || artwork.availability === "reservada";
+  const canBuy = !artwork.is_sample && (artwork.availability === "disponible" || artwork.availability === "reservada");
+  const sample = Boolean(artwork.is_sample); // obra de muestra de dominio público: solo se exhibe
   const artist = artwork.artist;
 
   return (
@@ -56,16 +57,25 @@ export default async function ArtworkPage({ params, searchParams }: { params: Pa
                 ? <Link href={`/artistas/${artist.slug}`} className="art-artist">{artwork.artist_name}</Link>
                 : <span className="art-artist">{artwork.artist_name}</span>}
               <h1>{artwork.title}</h1>
-              <p className="art-sub">{[artwork.technique, artwork.year].filter(Boolean).join(", ")}</p>
+              <p className="art-sub">{[artwork.technique, formatArtworkYear(artwork)].filter(Boolean).join(", ")}</p>
 
-              <div className="art-buy">
-                <strong className="art-price">{formatArtworkPrice(artwork)}</strong>
-                <span className={`art-status is-${artwork.availability}`}>{AVAILABILITY_LABEL[artwork.availability]}</span>
-              </div>
+              {sample ? (
+                <div className="art-sample">
+                  <strong>Obra de muestra · dominio público</strong>
+                  <span>Se exhibe como referencia: no está a la venta ni forma parte del registro de ArtHub.</span>
+                </div>
+              ) : (
+                <div className="art-buy">
+                  <strong className="art-price">{formatArtworkPrice(artwork)}</strong>
+                  <span className={`art-status is-${artwork.availability}`}>{AVAILABILITY_LABEL[artwork.availability]}</span>
+                </div>
+              )}
               <div className="art-ctas">
-                <a href="#solicitud" className="btn btn-gold btn-lg">
-                  {canBuy ? "Me interesa esta obra" : "Pedir información"}
-                </a>
+                {!sample ? (
+                  <a href="#solicitud" className="btn btn-gold btn-lg">
+                    {canBuy ? "Me interesa esta obra" : "Pedir información"}
+                  </a>
+                ) : null}
                 {artwork.certificate?.verification_token && artwork.certificate.status === "vigente" ? (
                   <Link href={`/verificar/${artwork.certificate.verification_token}`} className="btn btn-outline-dark btn-lg">
                     Ver el certificado
@@ -76,7 +86,7 @@ export default async function ArtworkPage({ params, searchParams }: { params: Pa
                     poster={artwork.image_url} size={artwork.dimensions ?? null} autoOpen={openWallView} />
                 ) : null}
               </div>
-              <p className="art-trust">Expediente revisado por ArtHub · Sin pagos en línea: un asesor te acompaña en la compra.</p>
+              {!sample ? <p className="art-trust">Expediente revisado por ArtHub · Sin pagos en línea: un asesor te acompaña en la compra.</p> : null}
 
               <Details artwork={artwork} />
 
@@ -97,6 +107,7 @@ export default async function ArtworkPage({ params, searchParams }: { params: Pa
         </div>
       </section>
 
+      {!sample ? (
       <section id="solicitud" className="art-request">
         <div className="wrap art-request-grid">
           <div>
@@ -117,6 +128,7 @@ export default async function ArtworkPage({ params, searchParams }: { params: Pa
           <RequestForm artworkId={artwork.id} artworkTitle={artwork.title} canBuy={canBuy} />
         </div>
       </section>
+      ) : null}
 
       {artist ? (
         <section className="art-more">
@@ -152,16 +164,26 @@ export default async function ArtworkPage({ params, searchParams }: { params: Pa
 /** Ficha técnica: solo las filas con dato. */
 function Details({ artwork }: { artwork: ArtworkDetail }) {
   const rows: [string, string | null | undefined][] = [
-    ["Código", artwork.code],
+    ["Autor", artwork.is_sample ? artwork.artist_name : null],
+    ["Código", artwork.is_sample ? null : artwork.code],
     ["Técnica", artwork.technique],
     ["Soporte", artwork.support],
     ["Medidas", artwork.dimensions],
     ["Peso", artwork.weight_kg ? `${Number(artwork.weight_kg)} kg` : null],
-    ["Año", artwork.year ? String(artwork.year) : null],
+    ["Año", formatArtworkYear(artwork)],
+    ["Licencia", artwork.license],
   ];
 
   return (
     <dl className="art-details">
+      {artwork.source ? (
+        <div>
+          <dt>Fuente de la imagen</dt>
+          <dd>{artwork.source_url
+            ? <a href={artwork.source_url} target="_blank" rel="noopener noreferrer" className="art-source">{artwork.source} ↗</a>
+            : artwork.source}</dd>
+        </div>
+      ) : null}
       {rows.filter(([, v]) => v).map(([label, value]) => (
         <div key={label}>
           <dt>{label}</dt>

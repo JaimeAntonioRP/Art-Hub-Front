@@ -210,3 +210,9 @@ a.art-artist:hover { color: var(--accent-text); }
   .wall-actions .btn { width: 100%; justify-content: center; }
   .wall-fallback img { display: none; }
 }
+
+/* Obra de muestra de dominio público */
+.art-sample { margin-top: 28px; padding: 14px 16px; border-left: 3px solid var(--accent); background: var(--surface-2); display: flex; flex-direction: column; gap: 4px; }
+.art-sample strong { font-size: 14.5px; color: var(--text); }
+.art-sample span { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
+.art-source { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }

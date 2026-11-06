@@ -95,7 +95,13 @@ export type ArtworkCard = Pick<
   Artwork,
   "id" | "code" | "title" | "technique" | "year" | "price" | "currency" | "show_price"
   | "availability" | "model_3d_url" | "artist_name" | "image_url" | "dimensions"
-> & { artist_slug: string | null };
+> & {
+  artist_slug: string | null;
+  /** Obra de muestra de dominio público: se exhibe «No a la venta». */
+  is_sample?: boolean;
+  /** Año aproximado («c. 1830»). */
+  year_circa?: boolean;
+};
 
 export type CatalogResponse = {
   data: ArtworkCard[];
@@ -135,6 +141,10 @@ export type ArtworkDetail = ArtworkCard & {
   weight_kg: string | null;
   description: string | null;
   history_notes: string | null;
+  /** Fuente y licencia de la imagen (obras de muestra). */
+  source: string | null;
+  source_url: string | null;
+  license: string | null;
   status: ArtworkStatus;
   images: Pick<ArtworkImage, "id" | "kind" | "url" | "is_primary">[];
   artist: {
