@@ -88,6 +88,7 @@
   position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 999px;
   background: var(--piedra-0); color: var(--danger); font-size: 11px; font-weight: 600;
 }
+.blk-work-badge.is-sample { color: var(--text); }
 .blk-work-artist { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
 .blk-work h3 { font-size: 21px; line-height: 1.2; margin: 0; font-weight: 500; }
 .blk-work-meta { font-size: 13px; color: var(--text-muted); }

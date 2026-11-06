@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { API_BASE, type CommercialRequestType } from "@/lib/api";
+
+const CONTACT_KEY = "arthub:contacto";
 
 type Errors = Partial<Record<"name" | "email" | "phone" | "type" | "message" | "consent" | "form", string>>;
 
@@ -14,6 +16,21 @@ export function RequestForm({ artworkId, artworkTitle, canBuy }: { artworkId: nu
   const [errors, setErrors] = useState<Errors>({});
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
+  const form = useRef<HTMLFormElement>(null);
+
+  // Rellena los datos de contacto de la última solicitud enviada desde este dispositivo.
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(CONTACT_KEY) ?? "null") as Record<string, string> | null;
+      if (!saved || !form.current) return;
+      for (const field of ["name", "email", "phone"]) {
+        const input = form.current.elements.namedItem(field) as HTMLInputElement | null;
+        if (input && !input.value && saved[field]) input.value = saved[field];
+      }
+    } catch {
+      // sin almacenamiento local (modo privado): el formulario queda vacío
+    }
+  }, []);
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,6 +48,11 @@ export function RequestForm({ artworkId, artworkTitle, canBuy }: { artworkId: nu
       const body = await res.json().catch(() => ({}));
 
       if (res.ok) {
+        try {
+          localStorage.setItem(CONTACT_KEY, JSON.stringify({ name: data.name, email: data.email, phone: data.phone }));
+        } catch {
+          // sin almacenamiento local: no se recuerda, y no pasa nada
+        }
         setSent(body.message ?? "Recibimos tu solicitud.");
         return;
       }
@@ -65,7 +87,7 @@ export function RequestForm({ artworkId, artworkTitle, canBuy }: { artworkId: nu
   }
 
   return (
-    <form className="req-form" onSubmit={submit} noValidate>
+    <form ref={form} className="req-form" onSubmit={submit} noValidate>
       <fieldset className="req-types">
         <legend className="sr-only">¿Qué te gustaría?</legend>
         {canBuy ? (

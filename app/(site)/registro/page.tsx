@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import {
   AuthCard,
@@ -30,6 +30,14 @@ export default function RegistroPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [artistPanelUrl, setArtistPanelUrl] = useState<string | null>(null);
+  const [clientEmail, setClientEmail] = useState<string | null>(null);
+
+  // «Crear cuenta» del encabezado llega con ?tipo=cliente; el de artistas, con ?tipo=artista.
+  useEffect(() => {
+    const tipo = new URLSearchParams(window.location.search).get("tipo");
+    if (tipo === "artista") setRole("artista");
+    if (tipo === "cliente") setRole("comprador");
+  }, []);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +63,8 @@ export default function RegistroPage() {
       });
       if (user.role === "artista" && user.artist_panel_url) {
         setArtistPanelUrl(user.artist_panel_url);
+      } else if (user.role === "comprador") {
+        setClientEmail(user.email);
       } else {
         router.push("/obras");
       }
@@ -73,6 +83,24 @@ export default function RegistroPage() {
       setSubmitting(false);
     }
   };
+
+  if (clientEmail) {
+    return (
+      <AuthCard
+        title="Tu cuenta está lista"
+        subtitle={`Te enviamos un correo a ${clientEmail} para confirmar tu dirección.`}
+      >
+        <ol style={{ margin: "0 0 24px", paddingLeft: 20, color: "var(--ink-soft)", lineHeight: 1.7, fontSize: 14.5 }}>
+          <li>Abre el correo de ArtHub y toca «Confirmar mi correo».</li>
+          <li>Ingresa con tu correo y contraseña.</li>
+          <li>En «Mi cuenta» verás el estado de cada solicitud que envíes desde la ficha de una obra.</li>
+        </ol>
+        <a href="/login" className="btn btn-gold btn-lg" style={{ width: "100%", justifyContent: "center" }}>
+          Ingresar a mi cuenta
+        </a>
+      </AuthCard>
+    );
+  }
 
   if (artistPanelUrl) {
     return (

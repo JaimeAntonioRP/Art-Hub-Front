@@ -109,6 +109,8 @@ function HeaderContent() {
               ))}
             </nav>
             <div className="nav-aside">
+              <a href="/login" className="header-login">Ingresar</a>
+              <Link href="/registro?tipo=cliente" className="btn btn-outline-dark header-cta header-account">Crear cuenta</Link>
               {header_cta ? (
                 <MenuLink link={header_cta} className="btn btn-gold header-cta" />
               ) : null}
@@ -140,11 +142,13 @@ function HeaderContent() {
             <MenuLink key={n.label + n.url} link={n} className={isActive(n.url) ? "active" : ""} onClick={() => setMenuOpen(false)} />
           ))}
         </nav>
-        {header_cta ? (
-          <div className="mnav-footer">
+        <div className="mnav-footer">
+          {header_cta ? (
             <MenuLink link={header_cta} className="btn btn-gold btn-lg mnav-cta" onClick={() => setMenuOpen(false)} />
-          </div>
-        ) : null}
+          ) : null}
+          <Link href="/registro?tipo=cliente" className="btn btn-outline-dark btn-lg mnav-cta" onClick={() => setMenuOpen(false)}>Crear cuenta</Link>
+          <a href="/login" className="mnav-login">Ingresar</a>
+        </div>
       </div>
     </>
   );
